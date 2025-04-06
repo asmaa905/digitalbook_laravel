@@ -34,7 +34,21 @@ class ConfirmablePasswordController extends Controller
         }
 
         $request->session()->put('auth.password_confirmed_at', time());
+        
+        // return redirect()->intended(route('dashboard', absolute: false));
+        return $this->redirectTo(Auth::user()->role);
+    }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+    protected function redirectTo($role): RedirectResponse
+    {
+        switch ($role) {
+            case 'Admin':
+                return redirect()->route('admin.dashboard');
+                case 'Publisher':
+                    return redirect()->route('books.publisher.index');
+                case 'Reader':
+                default:
+                    return redirect()->route('books.reader.index');
+        }
     }
 }

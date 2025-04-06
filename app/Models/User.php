@@ -76,6 +76,17 @@ class User extends Authenticatable
         {
             return $this->hasMany(Book::class, 'published_by');
         }
+
+
+        public function subscriptions()
+        {
+            return $this->hasMany(Subscription::class);
+        }
+
+        public function payments()
+        {
+            return $this->hasMany(Payment::class);
+        }
 }
 
 

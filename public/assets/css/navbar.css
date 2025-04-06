@@ -3,33 +3,36 @@ nav.navbar {
     position: fixed;
     z-index: 1000;
     width: 100%;
+    background-color: rgb(16, 16, 16);
 }
+
 .cont {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     padding: 0 16px;
-    background-color: rgb(16, 16, 16);
 }
+
 @media (min-width: 992px) {
     .cont {
         padding: 0 64px;
     }
 }
+
 li.nav-item a.nav-link {
     color: #fff;
-    font-size: 1.2rem;
-    font-weight: 500;
     font-family: "Storytel Euclid", sans-serif;
-    font-style: normal;
-    font-weight: 400;
     font-size: 16px;
     line-height: 22px;
+    transition: all 0.3s ease;
 }
+
 li.nav-item a.nav-link:hover {
     color: #ff5c28;
-    font-weight: 600;
+}
+li.nav-item a.nav-link:hover i {
+    color: #ff5c28;
 }
 li.nav-item {
     padding-inline-end: 32px;
@@ -44,33 +47,103 @@ li.nav-item {
         border-inline-end: 1px solid rgb(92, 92, 92);
     }
 }
-.gqCvyq:hover {
-    color: rgb(16, 16, 16) !important;
-    background-color: rgb(242, 238, 235);
+
+/* Profile Dropdown */
+.profile-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
 }
-a.gqCvyq {
-    color: #fff;
+
+.profile-image {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dropdown-menu {
+    background-color: #2a2a2a;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-item {
+    color: white;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #ff5c28;
+    color: white;
+}
+
+.dropdown-divider {
+    border-color: #444;
+}
+
+/* Search Button */
+.search-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.search-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Get Started Button */
+.gqCvyq {
     font-weight: 600;
     font-family: "Storytel Euclid", sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 16px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 8px;
-    cursor: pointer;
     min-width: 10ch;
-    border-width: 0px;
     border-radius: 1000px;
-    border-color: transparent;
-    text-align: center;
-    text-decoration: none;
-    font-style: normal;
-    letter-spacing: 0.03px;
     padding: 12px 16px;
     color: rgb(16, 16, 16) !important;
     background-color: rgb(255, 255, 255);
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.gqCvyq:hover {
+    color: rgb(16, 16, 16) !important;
+    background-color: rgb(242, 238, 235);
+    transform: translateY(-1px);
+}
+li.nav-item {
+    padding-inline-end: 5px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    left: auto;
+}
+
+.navbar-nav .dropdown-menu {
+    position: absolute;
+}
+
+/* For mobile view */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        padding-bottom: 15px;
+    }
+    .dropdown-menu {
+        position: static;
+        float: none;
+    }
 }
