@@ -1,0 +1,76 @@
+nav.navbar {
+    height: 64px;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+}
+.cont {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 16px;
+    background-color: rgb(16, 16, 16);
+}
+@media (min-width: 992px) {
+    .cont {
+        padding: 0 64px;
+    }
+}
+li.nav-item a.nav-link {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 500;
+    font-family: "Storytel Euclid", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+}
+li.nav-item a.nav-link:hover {
+    color: #ff5c28;
+    font-weight: 600;
+}
+li.nav-item {
+    padding-inline-end: 32px;
+}
+
+@media screen and (min-width: 1280px) {
+    .sMspI {
+        flex-direction: row;
+        align-items: center;
+        padding-block-end: 0px;
+        border-bottom: none;
+        border-inline-end: 1px solid rgb(92, 92, 92);
+    }
+}
+.gqCvyq:hover {
+    color: rgb(16, 16, 16) !important;
+    background-color: rgb(242, 238, 235);
+}
+a.gqCvyq {
+    color: #fff;
+    font-weight: 600;
+    font-family: "Storytel Euclid", sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    min-width: 10ch;
+    border-width: 0px;
+    border-radius: 1000px;
+    border-color: transparent;
+    text-align: center;
+    text-decoration: none;
+    font-style: normal;
+    letter-spacing: 0.03px;
+    padding: 12px 16px;
+    color: rgb(16, 16, 16) !important;
+    background-color: rgb(255, 255, 255);
+}
