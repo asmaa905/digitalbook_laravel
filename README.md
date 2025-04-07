@@ -30,13 +30,16 @@ A modern Laravel-based digital bookstore where users can browse, purchase, and e
    ```bash
    git clone https://github.com/your-username/digital-bookstore.git
    cd digital-bookstore
+   ```
 2- **install dependances
   ```bash
     composer install
+  ```
 3- Set Up Environment
    ```bash
     cp .env.example .env
     php artisan key:generate
+  ```
 4- **Configure .env**
 
     Set your database credentials:
@@ -45,23 +48,27 @@ A modern Laravel-based digital bookstore where users can browse, purchase, and e
     DB_DATABASE=your_db
     DB_USERNAME=root
     DB_PASSWORD=your_password
-
+    ```
 5- 
     ```bash
     php artisan migrate
+    ```
     
     ```bash
     php artisan db:seed
+   ```
 6- Install NPM Dependencies
 
     ```bash
     npm install
     npm run dev
+   ```
 
 7- Serve the App
     
     ```bash
     php artisan serve
+    ```
 
 8- Open your browser:
 
