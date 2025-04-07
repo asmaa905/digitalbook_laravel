@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.user')
+@section('user-title', 'Readed Books')
 
-@section('title', 'My Account - Listen To Story')
 
-@section('styles')
+@section('user-styles')
 <style>
     .account-container {
         max-width: 1200px;
@@ -137,7 +137,7 @@
 </style>
 @endsection
 
-@section('content')
+@section('user-content')
 <div class="  py-5 " style= "   color: #101010;
 background: #f8f6f5;">
         
@@ -225,10 +225,4 @@ background: #f8f6f5;">
 
     </div>
  </div>
-@endsection
-
-@section('scripts')
-<script>
-    // Add any necessary JavaScript here
-</script>
 @endsection

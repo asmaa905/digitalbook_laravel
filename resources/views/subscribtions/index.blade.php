@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.user')
 
-@section('title', 'My Subscription')
+@section('user-title', 'My Subscription')
 
-@section('styles')
+@section('user-styles')
 <style>
     .subscription-container {
         max-width: 1200px;
@@ -176,7 +176,7 @@
 </style>
 @endsection
 
-@section('content')
+@section('user-content')
 <div class="subscription-container pt-5">
     <div class="subscription-card mt-5">
         <div class="subscription-header">
@@ -287,8 +287,3 @@
 </div>
 @endsection
 
-@section('scripts')
-<script>
-    // Add any JavaScript for subscription management here
-</script>
-@endsection

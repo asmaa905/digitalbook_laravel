@@ -1,8 +1,8 @@
-@extends('layouts.app')
-@section('title')
+@extends('layouts.user')
+@section('user-title')
 Register
 @endsection
-@section('styles')
+@section('user-styles')
 <style>
     .btn-orange {
         color: #fff !important;
@@ -79,7 +79,7 @@ Register
 </head>
 
 
-@section('content')
+@section('user-content')
 
 <div class="background-page">
     <div class="bg-image">
@@ -238,7 +238,7 @@ Register
 </div>
 @endsection
 
-@section('scripts')
+@section('user-scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('multiStepForm');

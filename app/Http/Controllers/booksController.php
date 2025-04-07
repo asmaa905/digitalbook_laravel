@@ -45,4 +45,141 @@ class BooksController extends Controller
 
         return view('books.publisher.index', compact('publishedBooks'));
     }
+    // ... (keep your existing methods)
+
+    public function show_audio_books()
+    {
+        // Get books that have at least one audio version (audio_link not null)
+        $books = Book::whereHas('audioVersions', function($query) {
+                $query->whereNotNull('audio_link');
+            })
+            ->with(['author', 'audioVersions'])
+            ->orderBy('title')
+            ->get();
+    
+        $topRatedBooks = Book::whereHas('audioVersions', function($query) {
+                $query->whereNotNull('audio_link');
+            })
+            ->with(['author', 'audioVersions'])
+            ->orderByDesc('rating')
+            ->take(20)
+            ->get();
+    
+        $isFeaturedBooks = Book::whereHas('audioVersions', function($query) {
+                $query->whereNotNull('audio_link');
+            })
+            ->with(['author', 'audioVersions'])
+            ->where('is_featured', true)
+            ->take(20)
+            ->get();
+    
+        $book_type = 'audio';
+        
+        return view('user.Books.index', compact('books', 'topRatedBooks', 'isFeaturedBooks', 'book_type'));
+    }
+
+    public function show_ebooks()
+    {
+        // Get books that have PDF link AND no audio versions
+        $books = Book::whereNotNull('pdf_link')
+            ->with(['author', 'audioVersions'])
+            ->orderBy('title')
+            ->get();
+    
+        $topRatedBooks = Book::whereNotNull('pdf_link')
+            ->with(['author', 'audioVersions'])
+            ->orderByDesc('rating')
+            ->take(20)
+            ->get();
+    
+        $isFeasuredBooks = Book::whereNotNull('pdf_link')
+            ->with(['author', 'audioVersions'])
+            ->where('is_featured', true)
+            ->take(20)
+            ->get();
+    
+        $book_type = 'ebook';
+    
+        return view('user.Books.index', compact('books', 'topRatedBooks', 'isFeasuredBooks', 'book_type'));
+    }
+    
+    //show book with its review number  
+    // audioversion of that book
+    // rating of book
+    //author
+    //publisher of audio book created_by in audio_version
+    // and publisher of book
+    //catgory of book
+    //language of book
+    //book keywords
+
+    //show books that is in the same category of book
+    //and all books
+
+    //show book rating and all review and comments if found
+    public function show($bookId)
+    {
+        // Get the book with all related data
+        $book = Book::with([
+            'author',
+            'category',
+            'publishingHouse',
+            'publisher', // The user who published the book
+            'audioVersions' => function($query) {
+                $query->with(['creator' => function($q) {
+                    $q->select('id', 'name'); // Audio version creator (user)
+                }]);
+            },
+            'reviews' => function($query) {
+                $query->with(['user' => function($q) {
+                    $q->select('id', 'name'); // Review author
+                }])
+                ->orderBy('created_at', 'desc');
+            }
+        ])->findOrFail($bookId);
+    
+        // Calculate review statistics
+        $reviewCount = $book->reviews->count();
+        $averageRating = $book->reviews->avg('rating') ?? $book->rating ?? 0;
+    
+        // Get related books (same category and language)
+        $relatedBooks = Book::where('category_id', $book->category_id)
+            ->where('id', '!=', $book->id)
+            ->when($book->language, function($query, $language) {
+                $query->where('language', $language); // Filter by same language if available
+            })
+            ->with(['author', 'category'])
+            ->orderBy('rating', 'desc')
+            ->take(4)
+            ->get();
+    
+        // Get similar books (by same author and language)
+        $authorBooks = Book::where('author_id', $book->author_id)
+            ->where('id', '!=', $book->id)
+            ->when($book->language, function($query, $language) {
+                $query->where('language', $language); // Filter by same language if available
+            })
+            ->with(['author', 'category'])
+            ->orderBy('rating', 'desc')
+            ->take(4)
+            ->get();
+    
+        // Get available formats
+        $availableFormats = [];
+        if ($book->pdf_link) {
+            $availableFormats[] = 'E-book';
+        }
+        if ($book->audioVersions->count() > 0) {
+            $availableFormats[] = 'Audiobook';
+        }
+    
+        return view('user.books.show', compact(
+            'book',
+            'reviewCount',
+            'averageRating',
+            'relatedBooks',
+            'authorBooks',
+            'availableFormats'
+        ));
+    }
 }

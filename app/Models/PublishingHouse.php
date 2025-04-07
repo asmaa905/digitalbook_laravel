@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class PublishingHouse extends Model {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['name', 'location', 'website', 'email'];
+    protected $fillable = ['name', 'location', 'website', 'image'];
 
     public function publishers() {
         return $this->hasMany(Publisher::class);

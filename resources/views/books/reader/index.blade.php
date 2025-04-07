@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.user')
+@section('user-title', 'Readed Books')
 
-@section('content')
+@section('user-content')
 <div class="container">
     <h1>My Read Books</h1>
     

@@ -13,11 +13,14 @@ return new class extends Migration
         Schema::create('audio_versions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('book_id')->constrained('books')->onDelete('cascade');
-            $table->string('audio_link'); // Store audio link
+            $table->string('audio_link')->default(null); // Store audio link
             $table->string('review_record_link')->nullable(); // Optional review
 
             // Ensure nullable before constraint
             $table->unsignedBigInteger('created_by')->nullable(); 
+            $table->decimal('audio_duration', 8, 2)->default(1);
+
+            $table->string('language', 10)->default('en');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
 
             $table->timestamps();

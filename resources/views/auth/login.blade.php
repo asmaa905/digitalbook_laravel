@@ -1,8 +1,9 @@
-@extends('layouts.app')
-@section('title')
+@extends('layouts.user')
+
+@section('user-title')
 Login
 @endsection
-@section('styles')
+@section('user-styles')
 <style>
     .btn-orange {
         color: #fff !important;
@@ -44,8 +45,7 @@ Login
 </style>
 @endsection
 
-@section('content')
-<div class="background-page" >
+@section('user-content')<div class="background-page" >
     <div class="bg-image">
         <img src="{{ asset('assets/images/login_hero.jpg') }}" alt="Background Image" class="img-fluid">
     </div>
@@ -119,7 +119,7 @@ Login
         </div>
 
 @endsection
-@section('scripts')
+@section('user-scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('multiStepForm');
@@ -216,14 +216,7 @@ Login
                 document.getElementById('hidden-submit').click(); // Triggers normal form submission
             }
         });
-//         continueToStep3.addEventListener('click', function() {
-//     if (accountTypeInput.value === 'publisher') {
-//         showStep(2);
-//     } else {
-//         document.getElementById('hidden-submit').click(); // Triggers normal form submission
-//     }
-// });
-        // Initialize progress bar
+
         updateProgress();
         
         // If there are validation errors, show the appropriate step

@@ -9,7 +9,7 @@ class AudioVersion extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['book_id', 'audio_link', 'created_by'];
+    protected $fillable = ['book_id', 'audio_link', 'created_by','language'];
 
     // Relationships
     public function book()

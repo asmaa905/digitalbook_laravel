@@ -11,18 +11,17 @@ return new class extends Migration
      */
    
      public function up()
-     {
-         Schema::create('publishing_houses', function (Blueprint $table) {
-             $table->id();
-             $table->string('name');
-             $table->string('location');
-             $table->string('website');
-             $table->string('email')->unique();
-
-             $table->timestamps();
-             $table->softDeletes();
-         });
-     }
+{
+    Schema::create('publishing_houses', function (Blueprint $table) {
+        $table->id();
+        $table->string('name');
+        $table->string('location');
+        $table->string('website');
+        $table->string('image')->nullable(); // Remove ->after('website')
+        $table->timestamps();
+        $table->softDeletes();
+    });
+}
  
      public function down()
      {

@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.user')
 
-@section('content')
+@section('user-content')
 <div class="container">
     <h1>My Published Books</h1>
     

@@ -20,6 +20,10 @@ return new class extends Migration
             $table->foreignId('published_by')->constrained('users')->onDelete('cascade'); // Publisher or Admin
             $table->foreignId('author_id')->nullable()->constrained('authors')->onDelete('set null');
             $table->float('rating')->nullable();
+            $table->boolean('is_featured')->default(false);
+            $table->string('language')->default('en');
+            $table->string('image')->nullable();
+            
             $table->timestamps();
             $table->softDeletes();
 

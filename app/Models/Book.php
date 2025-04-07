@@ -10,8 +10,12 @@ class Book extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['title', 'description', 'image','price', 'publish_date', 'pdf_link', 'publish_house_id', 'category_id', 'published_by', 'author_id'];
+    protected $fillable = ['title', 'description', 'image','price', 'publish_date', 'pdf_link', 'publish_house_id', 
+    'category_id', 'published_by', 'author_id','image','is_featured','language'];
 
+    protected $casts = [
+        'publish_date' => 'date',
+    ];
     // Relationships
     public function publisher()
     {
@@ -43,7 +47,6 @@ class Book extends Model
         return $this->hasMany(Review::class);
     }
 
-    // In Book model
     public function scopePublished($query)
     {
         return $query->where('is_published', true);

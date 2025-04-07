@@ -7,9 +7,16 @@ use App\Models\PublishingHouse;
 
 class PublishingHousesSeeder extends Seeder
 {
-    public function run()
-    {
-        PublishingHouse::factory(3)->create();
-    }
+   // In your PublishingHousesSeeder
+public function run()
+{
+    \App\Models\PublishingHouse::create([
+        'name' => 'Example Publisher',
+        'location' => '123 Main St',
+        'website' => 'http://example.com',
+        'image' => 'publishing_houses/aseer_alkutib.jpg',
+        // Add 'image' if needed
+    ]);
+}
 }
 
