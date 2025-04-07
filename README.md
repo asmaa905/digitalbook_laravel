@@ -74,12 +74,13 @@ A modern Laravel-based digital bookstore where users can browse, purchase, and e
 
 ```bash
 http://127.0.0.1:8000
+```
 
 9- Storage Link (for audio and images)
 
-    ```bash
-    php artisan storage:link
-    ```
+```bash
+php artisan storage:link
+```
 10- Queue for Notifications or Audio Processing (if used)
 
 ```bash
