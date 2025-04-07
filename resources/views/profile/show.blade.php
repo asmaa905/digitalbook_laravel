@@ -162,9 +162,15 @@ background: #f8f6f5;">
             <a href="{{ route('books.reader.index') }}" class="account-menu-item">
                 <i class="fas fa-book"></i> My Reading History
             </a>
+            @if(Auth::check() && Auth::user()->role === 'Publisher')
             <a href="{{ route('subscription.index') }}" class="account-menu-item">
                 <i class="fas fa-credit-card"></i> Subscriptions
             </a>
+            {{--"{{ route('payments.index') }}" --}}
+            <a href="#" class="account-menu-item">
+                <i class="fas fa-credit-card"></i> Payments
+            </a>
+            @endif
            
             <form method="POST" action="{{ route('logout') }}" class="account-menu-item">
                 @csrf

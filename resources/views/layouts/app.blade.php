@@ -61,15 +61,20 @@
                                     <a class="dropdown-item" href="{{ route('profile.show') }}">
                                         <i class="fas fa-user me-2"></i> My Profile
                                     </a>
+                                    @if(Auth::check() && Auth::user()->role === 'Reader')
                                     <a class="dropdown-item" href="{{ route('books.reader.index') }}">
-                                    <i class="fa-solid fa-book"></i>Readed Books
+                                      <i class="fa-solid fa-book"></i>Readed Books
                                     </a>
                                     <a class="dropdown-item" href="{{ route('books.reader.index') }}">
-                                    <i class="fa-solid fa-headphones-simple"></i> Watched Books
+                                      <i class="fa-solid fa-headphones-simple"></i> Watched Books
                                     </a>
+                                    @elseif(Auth::check() && Auth::user()->role === 'Publisher')
                                     <a class="dropdown-item" href="{{ route('books.publisher.index') }}">
-                                    <i class="fa-solid fa-book"></i> My Published Books
+                                      <i class="fa-solid fa-book"></i> My Published Books
                                     </a>
+                                    @endif
+                                    
+                                    
                                     <div class="dropdown-divider"></div>
                                    {{--
                                     <form method="POST" action="{{ route('logout') }}"> 
@@ -91,7 +96,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="gqCvyq" href="{{ route('register') }}">
-                                    Get Started
+                                    Try it for free
                                 </a>
                             </li>
                         @endauth
