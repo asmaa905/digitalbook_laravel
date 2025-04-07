@@ -33,12 +33,12 @@ A modern Laravel-based digital bookstore where users can browse, purchase, and e
    ```
 2- **install dependances
   ```bash
-    composer install
+  composer install
   ```
 3- Set Up Environment
    ```bash
-    cp .env.example .env
-    php artisan key:generate
+  cp .env.example .env
+  php artisan key:generate
   ```
 4- **Configure .env**
 
@@ -74,4 +74,15 @@ A modern Laravel-based digital bookstore where users can browse, purchase, and e
 
 ```bash
 http://127.0.0.1:8000
+
+9- Storage Link (for audio and images)
+
+    ```bash
+    php artisan storage:link
+    ```
+10- Queue for Notifications or Audio Processing (if used)
+
+```bash
+php artisan queue:work
+```
 
