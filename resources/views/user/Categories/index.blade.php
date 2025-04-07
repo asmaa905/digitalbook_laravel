@@ -138,7 +138,7 @@
 
 @section('user-content')
 <div class="categories-header">
-    <div class="container">
+    <div class="container" style="padding-top:100px">
         <div class="row align-items-center">
             <div class="col-md-8">
                 <h1 class="display-4 mb-3">Browse Categories</h1>

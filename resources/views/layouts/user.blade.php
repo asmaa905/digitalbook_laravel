@@ -15,11 +15,28 @@
 
 @section('content')
 
+@php
+    use Illuminate\Support\Facades\Auth;
 
+    if (!Auth::check()) {
+        $dashboardRoute = route('user.home'); // or route to your homepage
+    } else {
+        $user = Auth::user();
+        if ($user->role === 'Admin') {
+            $dashboardRoute = route('admin.dashboard');
+        } elseif ($user->role === 'Reader') {
+            $dashboardRoute = route('books.reader.index');
+        } elseif ($user->role === 'Publisher') {
+            $dashboardRoute = route('books.publisher.index');
+        } else {
+            $dashboardRoute = route('user.home'); // fallback
+        }
+    }
+@endphp
 <nav class="navbar navbar-expand-lg py-0" style="background-color: rgb(16, 16, 16)">
         <div class="cont">
            {{--<a class="navbar-brand" href="{{ route('home') }}"> --}}
-            <a class="navbar-brand" href="{{ route('user.home') }}">    
+            <a class="navbar-brand"  href="{{ $dashboardRoute }}">    
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="23" fill="#FF5C28" viewBox="0 0 21 24">
                     <path d="M20.466 11.109c.876-4.8-2.049-9.093-6.627-10.519C5.709-1.94-.052 5.506.014 13.015c.053 6.066 1.354 10.098 1.354 10.101-.058-.18 1.536-1.02 1.72-1.114.625-.32 1.28-.582 1.944-.802 1.372-.456 2.79-.743 4.197-1.064 4.399-1.006 9.127-2.902 10.81-7.47.19-.515.33-1.036.427-1.557Z"></path>
                 </svg>
@@ -76,6 +93,10 @@
                                     <a class="dropdown-item" href="{{ route('books.publisher.index') }}">
                                       <i class="fa-solid fa-book"></i> My Published Books
                                     </a>
+                                    @elseif(Auth::check() && Auth::user()->role === 'Admin')
+                                    <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                    <i class="fas fa-tachometer-alt"></i>Dashboard
+                                    </a>
                                     @endif
                                     
                                     
@@ -83,7 +104,7 @@
                                    {{--
                                     <form method="POST" action="{{ route('logout') }}"> 
                                     --}}
-                                    <form method="POST" action="#">
+                                    <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                         <button type="submit" class="dropdown-item">
                                             <i class="fas fa-sign-out-alt me-2"></i> Logout

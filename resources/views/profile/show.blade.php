@@ -159,9 +159,11 @@ background: #f8f6f5;">
             <a href="#" class="account-menu-item">
                 <i class="fas fa-lock"></i> Security
             </a>
+            @if(Auth::check() && Auth::user()->role === 'Reader')
             <a href="{{ route('books.reader.index') }}" class="account-menu-item">
                 <i class="fas fa-book"></i> My Reading History
             </a>
+            @endif
             @if(Auth::check() && Auth::user()->role === 'Publisher')
             <a href="{{ route('subscription.index') }}" class="account-menu-item">
                 <i class="fas fa-credit-card"></i> Subscriptions
