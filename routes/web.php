@@ -7,10 +7,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Publisher\SubscriptionController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\CategoryController;
-// use Laravel\Socialite\Facades\Socialite;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\GoogleController;
+
 
 // =============================
 // ✅ Public Routes appear for login and non login users
@@ -29,9 +26,7 @@ Route::get('/books/{id}', [BooksController::class, 'show'])->name('user.books.sh
 // =============================
 Route::middleware('guest')->group(function () {
 
-    // Route::get('/auth/callback', function () {
-    //     $user = Socialite::driver('google')->user();
-    // });
+ 
 });
 // =============================
 // ✅ Auth Routes appear for login and non login users

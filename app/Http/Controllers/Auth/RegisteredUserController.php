@@ -40,7 +40,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            'account_type' => ['required', 'in:reader,publisher'],
+            'account_type' => ['required', 'in:Reader,Publisher'],
         ]);
 
         // Handle image upload
@@ -60,7 +60,7 @@ class RegisteredUserController extends Controller
         ]);
 
         // If publisher, validate and create publisher record
-        if ($request->account_type === 'publisher') {
+        if ($request->account_type === 'Publisher') {
             $request->validate([
                 'identity' => ['required', 'file', 'mimes:pdf,jpeg,png,jpg', 'max:2048'],
                 'job_title' => ['required', 'string', 'max:255'],
@@ -81,7 +81,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return $this->redirectTo($user->role);
+        return $this->redirectTo(Auth::user()->role);
 
     }
 
@@ -93,8 +93,9 @@ protected function redirectTo($role): RedirectResponse
         case 'Publisher':
             return redirect()->route('books.publisher.index');
         case 'Reader':
-        default:
             return redirect()->route('books.reader.index');
+        default:
+            return redirect()->route('user.home');
     }
 }
 }

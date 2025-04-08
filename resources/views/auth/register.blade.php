@@ -162,14 +162,14 @@ Register
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <div class="account-type text-center" data-type="reader">
+                                <div class="account-type text-center" data-type="Reader">
                                     <i class="fas fa-book-reader"></i>
                                     <h4>Reader</h4>
                                     <p>Enjoy audiobooks and manage your library</p>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <div class="account-type text-center" data-type="publisher">
+                                <div class="account-type text-center" data-type="Publisher">
                                     <i class="fas fa-book-open"></i>
                                     <h4>Publisher</h4>
                                     <p>Publish and manage your audiobooks</p>
@@ -319,7 +319,7 @@ Register
                 
                 // If publisher is selected, show step 3 next
                 // If reader is selected, skip to submission
-                if (selectedType === 'publisher') {
+                if (selectedType === 'Publisher') {
                     continueToStep3.textContent = 'Continue';
                 } else {
                     continueToStep3.textContent = 'Complete Registration';
@@ -329,7 +329,7 @@ Register
         
         // Special handling for continue button on step 2
         continueToStep3.addEventListener('click', function() {
-            if (accountTypeInput.value === 'publisher') {
+            if (accountTypeInput.value === 'Publisher') {
                 showStep(2); // Show publisher info form
             } else {
                 document.getElementById('hidden-submit').click(); // Triggers normal form submission
@@ -347,7 +347,7 @@ Register
         
         // If there are validation errors, show the appropriate step
         @if($errors->has('identity') || $errors->has('job_title') || $errors->has('publishing_house_id'))
-            document.getElementById('account_type').value = 'publisher';
+            document.getElementById('account_type').value = 'Publisher';
             showStep(2);
         @elseif($errors->has('account_type'))
             showStep(1);
