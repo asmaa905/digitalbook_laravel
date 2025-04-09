@@ -1,453 +1,562 @@
 @extends('layouts.user')
 
 @section('user-title')
- @php
- if(book_type == 'ebooks') ebooks Collection
- else 
- audio books
+@section('user-title')
+@php
+    if($book_type == 'ebook') 
+        echo 'eBooks Collection';
+    else 
+        echo 'Audio Books Collection';
+@endphp
+@endsection
 @endsection
 
 @section('user-styles')
 <style>
-    :root {
-        --primary: #00a8e1;
-        --secondary: #ff6b6b;
-        --dark: #2c3e50;
-        --light: #f8f9fa;
-        --gray: #6c757d;
+    body {
+        font-family: "Euclid Circular A", sans-serif;
+        background: rgb(255, 251, 250);
     }
-    
-    .ebooks-hero {
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: white;
-        padding: 4rem 0;
-        margin-bottom: 3rem;
+    img,
+    svg {
+        vertical-align: unset;
     }
-    
-    .ebook-card {
-        border: none;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: all 0.3s ease;
+    @media (min-width: 992px) {
+        .col-lg-12-8 {
+            flex: 0 0 auto;
+            width: calc(12.5% - 8px) !important;
+        }
+    }
+    /* @media (min-width: 1200px) {
+        .container,
+        .container-lg,
+        .container-md,
+        .container-sm,
+        .container-xl {
+            max-width: 1297px;
+        }
+    } */
+    @media (min-aspect-ratio: 4 / 5) {
+        .jASifu {
+            background-image: url(https://images.ctfassets.net/eukfsb1ndh2n/4zMIdOhEn4NazgHJVCq1IP/7cbbe41…/expiration_date_2026_11_20_kayla-bed-phone_16-9.jpg?fm=webp&w=1920);
+        }
+    }
+
+    @media (min-aspect-ratio: 1 / 2) {
+        .jASifu {
+            @if($book_type == 'ebook')
+              background-image: url(https://images.ctfassets.net/eukfsb1ndh2n/6uHy3wT7o0F05y5t0JrQ3N/26b40ed…/e-books_page_1080x1080_1_x_1_1080_x1080_.jpg?fm=webp&w=768);
+            @else
+              background-image: url(../../../../assets/images/banner-2.jpg);
+            @endif
+        }
+    }
+    .jASifu {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        min-height: calc(100vh - 6.4rem);
+        background-color: rgb(255, 242, 241);
+        @if($book_type == 'ebook')
+            background-image: url(../../../../assets/images/banner-1.jpg);
+        @else
+            background-image: url(../../../../assets/images/banner-2.jpg);
+        @endif
+        background-position: center center;     
+          /* aspect-ratio: 1 / 1; */
+    }
+    @media screen and (min-width: 600px) {
+        .cJhNxu {
+            background-size: 100%;
+            padding: 5.6rem 3.2rem 3.2rem;
+        }
+    }
+    .cJhNxu {
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        grid-column: 2 / 3;
+        grid-row-start: 2;
+        margin-top: auto;
+        padding: 5.6rem 1.6rem 3.2rem;
+        background-image: linear-gradient(
+            rgba(16, 16, 16, 0) 0%,
+            rgb(16, 16, 16) 66.37%
+        );
+        background-size: 100%;
+    }
+    .content {
+        padding: 0 0 50px 16px;
+    }
+    .main-title {
+        font-style: normal;
+        font-weight: 600;
+        color: rgb(255, 80, 28);
+        font-size: 83px;
+        line-height: 81px;
+
+        letter-spacing: -1.328px;
+        text-decoration: none;
+    }
+    .head-desc {
+        font-style: normal;
+        font-weight: 400;
+        color: #fff;
+        font-size: 20px;
+        line-height: 28px;
+        text-decoration: none;
+    }
+    .try-btn {
+        min-width: 10ch;
+        border-radius: 1000px;
+        padding: 5px 16px;
+        background-color: rgb(255, 255, 255);
+        transition: all 0.3s;
+        text-decoration: none;
+
+        font-size:13px;
+        line-height:16px;
+        color:rgb(16,16,16);
+        font-weight:600
+
+    }
+
+    .try-btn:hover {
+        color: rgb(16, 16, 16) !important;
+        background-color: rgb(242, 238, 235);
+        transform: translateY(-1px);
+    }
+
+    ul li {
+        text-decoration: none;
+        list-style: none;
+    }
+    ul.lfjSpC {
+        padding-top: 32px;
+        padding-bottom: 27px;
+        padding-left: 0.75rem;
+    }
+    ul.lfjSpC li a {
+        font-weight: 500;
+        font-style: normal;
+        color: rgb(92, 92, 92) !important;
+        font-size: 16px;
+        line-height: 22px;
+        transition: all 1s ease-in-out;
+    }
+    ul.lfjSpC li a:hover {
+        color: rgb(198, 70, 27) !important;
+    }
+    .books-section {
+        row-gap: 2.4rem;
+        padding-top: 0px;
+        padding-bottom: 4rem;
+        background-color: rgb(255, 251, 250);
+    }
+    .sec-title {
+        font-weight: 600;
+        font-style: normal;
+        color: rgb(16, 16, 16) !important;
+        font-size: 26px;
+        line-height: 32px;
+    }
+    .cards {
+        gap: 8px;
+    }
+    .sec-title:hover {
+        text-decoration-line: underline;
+        cursor: pointer;
+    }
+    .all-books-link {
+        font-weight: 600;
+        font-style: normal;
+        color: rgb(16, 16, 16) !important;
+        font-size: 13px;
+        line-height: 16px;
+        transition: all 1s ease-in-out;
+    }
+    .all-books-link:hover {
+        text-decoration-line: underline;
+    }
+    .all-books-link span {
+        padding-right: 5px;
+    }
+    .book-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 0.5rem;
+        border: 0.8px solid #ccc;
+        width: 166.4px;
+        height: 250px;
+
+        border-radius: 4rem;
+        padding: 8px;
+    }
+    .book-card .image {
+        /* max-width: 16rem;
+        max-height: 16rem;
+        min-width: var(--min-width);
+        min-height: var(--min-height);
+        height: 100%;
+        width: 100%; */
+        aspect-ratio: 1 / 1;
+    }
+    .book-card .card-title {
+        font-weight: 600;
+        font-style: normal;
+        color: rgb(16, 16, 16) !important;
+        font-size: 13px;
+        line-height: 16px;
+        transition: all 1s ease-in-out;
+    }
+    .book-card .card-text {
+        font-weight: 400;
+        font-style: normal;
+        color: rgb(92, 92, 92) !important;
+        font-size: 13px;
+        line-height: 16px;
+        transition: all 1s ease-in-out;
+    }
+    .book-card .actions {
+        padding-top: 25px;
+    }
+    .book-card .actions .rates {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .book-card .actions .rates,
+    .book-card .actions .pdf-version,
+    .book-card .actions .audio-version {
+        width: 32px;
+        height: 16px;
+    }
+    .book-card .actions .rates img,
+    .book-card .actions .pdf-version img,
+    .book-card .actions .audio-version img {
+        width: 100%;
         height: 100%;
     }
-    
-    .ebook-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-    
-    .ebook-cover {
-        height: 200px;
-        background-color: #f1f3f5;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .ebook-cover img {
-        max-height: 100%;
-        transition: transform 0.3s ease;
-    }
-    
-    .ebook-card:hover .ebook-cover img {
-        transform: scale(1.05);
-    }
-    
-    .ebook-badge {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: var(--primary);
-        color: white;
-        padding: 3px 8px;
-        border-radius: 4px;
-        font-size: 0.8rem;
-    }
-    
-    .ebook-body {
-        padding: 1.25rem;
-    }
-    
-    .ebook-title {
-        font-size: 1rem;
-        margin-bottom: 0.5rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    
-    .ebook-author {
-        color: var(--gray);
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-    }
-    
-    .ebook-rating {
-        color: #ffc107;
-        font-size: 0.9rem;
-    }
-    
-    .ebook-price {
-        font-weight: bold;
-        margin-top: 0.5rem;
-    }
-    
-    .section-title {
-        position: relative;
-        padding-bottom: 0.75rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .section-title:after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 50px;
-        height: 3px;
-        background: var(--primary);
-    }
-    
-    .ebook-actions {
-        display: flex;
-        gap: 0.5rem;
-        margin-top: 1rem;
-    }
-    
-    .btn-download {
-        background-color: var(--primary);
-        color: white;
-        flex: 1;
-    }
-    
-    .btn-preview {
-        border: 1px solid var(--primary);
-        color: var(--primary);
-        flex: 1;
-    }
-    
-    .ebooks-carousel {
-        margin-bottom: 3rem;
-    }
-    
-    .carousel-control-prev, .carousel-control-next {
-        width: 5%;
-    }
-    
-    @media (max-width: 767.98px) {
-        .ebook-cover {
-            height: 150px;
-        }
-        
-        .ebooks-hero {
-            padding: 2rem 0;
-        }
+
+    .book-card .actions .rate-avg {
+        color: rgb(92, 92, 92) !important;
+        font-size: 13px;
+        line-height: 16px;
     }
 </style>
 @endsection
 
 @section('user-content')
-<div class="ebooks-hero">
-    <div class="container mt-5">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <h1 class="display-4 mb-3">Discover Great Ebooks</h1>
-                <p class="lead mb-4">Read your favorite books anytime, anywhere</p>
-                <form class="ebook-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control form-control-lg" placeholder="Search ebooks...">
-                        <button class="btn btn-primary" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
-            {{--<div class="col-lg-4 d-none d-lg-block">
-                <img src="{{ asset('assets/images/banner-1.jpg') }}" alt="Ebooks" class="img-fluid">
-            </div>--}}
+<div class="hero">
+    <div class="sc-1c680e04-0 jASifu">
+        <div class="cJhNxu">
+            <h1 class="main-title">
+                @if($book_type == 'ebook')
+                    eBooks
+                @else
+                    Audio Books
+                @endif
+            </h1>
+            <p class="head-desc">
+                @if($book_type == 'ebook')
+                    Get access to more than 250 000 + eBooks - new content is added daily. Start now. Read anytime, anywhere.
+                @else
+                    Discover our vast collection of audio books - new titles added regularly. Listen anytime, anywhere.
+                @endif
+            </p>
+            <a class="try-btn" href="#"> Try it for free </a>
         </div>
     </div>
 </div>
 
-<div class="container">
-    <!-- Featured Ebooks -->
-    <section class="mb-5">
-        <h2 class="section-title">Featured Ebooks</h2>
-        <div class="row">
-            @foreach($books as $book)
-            <div class="col-6 col-md-4 col-lg-3 mb-4">
-                <div class="ebook-card">
-                    <a href="{{ route('user.books.show', $book->id) }}" class="text-decoration-none">
-                        <div class="ebook-cover">
-                            <img src="{{asset('assets/images/banner-1.jpg') }}" alt="{{ $book->title }}">
-                            <span class="ebook-badge">Featured</span>
-                        </div>
-                        <div class="ebook-body">
-                            <h3 class="ebook-title">{{ $book->title }}</h3>
-                            <p class="ebook-author">{{ $book->author->name ?? 'Unknown Author' }}</p>
-                            <div class="ebook-rating">
-                                @for($i = 1; $i <= 5; $i++)
-                                    @if($i <= ($book->rating ?? 0))
-                                        <i class="fas fa-star"></i>
-                                    @elseif($i - 0.5 <= ($book->rating ?? 0))
-                                        <i class="fas fa-star-half-alt"></i>
-                                    @else
-                                        <i class="far fa-star"></i>
-                                    @endif
-                                @endfor
-                                <small>({{ $book->reviews_count ?? 0 }})</small>
+    <div class="main-sections">
+            <div class="container p-0">
+                <nav>
+                    <ul class="sc-db0b2c15-0 lfjSpC">
+                        <li class="sc-e408b72-0 cJEgpJ sc-db0b2c15-1 gAVRKW">
+                            <a
+                                href="{{route('user.home')}}"
+                                class="sc-e408b72-0 kAwrBF"
+                                >Home</a
+                            >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="4"
+                                height="7"
+                                viewBox="0 0 5 8"
+                                fill="#767676ff"
+                            >
+                                <path
+                                    d="m1.144.864 2.681 2.663A.73.73 0 0 1 4.022 4a.702.702 0 0 1-.196.474L1.144 7.137a.67.67 0 0 1-.73.145C.163 7.178 0 6.971 0 6.682V1.337A.67.67 0 0 1 1.144.864Z"
+                                ></path>
+                            </svg>
+                        </li>
+                    </ul>
+                </nav>
+                <section class="books-section featured-books">
+                    <div class="row px-0 mx-0">
+                        <div
+                            class="sec-header col-md-12 d-flex justify-content-between align-items-center"
+                        >
+                            <h3 class="sec-title">Featured Books</h3>
+                            <div class="all-books-link d-flex">
+                                <span> View all titles</span>
+                                <div
+                                    class="icon"
+                                    style="width: 1rem; height: 1rem"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        style="width: 100%; height: 100%"
+                                        fill="#101010"
+                                        viewBox="0 0 15 28"
+                                        class="sc-dd917b06-0 bAuqWJ"
+                                    >
+                                        <path
+                                            d="m2.895 1.126 11.35 11.846c.277.286.415.658.415 1.028s-.138.742-.415 1.028L2.895 26.874a1.483 1.483 0 0 1-2.101.045 1.48 1.48 0 0 1-.045-2.102l10.414-10.873L.751 3.184A1.48 1.48 0 0 1 .796 1.08a1.48 1.48 0 0 1 2.1.045Z"
+                                        ></path>
+                                    </svg>
+                                </div>
+                                <!-- <i class="fas fa-greater-than"></i> -->
                             </div>
-                            <div class="ebook-price">${{ number_format($book->price, 2) }}</div>
                         </div>
-                    </a>
-                    <div class="ebook-actions">
-                        {{--<a href="{{ $book->pdf_link }}" class="btn btn-sm btn-download" download>
-                            <i class="fas fa-download"></i>
-                        </a>--}}
-                        @if($book->pdf_link !== null)
-                        <a href="#" class="btn btn-sm btn-preview">
-                          <i class="fas fa-glasses"></i>
-                        </a>
-                        @endif
-                        @if($book->audioVersions->count() > 0)
-                        <a href="#" class="btn btn-sm btn-preview">
-                        <i class="fas fa-headphones"></i>
-                        </a>
-                        @endif
-
                     </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </section>
+                    <div class="cards row p-0 m-0">
+                      @foreach($books as $book)
 
-    <!-- Top Rated Ebooks -->
-    <section class="mb-5">
-        <h2 class="section-title">Top Rated</h2>
-        <div class="row">
-            @foreach($topRatedBooks as $book)
-            <div class="col-6 col-md-4 col-lg-3 mb-4">
-                <div class="ebook-card">
-                    <a href="{{ route('user.books.show', $book->id) }}" class="text-decoration-none">
-                        <div class="ebook-cover">
-                            <img src="{{ asset('assets/images/default-ebook.jpg') }}" alt="{{ $book->title }}">
-                            @if($book->rating >= 4)
-                            <span class="ebook-badge">Top Rated</span>
-                            @endif
-                        </div>
-                        <div class="ebook-body">
-                            <h3 class="ebook-title">{{ $book->title }}</h3>
-                            <p class="ebook-author">{{ $book->author->name ?? 'Unknown Author' }}</p>
-                            <div class="ebook-rating">
-                                @for($i = 1; $i <= 5; $i++)
-                                    @if($i <= ($book->rating ?? 0))
-                                        <i class="fas fa-star"></i>
-                                    @elseif($i - 0.5 <= ($book->rating ?? 0))
-                                        <i class="fas fa-star-half-alt"></i>
-                                    @else
-                                        <i class="far fa-star"></i>
-                                    @endif
-                                @endfor
+                      <a href="{{ route('user.books.show', $book->id) }}" 
+                            class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none"
+                            style="border-radius: 5px">
+                        
+                            <div class="image">
+                              <img src="{{asset('assets/images/books/book-img-1.jpeg') }}" alt="{{ $book->title }}" class="card-img-top"/>
                             </div>
-                            <div class="ebook-price">${{ number_format($book->price, 2) }}</div>
-                        </div>
-                    </a>
-                    <div class="ebook-actions">
-                    {{--<a href="{{ $book->pdf_link }}" class="btn btn-sm btn-download" download>
-                            <i class="fas fa-download"></i>
-                        </a>--}}
-                        @if($book->pdf_link !== null)
-                        <a href="#" class="btn btn-sm btn-preview">
-                          <i class="fas fa-glasses"></i>
-                        </a>
-                        @endif
-                        @if($book->audioVersions->count() > 0)
-                        <a href="#" class="btn btn-sm btn-preview">
-                        <i class="fas fa-headphones"></i>
-                        </a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </section>
+                            <div class="card-body p-0 w-100">
+                                <h5 class="card-title pb-0 mb-0">
+                                {{ $book->title }}
+                                </h5>
+                                <p class="card-text pb-0 mb-0">
+                                {{ $book->author->name ?? 'Unknown Author' }}
+                                </p>
+                                <div
+                                    class="actions d-flex justify-content-between align-items-center"
+                                >
+                                    <div class="rates p-0">
+                                        <img
+                                            src="{{asset('assets/images/icons/star.svg')}}"
+                                            alt=""
+                                        />
+                                        <span class="rate-avg">{{$book->rating}}</span>
+                                        <small>({{ $book->reviews_count ?? 0 }})</small>
 
-    <!-- New Releases -->
-    <section class="mb-5">
-        <h2 class="section-title">New Releases</h2>
-        <div class="row">
-           {{-- @foreach($newReleases as $book)
-            <div class="col-6 col-md-4 col-lg-3 mb-4">
-                <div class="ebook-card">
-                    <a href="{{ route('user.books.show', $book->id) }}" class="text-decoration-none">
-                        <div class="ebook-cover">
-                            <img src="{{ asset('assets/images/default-ebook.jpg') }}" alt="{{ $book->title }}">
-                            <span class="ebook-badge">New</span>
-                        </div>
-                        <div class="ebook-body">
-                            <h3 class="ebook-title">{{ $book->title }}</h3>
-                            <p class="ebook-author">{{ $book->author->name ?? 'Unknown Author' }}</p>
-                            <div class="ebook-price">${{ number_format($book->price, 2) }}</div>
-                        </div>
-                    </a>
-                    <div class="ebook-actions">
-                   <a href="{{ $book->pdf_link }}" class="btn btn-sm btn-download" download>
-                            <i class="fas fa-download"></i>
-                        </a>
-                        @if($book->pdf_link !== null)
-                        <a href="#" class="btn btn-sm btn-preview">
-                          <i class="fas fa-glasses"></i>
-                        </a>
-                        @endif
-                        @if($book->audioVersions->count() > 0)
-                        <a href="#" class="btn btn-sm btn-preview">
-                        <i class="fas fa-headphones"></i>
-                        </a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            @endforeach --}}
-        </div>
-    </section>
+                                    </div>
+                                    <div
+                                        class="book-versions d-flex justify-content-between align-items-center col-3 p-0"
+                                    >
+                                      @if($book->audioVersions->count() > 0)
 
-    <!-- All Ebooks -->
-    <section class="mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="section-title mb-0">All Ebooks</h2>
-            <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown">
-                    Sort by: Title
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Title (A-Z)</a></li>
-                    <li><a class="dropdown-item" href="#">Title (Z-A)</a></li>
-                    <li><a class="dropdown-item" href="#">Price (Low to High)</a></li>
-                    <li><a class="dropdown-item" href="#">Price (High to Low)</a></li>
-                    <li><a class="dropdown-item" href="#">Rating</a></li>
-                    <li><a class="dropdown-item" href="#">Newest</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            @foreach($books as $book)
-            <div class="col-6 col-md-4 col-lg-3 mb-4">
-                <div class="ebook-card">
-                    <a href="{{ route('user.books.show', $book->id) }}" class="text-decoration-none">
-                        <div class="ebook-cover">
-                            <img src="{{ asset('assets/images/default-ebook.jpg') }}" alt="{{ $book->title }}">
-                        </div>
-                        <div class="ebook-body">
-                            <h3 class="ebook-title">{{ $book->title }}</h3>
-                            <p class="ebook-author">{{ $book->author->name ?? 'Unknown Author' }}</p>
-                            <div class="ebook-rating">
-                                @for($i = 1; $i <= 5; $i++)
-                                    @if($i <= ($book->rating ?? 0))
-                                        <i class="fas fa-star"></i>
-                                    @elseif($i - 0.5 <= ($book->rating ?? 0))
-                                        <i class="fas fa-star-half-alt"></i>
-                                    @else
-                                        <i class="far fa-star"></i>
-                                    @endif
-                                @endfor
+                                        <div class="audio-version">
+                                            <img
+                                                src="{{asset('assets/images/icons/headphones.svg')}}"
+                                                alt=""
+                                            />
+                                        </div>
+                                        @endif
+                                        @if($book->pdf_link !== null)
+                                        <div class="pdf-version">
+                                            <img
+                                                src="{{asset('assets/images/icons/glasses.svg')}}"
+                                                alt=""
+                                            />
+                                        </div>
+                                        @endif
+                                        
+                                    </div>
+                                </div>
                             </div>
-                            <div class="ebook-price">${{ number_format($book->price, 2) }}</div>
-                        </div>
-                    </a>
-                    <div class="ebook-actions">
-                       {{--<a href="{{ $book->pdf_link }}" class="btn btn-sm btn-download" download>
-                            <i class="fas fa-download"></i>
-                        </a>--}}
-                        @if($book->pdf_link !== null)
-                        <a href="#" class="btn btn-sm btn-preview">
-                          <i class="fas fa-glasses"></i>
                         </a>
-                        @endif
-                        @if($book->audioVersions->count() > 0)
-                        <a href="#" class="btn btn-sm btn-preview">
-                        <i class="fas fa-headphones"></i>
-                        </a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-        
-        <!-- Pagination -->
-        {{--<div class="d-flex justify-content-center mt-4">
-            {{ $books->links() }}
-        </div>--}}
-    </section>
-</div>
+                       @endforeach
 
-<!-- Preview Modals -->
-@foreach($books as $book)
-<div class="modal fade" id="previewModal-{{ $book->id }}" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Preview: {{ $book->title }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <img src="{{asset('assets/images/default-ebook.jpg') }}" class="img-fluid mb-3" alt="{{ $book->title }}">
-                        <div class="d-grid gap-2">
-                        {{--<a href="{{ $book->pdf_link }}" class="btn btn-sm btn-download" download>
-                            <i class="fas fa-download"></i>
-                        </a>--}}
-                        @if($book->pdf_link !== null)
-                        <a href="#" class="btn btn-sm btn-preview">
-                          <i class="fas fa-glasses"></i>
-                        </a>
-                        @endif
-                        @if($book->audioVersions->count() > 0)
-                        <a href="#" class="btn btn-sm btn-preview">
-                        <i class="fas fa-headphones"></i>
-                        </a>
-                        @endif
+                </section>
+                <section class="books-section world-books">
+                    <div class="row px-0 mx-0">
+                        <div
+                            class="sec-header col-md-12 d-flex justify-content-between align-items-center"
+                        >
+                            <h3 class="sec-title">Explore the World of Books                            </h3>
+                            <div class="all-books-link d-flex">
+                                <span> View all titles</span>
+                                <div
+                                    class="icon"
+                                    style="width: 1rem; height: 1rem"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        style="width: 100%; height: 100%"
+                                        fill="#101010"
+                                        viewBox="0 0 15 28"
+                                        class="sc-dd917b06-0 bAuqWJ"
+                                    >
+                                        <path
+                                            d="m2.895 1.126 11.35 11.846c.277.286.415.658.415 1.028s-.138.742-.415 1.028L2.895 26.874a1.483 1.483 0 0 1-2.101.045 1.48 1.48 0 0 1-.045-2.102l10.414-10.873L.751 3.184A1.48 1.48 0 0 1 .796 1.08a1.48 1.48 0 0 1 2.1.045Z"
+                                        ></path>
+                                    </svg>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-8">
-                        <h4>{{ $book->title }}</h4>
-                        <p class="text-muted">by {{ $book->author->name ?? 'Unknown Author' }}</p>
-                        <div class="mb-3">
-                            @for($i = 1; $i <= 5; $i++)
-                                @if($i <= ($book->rating ?? 0))
-                                    <i class="fas fa-star text-warning"></i>
-                                @elseif($i - 0.5 <= ($book->rating ?? 0))
-                                    <i class="fas fa-star-half-alt text-warning"></i>
-                                @else
-                                    <i class="far fa-star text-warning"></i>
-                                @endif
-                            @endfor
-                            <span class="ms-2">({{ $book->reviews_count ?? 0 }} reviews)</span>
-                        </div>
-                        <p>{{ $book->description }}</p>
-                        <div class="mt-3">
-                            <h6>Details</h6>
-                            <ul class="list-unstyled">
-                                <li><strong>Category:</strong> {{ $book->category->name ?? 'N/A' }}</li>
-                                <li><strong>Published:</strong> {{ $book->publish_date->format('F Y') }}</li>
-                                <li><strong>Pages:</strong> {{ $book->pages ?? 'N/A' }}</li>
-                                <li><strong>Language:</strong> {{ $book->language ?? 'English' }}</li>
-                            </ul>
+                    <div class="cards row p-0 m-0">
+                      @foreach($books as $book)
+
+                      <a href="{{ route('user.books.show', $book->id) }}" 
+                            class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none"
+                            style="border-radius: 5px">
+                        
+                            <div class="image">
+                              <img src="{{asset('assets/images/books/book-img-1.jpeg') }}" alt="{{ $book->title }}" class="card-img-top"/>
+                            </div>
+                            <div class="card-body p-0 w-100">
+                                <h5 class="card-title pb-0 mb-0">
+                                {{ $book->title }}
+                                </h5>
+                                <p class="card-text pb-0 mb-0">
+                                {{ $book->author->name ?? 'Unknown Author' }}
+                                </p>
+                                <div
+                                    class="actions d-flex justify-content-between align-items-center"
+                                >
+                                    <div class="rates p-0">
+                                        <img
+                                            src="{{asset('assets/images/icons/star.svg')}}"
+                                            alt=""
+                                        />
+                                        <span class="rate-avg">{{$book->rating}}</span>
+                                        <small>({{ $book->reviews_count ?? 0 }})</small>
+
+                                    </div>
+                                    <div
+                                        class="book-versions d-flex justify-content-between align-items-center col-3 p-0"
+                                    >
+                                      @if($book->audioVersions->count() > 0)
+
+                                        <div class="audio-version">
+                                            <img
+                                                src="{{asset('assets/images/icons/headphones.svg')}}"
+                                                alt=""
+                                            />
+                                        </div>
+                                        @endif
+                                        @if($book->pdf_link !== null)
+                                        <div class="pdf-version">
+                                            <img
+                                                src="{{asset('assets/images/icons/glasses.svg')}}"
+                                                alt=""
+                                            />
+                                        </div>
+                                        @endif
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                       @endforeach
+
+                </section>
+                <section class="books-section top-rated">
+                    <div class="row px-0 mx-0">
+                        <div
+                            class="sec-header col-md-12 d-flex justify-content-between align-items-center"
+                        >
+                            <h3 class="sec-title">Top Rated</h3>
+                            <div class="all-books-link d-flex">
+                                <span> View all titles</span>
+                                <div
+                                    class="icon"
+                                    style="width: 1rem; height: 1rem"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        style="width: 100%; height: 100%"
+                                        fill="#101010"
+                                        viewBox="0 0 15 28"
+                                        class="sc-dd917b06-0 bAuqWJ"
+                                    >
+                                        <path
+                                            d="m2.895 1.126 11.35 11.846c.277.286.415.658.415 1.028s-.138.742-.415 1.028L2.895 26.874a1.483 1.483 0 0 1-2.101.045 1.48 1.48 0 0 1-.045-2.102l10.414-10.873L.751 3.184A1.48 1.48 0 0 1 .796 1.08a1.48 1.48 0 0 1 2.1.045Z"
+                                        ></path>
+                                    </svg>
+                                </div>
+                                <!-- <i class="fas fa-greater-than"></i> -->
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <div class="cards row p-0 m-0">
+                      @foreach($topRatedBooks as $book)
+
+                      <a href="{{ route('user.books.show', $book->id) }}" 
+                            class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none"
+                            style="border-radius: 5px">
+                        
+                            <div class="image">
+                              <img src="{{asset('assets/images/books/book-img-1.jpeg') }}" alt="{{ $book->title }}" class="card-img-top"/>
+                            </div>
+                            <div class="card-body p-0 w-100">
+                                <h5 class="card-title pb-0 mb-0">
+                                {{ $book->title }}
+                                </h5>
+                                <p class="card-text pb-0 mb-0">
+                                {{ $book->author->name ?? 'Unknown Author' }}
+                                </p>
+                                <div
+                                    class="actions d-flex justify-content-between align-items-center"
+                                >
+                                    <div class="rates p-0">
+                                        <img
+                                            src="{{asset('assets/images/icons/star.svg')}}"
+                                            alt=""
+                                        />
+                                        <span class="rate-avg">{{$book->rating}}</span>
+                                        {{--<small>({{ $book->reviews_count ?? 0 }})</small>--}}
+
+                                    </div>
+                                    <div
+                                        class="book-versions d-flex justify-content-between align-items-center col-3 p-0"
+                                    >
+                                      @if($book->audioVersions->count() > 0)
+
+                                        <div class="audio-version">
+                                            <img
+                                                src="{{asset('assets/images/icons/headphones.svg')}}"
+                                                alt=""
+                                            />
+                                        </div>
+                                        @endif
+                                        @if($book->pdf_link !== null)
+                                        <div class="pdf-version">
+                                            <img
+                                                src="{{asset('assets/images/icons/glasses.svg')}}"
+                                                alt=""
+                                            />
+                                        </div>
+                                        @endif
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                       @endforeach
+
+                </section>
             </div>
         </div>
-    </div>
-</div>
-@endforeach
+
+
 @endsection
 
 @section('user-scripts')

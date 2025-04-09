@@ -136,7 +136,18 @@ li.nav-item {
 .navbar-nav .dropdown-menu {
     position: absolute;
 }
+.navbar-toggler-icon {
+    background-image: url(../images/icons/collaspe.svg);
+}
+button:focus:not(:focus-visible) {
+    outline: 0;
+}
 
+.navbar-toggler:focus {
+    text-decoration: none;
+    outline: 0;
+    box-shadow: unset;
+}
 /* For mobile view */
 @media (max-width: 991.98px) {
     .navbar-collapse {

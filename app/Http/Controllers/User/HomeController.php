@@ -14,7 +14,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        // Top 5 rated books
+        // Top 50 rated books
         $topRatedBooks = Book::with(['author', 'audioVersions'])
             ->orderByDesc('rating')
             ->take(20)
@@ -23,6 +23,11 @@ class HomeController extends Controller
         // All books with required info
         $allBooks = Book::with(['author', 'audioVersions'])
             ->orderBy('title')
+            ->get();
+    
+        $isFeasuredBooks = Book::with(['author', 'audioVersions'])
+            ->where('is_featured', true)
+            ->take(20)
             ->get();
         $planOptions = [
             'Free' => [
@@ -45,7 +50,7 @@ class HomeController extends Controller
             ]
         ];
     
-        return view('user.home', compact('topRatedBooks', 'allBooks','planOptions'));
+        return view('user.home', compact('topRatedBooks', 'allBooks','planOptions','isFeasuredBooks'));
     }
     
 }

@@ -115,12 +115,15 @@
                         </div>
                 </ul>
                         @else
-                <ul class="navbar-nav sMspI" style="padding-left: 20px">
+                <ul class="navbar-nav sMspI" style="    padding-left: 20px;
+    justify-content: center;
+    align-items: center;">
                             <li class="nav-item active">
                                 <a class="nav-link" href="{{ route('login') }}">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="gqCvyq" href="{{ route('register') }}">
+                                <a class="gqCvyq" style="font-size:13px;line-height:16px;color:rgb(16,16,16);font-weight:600"
+                                href="{{ route('register') }}">
                                     Try it for free
                                 </a>
                             </li>

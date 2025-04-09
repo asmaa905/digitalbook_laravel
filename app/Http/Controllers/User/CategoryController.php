@@ -30,12 +30,39 @@ class CategoryController extends Controller
      */
     public function show($categoryId)
     {
+        // Get the category with its books, sorted by title
         $category = Category::with(['books' => function($query) {
             $query->orderBy('title')->with(['author', 'audioVersions']);
-        }])
-        ->findOrFail($categoryId);
-        
-        return view('user.categories.show', compact('category'));
+        }])->findOrFail($categoryId);
+    
+        // Get top-rated books in this category (sorted by rating)
+        $topRatedBooks = $category->books()
+            ->with(['author', 'audioVersions'])
+            ->orderByDesc('rating')
+            ->take(20)
+            ->get();
+    
+        // Get featured books in this category (where is_featured = true)
+        $featuredBooks = $category->books()
+            ->with(['author', 'audioVersions'])
+            ->where('is_featured', true)
+            ->take(20)
+            ->get();
+    
+        return view('user.categories.show', compact('category', 'featuredBooks', 'topRatedBooks'));
+    }
+    public function topBooksInCat($categoryId){
+        // Get the category with its books, sorted by title
+        $category = Category::with(['books' => function($query) {
+            $query
+            ->orderByDesc('rating')
+            ->take(50)
+            ->with(['author', 'audioVersions']);
+        }])->findOrFail($categoryId);
+    
+    
+        return view('user.Categories.topBooksInCat', compact('category',));
+
     }
 
 }

@@ -16,7 +16,9 @@ use App\Http\Controllers\User\CategoryController;
 Route::get('/', [HomeController::class, 'index'])->name('user.home');
 // categories
 Route::get('/categories', [CategoryController::class, 'index'])->name('user.categories.index');
-Route::get('/categories/{id}', [BooksController::class, 'show'])->name('user.categories.show');
+Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('user.categories.show');
+Route::get('/categories/top-books/{id}', [CategoryController::class, 'topBooksInCat'])->name('user.categories.topBooks');
+//topBooksInCat.blade
 // books
 Route::get('/audio-books', [BooksController::class, 'show_audio_books'])->name('user.books.audio');
 Route::get('/e-books', [BooksController::class, 'show_ebooks'])->name('user.books.ebooks');
