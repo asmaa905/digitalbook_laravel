@@ -70,6 +70,10 @@ class User extends Authenticatable
                 ->withTimestamps()
                 ->withPivot(['read_date']);  // Changed from 'read_at' to match your migration
         }
+        public function savedBooks()
+        {
+            return $this->belongsToMany(Book::class, 'saved_books');
+        }
 
         // For publishers
         public function publishedBooks()

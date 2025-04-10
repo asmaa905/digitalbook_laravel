@@ -1,0 +1,207 @@
+@extends('layouts.admin')
+
+@section('admin-title', 'Create New Book')
+@section('admin-nav-title', 'Create New Book')
+
+@section('admin-content')
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">{{ isset($book) ? 'Edit' : 'Create' }} Book</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ isset($book) ? route('admin.books.update', $book->id) : route('admin.books.store') }}" enctype="multipart/form-data">
+            @csrf
+            @if(isset($book))
+                @method('PUT')
+            @endif
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="title" class="form-label">Title*</label>
+                    <input type="text" class="form-control" id="title" name="title" 
+                           value="{{ old('title', $book->title ?? '') }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="author_id" class="form-label">Author*</label>
+                    <select class="form-select" id="author_id" name="author_id" required>
+                        <option value="">Select Author</option>
+                        @foreach($authors as $author)
+                            <option value="{{ $author->id }}" 
+                                {{ old('author_id', $book->author_id ?? '') == $author->id ? 'selected' : '' }}>
+                                {{ $author->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="category_id" class="form-label">Category*</label>
+                    <select class="form-select" id="category_id" name="category_id" required>
+                        <option value="">Select Category</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" 
+                                {{ old('category_id', $book->category_id ?? '') == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="publish_house_id" class="form-label">Publishing House</label>
+                    <select class="form-select" id="publish_house_id" name="publish_house_id">
+                        <option value="">Select Publishing House</option>
+                        @foreach($publishingHouses as $house)
+                            <option value="{{ $house->id }}" 
+                                {{ old('publish_house_id', $book->publish_house_id ?? '') == $house->id ? 'selected' : '' }}>
+                                {{ $house->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="price" class="form-label">Price*</label>
+                    <input type="number" step="0.01" class="form-control" id="price" name="price" 
+                           value="{{ old('price', $book->price ?? '') }}" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="publish_date" class="form-label">Publish Date*</label>
+                    <input type="date" class="form-control" id="publish_date" name="publish_date" 
+                    value="{{ old('publish_date', isset($book) ? $book->publish_date->format('Y-m-d') : '') }}" required>
+                    </div>
+                <div class="col-md-4">
+                    <label for="language" class="form-label">Language*</label>
+                    <select class="form-select" id="language" name="language" required>
+                        <option value="en" {{ old('language', $book->language ?? '') == 'en' ? 'selected' : '' }}>English</option>
+                        <option value="es" {{ old('language', $book->language ?? '') == 'es' ? 'selected' : '' }}>Spanish</option>
+                        <option value="fr" {{ old('language', $book->language ?? '') == 'fr' ? 'selected' : '' }}>French</option>
+                        <option value="de" {{ old('language', $book->language ?? '') == 'de' ? 'selected' : '' }}>German</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description*</label>
+                <textarea class="form-control" id="description" name="description" rows="5" required>{{ old('description', $book->description ?? '') }}</textarea>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="image" class="form-label">Cover Image</label>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                    @if(isset($book) && $book->image)
+                        <div class="mt-2">
+                            <img src="{{ asset('storage/'.$book->image) }}" width="100" class="img-thumbnail">
+                        </div>
+                    @endif
+                </div>
+
+                <div class="col-md-6">
+                    <label for="pdf_link" class="form-label">Book File (PDF or DOCX only)</label>
+                    <input type="file" class="form-control" id="pdf_link" name="pdf_link" accept=".pdf,.docx">
+                    
+                    @if(isset($book) && $book->pdf_link)
+                        <div class="mt-2" id="existing-file-container">
+                            <div class="d-flex align-items-center">
+                                @if(pathinfo($book->pdf_link, PATHINFO_EXTENSION) === 'pdf')
+                                    <i class="fas fa-file-pdf fa-2x text-danger me-2"></i>
+                                @else
+                                    <i class="fas fa-file-word fa-2x text-primary me-2"></i>
+                                @endif
+                                <div>
+                                    <a href="{{ asset('storage/'.$book->pdf_link) }}" target="_blank" class="d-block">
+                                        View current file
+                                    </a>
+                                    <small class="text-muted">{{ basename($book->pdf_link) }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    
+                    <div id="file-preview" class="mt-2 d-none">
+                        <div class="d-flex align-items-center">
+                            <i id="file-icon" class="fas fa-2x me-2"></i>
+                            <div>
+                                <span id="file-name" class="d-block"></span>
+                                <small class="text-muted" id="file-size"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured" 
+                       {{ old('is_featured', $book->is_featured ?? false) ? 'checked' : '' }}>
+                <label class="form-check-label" for="is_featured">Featured Book</label>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="{{ route('admin.books.index') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save Book</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('pdf_link');
+        const filePreview = document.getElementById('file-preview');
+        const fileIcon = document.getElementById('file-icon');
+        const fileName = document.getElementById('file-name');
+        const fileSize = document.getElementById('file-size');
+        const existingFileContainer = document.getElementById('existing-file-container');
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                const fileType = file.name.split('.').pop().toLowerCase();
+                
+                // Validate file type
+                if (fileType !== 'pdf' && fileType !== 'docx') {
+                    alert('Only PDF and DOCX files are allowed.');
+                    this.value = '';
+                    return;
+                }
+                
+                // Show preview
+                filePreview.classList.remove('d-none');
+                fileName.textContent = file.name;
+                fileSize.textContent = formatFileSize(file.size);
+                
+                // Set appropriate icon
+                if (fileType === 'pdf') {
+                    fileIcon.className = 'fas fa-file-pdf fa-2x text-danger me-2';
+                } else {
+                    fileIcon.className = 'fas fa-file-word fa-2x text-primary me-2';
+                }
+                
+                // Hide existing file if present
+                if (existingFileContainer) {
+                    existingFileContainer.classList.add('d-none');
+                }
+            } else {
+                filePreview.classList.add('d-none');
+                if (existingFileContainer) {
+                    existingFileContainer.classList.remove('d-none');
+                }
+            }
+        });
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    });
+</script>
+@endpush
+
+@endsection

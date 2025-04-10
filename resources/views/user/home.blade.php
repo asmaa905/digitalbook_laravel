@@ -742,7 +742,7 @@
                                     class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
                                     style="border-radius: 5px"
                                 >
-                                    <div class="image">
+                                    <div class="image"  style="width:95%;height:60%">
                                     @php
                                         $storagePath = public_path('storage/' .$book->image);
                                         $publicPath = public_path( 'assets/images/' . $book->image);
@@ -757,7 +757,7 @@
                                     <img
                                             src="{{ $imageUrl }}"
                                         alt="book"
-                                        class="card-img-top"
+                                        class="card-img-top w-100 h-100"
                                         />
                                     
                                     </div>
@@ -855,7 +855,7 @@
                                     class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
                                     style="border-radius: 5px"
                                 >
-                                    <div class="image">
+                                    <div class="image" style="width:95%;height:60%">
                                     @php
                                         $storagePath = public_path('storage/' .$book->image);
                                         $publicPath = public_path( 'assets/images/' . $book->image);
@@ -870,7 +870,7 @@
                                     <img
                                             src="{{ $imageUrl }}"
                                         alt="book"
-                                        class="card-img-top"
+                                        class="card-img-top w-100 h-100"
                                         />
                                     
                                     </div>
@@ -968,7 +968,7 @@
                                     class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
                                     style="border-radius: 5px"
                                 >
-                                    <div class="image">
+                                    <div class="image"  style="width:95%;height:60%">
                                     @php
                                         $storagePath = public_path('storage/' .$book->image);
                                         $publicPath = public_path( 'assets/images/' . $book->image);
@@ -983,7 +983,7 @@
                                     <img
                                             src="{{ $imageUrl }}"
                                         alt="book"
-                                        class="card-img-top"
+                                        class="card-img-top w-100 h-100"
                                         />
                                     
                                     </div>

@@ -12,4 +12,9 @@ class PublishingHouse extends Model {
     public function publishers() {
         return $this->hasMany(Publisher::class);
     }
+
+    public function books()
+    {
+        return $this->hasMany(Book::class, 'publish_house_id');
+    }
 }

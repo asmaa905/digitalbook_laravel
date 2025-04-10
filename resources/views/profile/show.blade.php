@@ -161,10 +161,15 @@ background: #f8f6f5;">
             </a>
             @if(Auth::check() && Auth::user()->role === 'Reader')
             <a href="{{ route('books.reader.index') }}" class="account-menu-item">
-                <i class="fas fa-book"></i> My Reading History
+                <i class="fas fa-book"></i> My Saved Books
             </a>
             @endif
             @if(Auth::check() && Auth::user()->role === 'Publisher')
+            <a href="{{ route('subscription.index') }}" class="account-menu-item">
+                <i class="fas fa-credit-card"></i> Published Books 
+                {{--when open Published Books  it show me publised books page with muli tabs include drafts , published with  create books button and create audio book button and
+                     when press on it show create book form, reject books--}}
+            </a>
             <a href="{{ route('subscription.index') }}" class="account-menu-item">
                 <i class="fas fa-credit-card"></i> Subscriptions
             </a>

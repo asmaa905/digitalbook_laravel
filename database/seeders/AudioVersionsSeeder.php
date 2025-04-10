@@ -31,6 +31,8 @@ class AudioVersionsSeeder extends Seeder
                 'book_id' => $audio['book_id'],
                 'audio_link' => $audio['audio_link'],
                 'review_record_link' => $audio['review_record_link'],
+                'audio_format_review' => 'MP3',
+                'audio_format_full_audio' => 'MP3',
                 'created_by' => $creators->random(),
         ]);
     }

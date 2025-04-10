@@ -2,64 +2,34 @@
 
 namespace App\Http\Controllers\Publisher;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Book;
+use App\Models\AudioVersion;
 
-class DashboardController extends Controller
+class DashboardController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
-    }
+        $stats = [
+            'total_books' => Book::where('published_by', auth()->id())->count(),
+            'published_books' => Book::where('published_by', auth()->id())->where('is_published', 'accepted')->count(),
+            'draft_books' => Book::where('published_by', auth()->id())->where('is_draft', true)->count(),
+            'audio_versions' => AudioVersion::whereHas('book', function($q) {
+                $q->where('published_by', auth()->id());
+            })->count(),
+        ];
+        
+        $recentBooks = Book::where('published_by', auth()->id())
+            ->latest()
+            ->take(5)
+            ->get();
+            
+        $recentAudio = AudioVersion::whereHas('book', function($q) {
+                $q->where('published_by', auth()->id());
+            })
+            ->latest()
+            ->take(5)
+            ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return $this->view('dashboard', compact('stats', 'recentBooks', 'recentAudio'));
     }
 }

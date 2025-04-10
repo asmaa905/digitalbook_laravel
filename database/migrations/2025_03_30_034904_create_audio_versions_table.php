@@ -21,6 +21,9 @@ return new class extends Migration
             $table->decimal('audio_duration', 8, 2)->default(1);
 
             $table->string('language', 10)->default('en');
+            $table->enum('audio_format_review', ['MP3', 'AAC', 'WAV'])->default('MP3');
+            $table->enum('audio_format_full_audio', ['MP3', 'AAC', 'WAV'])->default('MP3');
+
             $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
 
             $table->timestamps();

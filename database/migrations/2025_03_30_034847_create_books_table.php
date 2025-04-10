@@ -21,7 +21,10 @@ return new class extends Migration
             $table->foreignId('author_id')->nullable()->constrained('authors')->onDelete('set null');
             $table->float('rating')->nullable();
             $table->boolean('is_featured')->default(false);
+            $table->boolean('is_draft')->default(false);
+            $table->enum('is_published', ['waiting','accepted', 'rejected'])->default('waiting');
             $table->string('language')->default('en');
+            
             $table->string('image')->nullable();
             
             $table->timestamps();

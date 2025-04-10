@@ -31,8 +31,11 @@
                             <td>{{ $book->author->name }}</td>
                             <td>{{ $book->created_at->format('M d, Y') }}</td>
                             <td>
-                                <span class="badge {{ $book->is_published ? 'bg-success' : 'bg-warning' }}">
-                                    {{ $book->is_published ? 'Published' : 'Draft' }}
+                                <span class="badge {{ $book->is_published == 'accepted'? 'bg-success' : ($book->is_published == 'waiting'?'bg-warning':'bg-danger') }}">
+                                {{ $book->is_published == 'accepted'? 'Published' : ($book->is_published == 'waiting'?'waiting':'Rejected') }}
+                                </span>
+                                <span class="badge {{ $book->is_draft == true? 'bg-success':''}}">
+                                {{ $book->is_draft == true?? Draft}}
                                 </span>
                             </td>
                             <td>
