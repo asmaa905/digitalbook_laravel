@@ -12,8 +12,9 @@ class AdminUserSeeder extends Seeder
         User::create([
             'name' => 'fatma',
             'email' => 'admin@ebook.com',
-            'password' => bcrypt('fatmafkk'),
-            'role' => 'admin'
+            'password' => bcrypt('fatmafkk'), // Properly hashed password
+            'role' => 'admin', // Correct role assignment
+            'email_verified_at' => now(),
         ]);
     }
 }

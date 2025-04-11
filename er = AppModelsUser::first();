@@ -1,0 +1,22 @@
+[90m= [39m[34;4mApp\Models\User[39;24m {#6270
+    [34mid[39m: [35m1[39m,
+    [34mname[39m: "[32mfatma[39m",
+    [34memail[39m: "[32madmin@ebook.com[39m",
+    [34memail_verified_at[39m: [36mnull[39m,
+    #[33mpassword[39m: "[32m$2y$12$ioqCII3CNrkY5GlBLHlkaOmuFzROqgNgvYu3HKlpWgD3w/mrAvKy.[39m",
+    #[33mremember_token[39m: [36mnull[39m,
+    [34mcreated_at[39m: "[32m2025-04-09 16:32:18[39m",
+    [34mupdated_at[39m: "[32m2025-04-09 16:32:18[39m",
+    [34mrole[39m: "[32mfatmafkk[39m",
+  }
+
+[90m= [39m[34;4mApp\Models\User[39;24m {#6358
+    [34mname[39m: "[32mAdmin[39m",
+    [34memail[39m: "[32madmin@ebook.com[39m",
+    #[33mpassword[39m: "[32m$2y$12$2suOvzgTjL5v2AX8XxL6gegiJhzSPSPwumgaH3RLcalP1wjWUe0oS[39m",
+    [34mrole[39m: "[32madmin[39m",
+    [34mupdated_at[39m: "[32m2025-04-11 05:36:50[39m",
+    [34mcreated_at[39m: "[32m2025-04-11 05:36:50[39m",
+    [34mid[39m: [35m1[39m,
+  }
+
