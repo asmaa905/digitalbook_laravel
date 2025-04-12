@@ -91,7 +91,7 @@ protected function redirectTo($role): RedirectResponse
         case 'Admin':
             return redirect()->route('admin.dashboard');
         case 'Publisher':
-            return redirect()->route('books.publisher.index');
+            return redirect()->route('publisher.books.index');
         case 'Reader':
             return redirect()->route('books.reader.index');
         default:

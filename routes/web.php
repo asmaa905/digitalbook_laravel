@@ -25,6 +25,10 @@ use App\Http\Controllers\Admin\AdminAudioVersionController;
 use App\Http\Controllers\Admin\AdminAuthorController;
 use App\Http\Controllers\Admin\AdminPublishingHouseController;
 use App\Http\Controllers\Admin\AdminCategoryController;
+//=================================
+// Admin Auth
+//==================================
+use App\Http\Controllers\Admin\AdminAuthController;
 // =============================
 // ✅ Public Routes appear for login and non login users
 // =============================
@@ -53,6 +57,16 @@ Route::middleware('auth')->group(function () {
 // =============================
 // ✅ Admin Routes appear for login and non login users
 // =============================
+
+// Admin Login & Logout
+
+Route::get('admin/register', [AdminAuthController::class, 'showRegistrationForm'])->name('admin.register.create');
+Route::post('admin/register', [AdminAuthController::class, 'register'])->name('admin.register');
+
+Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login.create');
+Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login');
+Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');

@@ -772,7 +772,7 @@
                                         
                                         </h5>
                                         <p class="card-text pb-0 mb-0">
-                                        {{$book->author->name}}
+                                        {{$book->author? $book->author->name: 'unknown'}}
                                         </p>
                                         <div
                                             class="actions d-flex justify-content-between align-items-center"
@@ -885,7 +885,7 @@
                                         
                                         </h5>
                                         <p class="card-text pb-0 mb-0">
-                                        {{$book->author->name}}
+                                        {{$book->author? $book->author->name: 'unknown'}}
                                         </p>
                                         <div
                                             class="actions d-flex justify-content-between align-items-center"
@@ -998,7 +998,7 @@
                                         
                                         </h5>
                                         <p class="card-text pb-0 mb-0">
-                                        {{$book->author->name}}
+                                        {{$book->author? $book->author->name: 'unknown'}}
                                         </p>
                                         <div
                                             class="actions d-flex justify-content-between align-items-center"
