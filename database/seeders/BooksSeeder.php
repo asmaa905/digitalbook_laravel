@@ -44,10 +44,11 @@ class BooksSeeder extends Seeder
             'image' => $book['image'], 
             'publish_date' => 2020 , 
       
-            'price' => 500, 
+            // 'price' => 500, 
             'description' => "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis neque esse repellat maxime, excepturi, voluptatem praesentium porro itaque, ",
             'rating' => 3, 
             'pdf_link' => "books_pdf/book_defualt.pdf", 
+            'is_published'=>'accepted',
 
            'is_featured'=>true,
             'language'=>'en',

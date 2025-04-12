@@ -1,18 +1,14 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
 return new class extends Migration
 {
-
     public function up() {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->decimal('price', 8, 2);
             $table->date('publish_date');
             $table->string('pdf_link')->nullable(); // Directly store PDF link
             $table->foreignId('publish_house_id')->nullable()->constrained('publishing_houses')->onDelete('cascade');
@@ -21,20 +17,14 @@ return new class extends Migration
             $table->foreignId('author_id')->nullable()->constrained('authors')->onDelete('set null');
             $table->float('rating')->nullable();
             $table->boolean('is_featured')->default(false);
-            $table->boolean('is_draft')->default(false);
             $table->enum('is_published', ['waiting','accepted', 'rejected'])->default('waiting');
-            $table->string('language')->default('en');
-            
-            $table->string('image')->nullable();
-            
+            $table->string('language')->default('ar');         
+            $table->string('image')->nullable();            
             $table->timestamps();
-            $table->softDeletes();
-
-            
+            $table->softDeletes(); 
         });
     }
-
-    public function down() {
+ public function down() {
         Schema::dropIfExists('books');
     }
 };

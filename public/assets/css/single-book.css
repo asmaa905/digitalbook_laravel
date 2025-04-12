@@ -1,0 +1,237 @@
+body {
+    font-family: "Euclid Circular A", sans-serif;
+    background: rgb(255, 251, 250);
+}
+img,
+svg {
+    vertical-align: unset;
+}
+@media (min-width: 992px) {
+    .col-lg-12-8 {
+        flex: 0 0 auto;
+        width: calc(12.5% - 8px) !important;
+    }
+}
+
+ul li {
+    text-decoration: none;
+    list-style: none;
+}
+ul.lfjSpC {
+    padding-top: 32px;
+    padding-bottom: 27px;
+    padding-left: 0.75rem;
+}
+ul.lfjSpC li a {
+    font-weight: 500;
+    font-style: normal;
+    color: rgb(92, 92, 92) !important;
+    font-size: 16px;
+    line-height: 22px;
+    transition: all 1s ease-in-out;
+}
+ul.lfjSpC li a:hover {
+    color: rgb(198, 70, 27) !important;
+}
+.single-cat-header .cat-head {
+    font-weight: 600;
+    font-style: normal;
+    color: rgb(16, 16, 16) !important;
+    font-size: 74px;
+    line-height: 72px;
+}
+.books-section {
+    row-gap: 2.4rem;
+    padding-top: 0px;
+    padding-bottom: 4rem;
+    background-color: rgb(255, 251, 250);
+}
+.sec-title {
+    font-weight: 600;
+    font-style: normal;
+    color: rgb(16, 16, 16) !important;
+    font-size: 26px;
+    line-height: 32px;
+}
+.cards {
+    gap: 8px;
+}
+.sec-title:hover {
+    text-decoration-line: underline;
+    cursor: pointer;
+}
+.all-books-link {
+    font-weight: 600;
+    font-style: normal;
+    color: rgb(16, 16, 16) !important;
+    font-size: 13px;
+    line-height: 16px;
+    transition: all 1s ease-in-out;
+}
+.all-books-link:hover {
+    text-decoration-line: underline;
+}
+.all-books-link span {
+    padding-right: 5px;
+}
+.book-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    border: 0.8px solid #ccc;
+    width: 166.4px;
+    height: 250px;
+
+    border-radius: 4rem;
+    padding: 8px;
+}
+.book-card .image {
+    /* max-width: 16rem;
+    max-height: 16rem;
+    min-width: var(--min-width);
+    min-height: var(--min-height);
+    height: 100%;
+    width: 100%; */
+    aspect-ratio: 1 / 1;
+}
+.book-card .card-title {
+    font-weight: 600;
+    font-style: normal;
+    color: rgb(16, 16, 16) !important;
+    font-size: 13px;
+    line-height: 16px;
+    transition: all 1s ease-in-out;
+}
+.book-card .card-text {
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(92, 92, 92) !important;
+    font-size: 13px;
+    line-height: 16px;
+    transition: all 1s ease-in-out;
+}
+.book-card .actions {
+    padding-top: 25px;
+}
+.book-card .actions .rates {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.book-card .actions .rates,
+.book-card .actions .pdf-version,
+.book-card .actions .audio-version {
+    width: 32px;
+    height: 16px;
+}
+.book-card .actions .rates img,
+.book-card .actions .pdf-version img,
+.book-card .actions .audio-version img {
+    width: 100%;
+    height: 100%;
+}
+
+.book-card .actions .rate-avg {
+    color: rgb(92, 92, 92) !important;
+    font-size: 13px;
+    line-height: 16px;
+}
+.comment-card {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    background-color: #fff;
+}
+.card-body {
+    padding: 0;
+}
+.head h1 {
+    font-weight: 600;
+    font-style: normal;
+    color: rgb(16, 16, 16) !important;
+    font-size: 32px;
+    line-height: 40px;
+}
+.book-info {
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(0, 0, 0) !important;
+    font-size: 16px;
+    line-height: 22px;
+    padding-bottom: 10px;
+}
+.book-info .author,
+.book-info .narior,
+.book-info .publisher {
+    padding-right: 7px;
+}
+.book-info .author a,
+.book-info .narior a,
+.book-info .publisher a {
+    font-weight: 500;
+    font-style: normal;
+    color: rgb(92, 92, 92);
+    cursor: pointer;
+
+    font-size: 16px;
+    line-height: 22px;
+    text-decoration-line: underline;
+}
+.book-info .author a:hover,
+.book-info .narior a:hover,
+.book-info .publisher a:hover {
+    color: rgb(198, 70, 27) !important;
+}
+.left-sec p.desc {
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(92, 92, 92);
+    cursor: pointer;
+
+    font-size: 16px;
+    line-height: 22px;
+}
+.audio-info-section .info-sec-title {
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(92, 92, 92);
+
+    font-size: 13px;
+    line-height: 16px;
+}
+.audio-info-section .info-sec-body {
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(92, 92, 92);
+
+    font-size: 16px;
+    line-height: 22px;
+}
+.author-info h5,
+.release-info h5 {
+    font-weight: 600;
+    font-style: normal;
+    color: rgb(92, 92, 92);
+    font-style: normal;
+    font-size: 14px;
+    line-height: 20px;
+}
+.author-info p,
+.release-info p {
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(92, 92, 92);
+    font-style: normal;
+    font-size: 14px;
+    line-height: 20px;
+}
+.audio-review .text {
+    font-weight: 600;
+    font-style: normal;
+    color: rgb(16, 16, 16);
+    font-style: normal;
+    font-size: 14px;
+    line-height: 22px;
+}

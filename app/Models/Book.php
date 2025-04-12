@@ -13,7 +13,6 @@ class Book extends Model
     protected $fillable = [
         'title',
         'description',
-        'price',
         'publish_date',
         'pdf_link',
         'publish_house_id',
@@ -22,6 +21,7 @@ class Book extends Model
         'author_id',
         'rating',
         'is_featured',
+        'is_published',
         'language',
         'image',
     ];
@@ -69,5 +69,10 @@ class Book extends Model
     {
         return $query->where('published_by', $publisherId);
     }
+    public function readers()
+{
+    return $this->belongsToMany(User::class, 'readed_books')->withPivot('read_date');
+}
+
 
 }

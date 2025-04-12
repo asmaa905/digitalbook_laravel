@@ -27,7 +27,7 @@
         } elseif ($user->role === 'Reader') {
             $dashboardRoute = route('books.reader.index');
         } elseif ($user->role === 'Publisher') {
-            $dashboardRoute = route('books.publisher.index');
+            $dashboardRoute = route('publisher.books.index');
         } else {
             $dashboardRoute = route('user.home'); // fallback
         }
@@ -86,11 +86,9 @@
                                     <a class="dropdown-item" href="{{ route('books.reader.index') }}">
                                       <i class="fa-solid fa-book"></i>Readed Books
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('books.reader.index') }}">
-                                      <i class="fa-solid fa-headphones-simple"></i> Watched Books
-                                    </a>
+                                   
                                     @elseif(Auth::check() && Auth::user()->role === 'Publisher')
-                                    <a class="dropdown-item" href="{{ route('books.publisher.index') }}">
+                                    <a class="dropdown-item" href="{{ route('publisher.books.index') }}">
                                       <i class="fa-solid fa-book"></i> My Published Books
                                     </a>
                                     @elseif(Auth::check() && Auth::user()->role === 'Admin')

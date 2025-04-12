@@ -274,7 +274,7 @@
                                                 class="image"
                                                 style="
                                                     width: 90%;
-                                                    height: 95%;
+                                                    height: 80%;
                                                     border-radius: 4px;
                                                 "
                                             >
@@ -292,7 +292,7 @@
                                                 <img
                                                      src="{{ $imageUrl }}"
                                                     alt="parwaaz"
-                                                    class="img-fluid"
+                                                    class="w-100 h-100"
                                                 />
                                             </div>
                                         </div>

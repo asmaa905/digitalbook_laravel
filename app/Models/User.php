@@ -64,16 +64,13 @@ class User extends Authenticatable
     // app/Models/User.php
 
         // For readers
-        public function readBooks()
+        public function readedBooks()
         {
-            return $this->belongsToMany(Book::class, 'readed_books')  // Changed from 'book_user_read'
-                ->withTimestamps()
-                ->withPivot(['read_date']);  // Changed from 'read_at' to match your migration
+            return $this->belongsToMany(Book::class, 'readed_books', 'user_id', 'book_id')
+                        ->withPivot('read_date')
+                        ->withTimestamps();
         }
-        public function savedBooks()
-        {
-            return $this->belongsToMany(Book::class, 'saved_books');
-        }
+       
 
         // For publishers
         public function publishedBooks()
@@ -91,6 +88,7 @@ class User extends Authenticatable
         {
             return $this->hasMany(Payment::class);
         }
+
 }
 
 

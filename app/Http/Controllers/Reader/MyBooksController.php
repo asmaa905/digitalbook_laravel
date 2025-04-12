@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Reader;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class MyBooksController extends Controller
+class MyBooksController extends BaseController
 {
     public function indexSavedBooks()
     {
@@ -15,7 +14,7 @@ class MyBooksController extends Controller
         }
 
         // Get books that the user has marked as read
-        $readBooks = Auth::user()->readBooks()
+        $readBooks = Auth::user()->readedBooks()
             ->with(['author', 'categories'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
@@ -30,7 +29,7 @@ class MyBooksController extends Controller
         }
 
         // Get books that the user has marked as read
-        $readBooks = Auth::user()->readBooks()
+        $readBooks = Auth::user()->readedBooks()
             ->with(['author', 'categories'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
@@ -45,7 +44,7 @@ class MyBooksController extends Controller
         }
 
         // Get books that the user has marked as read
-        $readBooks = Auth::user()->readBooks()
+        $readBooks = Auth::user()->readedBooks()
             ->with(['author', 'categories'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);

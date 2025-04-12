@@ -151,6 +151,7 @@
             color: rgb(16, 16, 16) !important;
             font-size: 26px;
             line-height: 32px;
+            text-decoration-line:none
         }
         .cards {
             gap: 8px;
@@ -712,7 +713,7 @@
                                 <div
                                     class="sec-header col-md-12 d-flex justify-content-between align-items-center"
                                 >
-                                    <h3 class="sec-title">Top 50</h3>
+                                    <a class="sec-title" style="" href="{{route('user.books.ebooks')}}">Top 50</a>
                                     <div class="all-books-link d-flex">
                                         <a style="color: #000; text-decoration-line:none" href="{{route('user.books.ebooks')}}"> View all titles</a>
                                         <div
@@ -738,9 +739,10 @@
                             <div class="cards row p-0 m-0">
                             @if($topRatedBooks->count() > 0)
                             @foreach($topRatedBooks as $book)
-                                <div
+                                <a
                                     class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
-                                    style="border-radius: 5px"
+                                    style="border-radius: 5px;text-decoration-line:none"
+                                    href="{{ route('user.books.show', $book->id) }}" 
                                 >
                                     <div class="image"  style="width:95%;height:60%">
                                     @php
@@ -813,7 +815,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    </a>
                                 @endforeach
                                 @endif
 
@@ -825,7 +827,7 @@
                                 <div
                                     class="sec-header col-md-12 d-flex justify-content-between align-items-center"
                                 >
-                                    <h3 class="sec-title">Explore the World of Books</h3>
+                                <a class="sec-title" style="" href="{{route('user.books.ebooks')}}">Explore the World of Books</a>
                                     <div class="all-books-link d-flex">
                                     <a style="color: #000; text-decoration-line:none" href="{{route('user.books.ebooks')}}"> View all titles</a>
                                     <div
@@ -851,10 +853,10 @@
                             <div class="cards row p-0 m-0">
                             @if($allBooks->count() > 0)
                             @foreach($allBooks as $book)
-                                <div
+                                <a
                                     class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
-                                    style="border-radius: 5px"
-                                >
+                                    style="border-radius: 5px;text-decoration-line:none"
+                                    href="{{ route('user.books.show', $book->id) }}" >
                                     <div class="image" style="width:95%;height:60%">
                                     @php
                                         $storagePath = public_path('storage/' .$book->image);
@@ -926,10 +928,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    </a>
                                 @endforeach
                                 @endif
-
                             </div>
                         </section>
                     <!-- all featured books -->
@@ -938,7 +939,7 @@
                                 <div
                                     class="sec-header col-md-12 d-flex justify-content-between align-items-center"
                                 >
-                                    <h3 class="sec-title">Most Poplular</h3>
+                                <a class="sec-title" style="" href="{{route('user.books.ebooks')}}">Most Poplular</a>
                                     <div class="all-books-link d-flex">
                                     <a style="color: #000; text-decoration-line:none" href="{{route('user.books.ebooks')}}"> View all titles</a>
                                     <div
@@ -964,9 +965,10 @@
                             <div class="cards row p-0 m-0">
                             @if( $isFeasuredBooks->count() > 0)
                             @foreach( $isFeasuredBooks as $book)
-                                <div
+                            <a
                                     class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
-                                    style="border-radius: 5px"
+                                    style="border-radius: 5px;text-decoration-line:none"
+                                    href="{{ route('user.books.show', $book->id) }}" 
                                 >
                                     <div class="image"  style="width:95%;height:60%">
                                     @php
@@ -1039,7 +1041,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    </a>
                                 @endforeach
                                 @endif
 

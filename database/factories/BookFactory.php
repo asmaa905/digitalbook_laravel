@@ -17,7 +17,7 @@ class BookFactory extends Factory
         return [
             'title' => $this->faker->name,
             'description' => $this->faker->name, // fixed: changed from location to address
-            'price' => $this->faker->numberBetween(1, 5000),
+            // 'price' => $this->faker->numberBetween(1, 5000),
             'author_id' => $this->faker->numberBetween(1, 10), // fixed: changed from location to address
             'category_id' => $this->faker->numberBetween(1, 10), // fixed: changed from location to address
             'publish_house_id' => $this->faker->numberBetween(1, 10), // fixed: changed from location to address
@@ -25,7 +25,8 @@ class BookFactory extends Factory
             'publish_date' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'image' => $this->faker->imageUrl(),
             'pdf_link' => $this->faker->url(),
-
+            'is_published' => 'accepted',
+            'pdf_link' => $this->faker->url(),
             'created_at' => now(),
             'updated_at' => now(),
             'deleted_at' => null,

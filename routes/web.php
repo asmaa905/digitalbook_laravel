@@ -8,6 +8,11 @@ use App\Http\Controllers\Publisher\SubscriptionController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\CategoryController;
 //========================
+// reader controllers
+//========================
+use App\Http\Controllers\Reader\ReviewController;
+
+//========================
 // publisher controllers
 //========================
 use App\Http\Controllers\Publisher\DashboardController;
@@ -28,7 +33,7 @@ use App\Http\Controllers\Admin\AdminCategoryController;
 //=================================
 // Admin Auth
 //==================================
-use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Auth\AdminAuthController;
 // =============================
 // ✅ Public Routes appear for login and non login users
 // =============================
@@ -142,6 +147,13 @@ Route::prefix('publisher')->name('publisher.')->group(function () {
 // =============================
 Route::middleware(['auth', 'role:Reader'])->group(function () {
     Route::get('/readed-books', [booksController::class, 'indexReadedBooks'])->name('books.reader.index');
+
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('user.review.store');
+    Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('user.review.update');
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('user.review.destroy');
+
+    Route::post('/books/{book}/mark-as-read', [BooksController::class, 'markAsRead'])->name('books.reader.markAsRead');
+
 });
 
 require __DIR__.'/auth.php';

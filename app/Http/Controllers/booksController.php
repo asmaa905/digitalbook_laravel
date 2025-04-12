@@ -19,8 +19,8 @@ class BooksController extends Controller
         }
 
         // Get books that the user has marked as read
-        $readBooks = Auth::user()->readBooks()
-            ->with(['author', 'categories'])
+        $readBooks = Auth::user()->readedBooks()
+            ->with(['author', 'category'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -43,9 +43,8 @@ class BooksController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('books.publisher.index', compact('publishedBooks'));
+        return view('publisher.books.index', compact('publishedBooks'));
     }
-    // ... (keep your existing methods)
 
     public function show_audio_books()
     {
@@ -145,12 +144,10 @@ class BooksController extends Controller
         // Get related books (same category and language)
         $relatedBooks = Book::where('category_id', $book->category_id)
             ->where('id', '!=', $book->id)
-            ->when($book->language, function($query, $language) {
-                $query->where('language', $language); // Filter by same language if available
-            })
+
             ->with(['author', 'category'])
             ->orderBy('rating', 'desc')
-            ->take(4)
+            ->take(8)
             ->get();
     
         // Get similar books (by same author and language)
@@ -182,4 +179,15 @@ class BooksController extends Controller
             'availableFormats'
         ));
     }
+    public function markAsRead(Book $book)
+    {
+        if (auth()->user()->readedBooks()->where('book_id', $book->id)->exists()) {
+            return back()->with('info', 'You have already marked this book as read');
+        }
+    
+        auth()->user()->readedBooks()->attach($book->id, ['read_date' => now()->toDateString()]);
+        
+        return back()->with('success', 'Book marked as read');
+    }
+
 }

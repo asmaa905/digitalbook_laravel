@@ -334,12 +334,31 @@
                             class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none"
                             style="border-radius: 5px">
                         
-                            <div class="image">
-                              <img src="{{asset('assets/images/books/book-img-1.jpeg') }}" alt="{{ $book->title }}" class="card-img-top"/>
-                            </div>
+                             
+                        <div class="image" style="width:95%;height:60%">
+                        @php
+                            $storagePath = public_path('storage/' .$book->image);
+                            $publicPath = public_path( 'assets/images/' . $book->image);
+                            if (!empty($book->image) && file_exists($storagePath)) {
+                                $imageUrl = asset('storage/' . $book->image);
+                            } elseif (!empty($book->image) && file_exists($publicPath)) {
+                                $imageUrl = asset( 'assets/images/' .$book->image);
+                            }else {
+                                $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
+                            }      
+                        @endphp
+                        <img
+                                src="{{ $imageUrl }}"
+                            alt="book"
+                            class="card-img-top w-100 h-100"
+                            /> </div>
                             <div class="card-body p-0 w-100">
                                 <h5 class="card-title pb-0 mb-0">
-                                {{ $book->title }}
+                                @if (strlen($book->title) > 15)
+                                    {{substr($book->title, 0, 15) . "..."}}
+                                @else 
+                                {{cutText($book->title)}} 
+                                @endif
                                 </h5>
                                 <p class="card-text pb-0 mb-0">
                                 {{ $book->author->name ?? 'Unknown Author' }}
@@ -418,12 +437,32 @@
                             class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none"
                             style="border-radius: 5px">
                         
-                            <div class="image">
-                              <img src="{{asset('assets/images/books/book-img-1.jpeg') }}" alt="{{ $book->title }}" class="card-img-top"/>
-                            </div>
+                              
+                        <div class="image" style="width:95%;height:60%">
+                        @php
+                            $storagePath = public_path('storage/' .$book->image);
+                            $publicPath = public_path( 'assets/images/' . $book->image);
+                            if (!empty($book->image) && file_exists($storagePath)) {
+                                $imageUrl = asset('storage/' . $book->image);
+                            } elseif (!empty($book->image) && file_exists($publicPath)) {
+                                $imageUrl = asset( 'assets/images/' .$book->image);
+                            }else {
+                                $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
+                            }      
+                        @endphp
+                        <img
+                                src="{{ $imageUrl }}"
+                            alt="book"
+                            class="card-img-top w-100 h-100"
+                            />
+                        </div>
                             <div class="card-body p-0 w-100">
                                 <h5 class="card-title pb-0 mb-0">
-                                {{ $book->title }}
+                                @if (strlen($book->title) > 15)
+                                    {{substr($book->title, 0, 15) . "..."}}
+                                @else 
+                                {{cutText($book->title)}} 
+                                @endif
                                 </h5>
                                 <p class="card-text pb-0 mb-0">
                                 {{ $book->author->name ?? 'Unknown Author' }}
@@ -503,12 +542,31 @@
                             class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none"
                             style="border-radius: 5px">
                         
-                            <div class="image">
-                              <img src="{{asset('assets/images/books/book-img-1.jpeg') }}" alt="{{ $book->title }}" class="card-img-top"/>
-                            </div>
+                             
+                        <div class="image" style="width:95%;height:60%">
+                        @php
+                            $storagePath = public_path('storage/' .$book->image);
+                            $publicPath = public_path( 'assets/images/' . $book->image);
+                            if (!empty($book->image) && file_exists($storagePath)) {
+                                $imageUrl = asset('storage/' . $book->image);
+                            } elseif (!empty($book->image) && file_exists($publicPath)) {
+                                $imageUrl = asset( 'assets/images/' .$book->image);
+                            }else {
+                                $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
+                            }      
+                        @endphp
+                        <img
+                                src="{{ $imageUrl }}"
+                            alt="book"
+                            class="card-img-top w-100 h-100"
+                            /></div>
                             <div class="card-body p-0 w-100">
                                 <h5 class="card-title pb-0 mb-0">
-                                {{ $book->title }}
+                                @if (strlen($book->title) > 15)
+                                    {{substr($book->title, 0, 15) . "..."}}
+                                @else 
+                                {{cutText($book->title)}} 
+                                @endif
                                 </h5>
                                 <p class="card-text pb-0 mb-0">
                                 {{ $book->author->name ?? 'Unknown Author' }}
