@@ -92,6 +92,16 @@ class User extends Authenticatable
         {
             return $this->hasOne(\App\Models\Publisher::class);
         }
+        public function canEditUser(User $targetUser)
+{
+    // Admins can edit themselves and all non-admin users
+    if ($this->role === 'Admin') {
+        return $targetUser->id === $this->id || $targetUser->role !== 'Admin';
+    }
+    
+    // Other users can only edit themselves
+    return $targetUser->id === $this->id;
+}
 
 }
 

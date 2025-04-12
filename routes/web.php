@@ -90,6 +90,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->grou
     
     // Categories Resource
     Route::resource('categories', AdminCategoryController::class);
+    // Users Resources
+    Route::resource('users', \App\Http\Controllers\Admin\UsersController::class)
+    ->names([
+        'index' => 'users.index',
+        'create' => 'users.create',
+        'store' => 'users.store',
+        'show' => 'users.show',
+        'edit' => 'users.edit',
+        'update' => 'users.update',
+        'destroy' => 'users.destroy',
+    ]);
 });
 // =============================
 // ✅ Publisher Routes appear for login and non login users

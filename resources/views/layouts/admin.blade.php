@@ -28,6 +28,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('admin.users.index') }}">
+                            <i class="fas fa-user-edit me-2"></i> Users
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link text-white" href="{{ route('admin.books.index') }}">
                             <i class="fas fa-book me-2"></i> Books
                         </a>
