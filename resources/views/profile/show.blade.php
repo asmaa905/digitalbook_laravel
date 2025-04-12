@@ -1,8 +1,8 @@
-@extends('layouts.user')
-@section('user-title', 'Readed Books')
+@extends('layouts.profile-layout')
+@section('page-title', 'My Account')
 
 
-@section('user-styles')
+@section('page-styles')
 <style>
     .account-container {
         max-width: 1200px;
@@ -135,101 +135,108 @@
         margin-bottom: 1rem;
     }
 </style>
-@endsection
+@section('page-content')
+<div class="account-content">
+    <h2 class="section-title">Account</h2>
 
-@section('user-content')
-<div class="  py-5 " style= "   color: #101010;
-background: #f8f6f5;">
-        
-  <div class="w-100  bg-black text-white">
-<div class="account-container">
-            <h1>My Account</h1>
-            <h3 class="account-name">{{ auth()->user()->name }}</h3>
-            <p class="account-email">{{ auth()->user()->email }}</p>
-        </div>
-    
-  </div>
-    
-    <div class="account-sections px-5  mt-5"style=   " color: #101010;
-    background: #f8f6f5;">
-        <div class="account-sidebar">
-            <a href="{{ route('profile.show') }}" class="account-menu-item active">
-                <i class="fas fa-user"></i> Account
-            </a>
-            <a href="#" class="account-menu-item">
-                <i class="fas fa-lock"></i> Security
-            </a>
-            @if(Auth::check() && Auth::user()->role === 'Reader')
-            <a href="{{ route('books.reader.index') }}" class="account-menu-item">
-                <i class="fas fa-book"></i> My Saved Books
-            </a>
-            @endif
-            @if(Auth::check() && Auth::user()->role === 'Publisher')
-            <a href="{{ route('subscription.index') }}" class="account-menu-item">
-                <i class="fas fa-credit-card"></i> Published Books 
-                {{--when open Published Books  it show me publised books page with muli tabs include drafts , published with  create books button and create audio book button and
-                     when press on it show create book form, reject books--}}
-            </a>
-            <a href="{{ route('subscription.index') }}" class="account-menu-item">
-                <i class="fas fa-credit-card"></i> Subscriptions
-            </a>
-            {{--"{{ route('payments.index') }}" --}}
-            <a href="#" class="account-menu-item">
-                <i class="fas fa-credit-card"></i> Payments
-            </a>
-            @endif
-           
-            <form method="POST" action="{{ route('logout') }}" class="account-menu-item">
-                @csrf
-                <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </form>
-        </div>
-        
-        <div class="account-content">
-            <h2 class="section-title">Account</h2>
-            
-            <form method="POST" action="{{ route('profile.update') }}">
-                @csrf
-                @method('patch')
-                
-                <div class="form-group">
-                    <label class="form-label" for="name">Full Name</label>
-                    <input id="name" name="name" type="text" class="form-input" value="{{ old('name', auth()->user()->name) }}" required autofocus>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="email">Email</label>
-                    <input id="email" name="email" type="email" class="form-input" value="{{ old('email', auth()->user()->email) }}" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="phone">Phone Number</label>
-                    <input id="phone" name="phone" type="tel" class="form-input" value="{{ old('phone', auth()->user()->phone) }}">
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="image">Profile Picture</label>
-                    <input id="image" name="image" type="file" class="form-input">
-                </div>
-                
-                <button type="submit" class="btn-primary">Save Changes</button>
-            </form>
-            
-            <div class="danger-zone">
-                <h3 class="danger-title">Danger Zone</h3>
-                <form method="POST" action="{{ route('profile.destroy') }}">
-                    @csrf
-                    @method('delete')
-                    <button type="submit" class="btn-primary" style="background-color: #f44336;">
-                        Delete Account
-                    </button>
-                </form>
+    <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">  
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
+        @endif
+        @csrf
+        @method('patch')
+        
+        <div class="form-group">
+            <label class="form-label" for="name">Full Name</label>
+            <input id="name" name="name" type="text" class="form-input" value="{{ old('name', auth()->user()->name) }}" required autofocus>
         </div>
-    </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input id="email" name="email" type="text" class="form-input" value="{{ old('email', auth()->user()->email) }}" >
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="phone">Phone Number</label>
+            <input id="phone" name="phone" type="tel" class="form-input" value="{{ old('phone', auth()->user()->phone) }}" >
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="image">Profile Picture</label>
+            
+            <!-- Current Profile Image Display -->
+            @if(auth()->user()->image)
+                <div class="current-image mb-3">
+                    <img src="{{ asset('storage/' . auth()->user()->image) }}" 
+                         alt="Current Profile Image"
+                         class="account-avatar"
+                         style="display: block; margin-bottom: 10px;">
+                    <p class="small text-muted">Current profile picture</p>
+                </div>
+            @else
+                <div class="current-image mb-3">
+                    <div class="account-avatar" style="background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-user" style="font-size: 2rem; color: #666;"></i>
+                    </div>
+                    <p class="small text-muted">No profile picture uploaded</p>
+                </div>
+            @endif
+            
+            <!-- File Input for New Image -->
+            <input id="image" name="image" type="file" class="form-input">
+            <small class="form-text text-muted">Upload a new image to replace your current profile picture (Max 2MB, JPG/PNG/GIF)</small>
+        </div>
 
-    </div>
- </div>
+        <!-- Publisher-specific fields -->
+        @if(auth()->user()->role === 'Publisher')
+            <div class="publisher-fields mt-4">
+                <h3 class="mb-3">Publisher Information</h3>
+                
+                <div class="form-group">
+                    <label class="form-label" for="job_title">Job Title</label>
+                    <input id="job_title" name="job_title" type="text" class="form-input" 
+                           value="{{ old('job_title', auth()->user()->publisher->job_title ?? '') }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="publishing_house_id">Publishing House</label>
+                    <select id="publishing_house_id" name="publishing_house_id" class="form-input">
+                        <option value="">-- Select Publishing House --</option>
+                        @foreach(\App\Models\PublishingHouse::all() as $house)
+                            <option value="{{ $house->id }}" 
+                                {{ old('publishing_house_id', auth()->user()->publisher->publishing_house_id ?? '') == $house->id ? 'selected' : '' }}>
+                                {{ $house->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="identity">Identity Document</label>
+                    
+                    @if(auth()->user()->publisher && auth()->user()->publisher->identity)
+                        <div class="current-document mb-3">
+                            <a href="{{ asset('storage/' . auth()->user()->publisher->identity) }}" 
+                               target="_blank" class="btn btn-outline-primary">
+                                View Current Document
+                            </a>
+                            <p class="small text-muted mt-1">Current identity document</p>
+                        </div>
+                    @endif
+                    
+                    <input id="identity" name="identity" type="file" class="form-input">
+                    <small class="form-text text-muted">Upload identity document (PDF/JPG/PNG, Max 2MB)</small>
+                </div>
+            </div>
+        @endif
+        
+        <button type="submit" class="btn-primary">Save Changes</button>
+    </form>
+</div>
 @endsection

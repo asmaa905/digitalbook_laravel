@@ -88,6 +88,10 @@ class User extends Authenticatable
         {
             return $this->hasMany(Payment::class);
         }
+        public function publisher()
+        {
+            return $this->hasOne(\App\Models\Publisher::class);
+        }
 
 }
 
