@@ -82,6 +82,9 @@
                                     <a class="dropdown-item" href="{{ route('profile.show') }}">
                                         <i class="fas fa-user me-2"></i> My Profile
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('user.home') }}">
+                                        <i class="fas fa-home me-2"></i> Home
+                                    </a>
                                     @if(Auth::check() && Auth::user()->role === 'Reader')
                                     <a class="dropdown-item" href="{{ route('books.reader.index') }}">
                                       <i class="fa-solid fa-book"></i>Readed Books
