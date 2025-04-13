@@ -8,7 +8,7 @@
         Publish New Book
     </a>
     
-    @if($publishedBooks->isEmpty())
+    @if($books->isEmpty())
         <div class="alert alert-info">
             You haven't published any books yet.
         </div>
@@ -25,18 +25,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($publishedBooks as $book)
+                    @foreach($books as $book)
                         <tr>
                             <td>{{ $book->title }}</td>
-                            <td>{{ $book->author->name }}</td>
+                            <td>{{ $book->author?$book->author->name:'known' }}</td>
                             <td>{{ $book->created_at->format('M d, Y') }}</td>
                             <td>
                                 <span class="badge {{ $book->is_published == 'accepted'? 'bg-success' : ($book->is_published == 'waiting'?'bg-warning':'bg-danger') }}">
                                 {{ $book->is_published == 'accepted'? 'Published' : ($book->is_published == 'waiting'?'waiting':'Rejected') }}
                                 </span>
-                                <span class="badge {{ $book->is_draft == true? 'bg-success':''}}">
-                                {{ $book->is_draft == true?? Draft}}
-                                </span>
+                               
                             </td>
                             <td>
                                 <a href="{{ route('books.edit', $book->id) }}" class="btn btn-sm btn-primary">Edit</a>
@@ -52,7 +50,7 @@
             </table>
         </div>
         
-        {{ $publishedBooks->links() }}
+        {{ $books->links() }}
     @endif
 </div>
 @endsection

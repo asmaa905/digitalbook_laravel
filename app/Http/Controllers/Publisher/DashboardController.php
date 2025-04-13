@@ -12,7 +12,6 @@ class DashboardController extends BaseController
         $stats = [
             'total_books' => Book::where('published_by', auth()->id())->count(),
             'published_books' => Book::where('published_by', auth()->id())->where('is_published', 'accepted')->count(),
-            'draft_books' => Book::where('published_by', auth()->id())->where('is_draft', true)->count(),
             'audio_versions' => AudioVersion::whereHas('book', function($q) {
                 $q->where('published_by', auth()->id());
             })->count(),

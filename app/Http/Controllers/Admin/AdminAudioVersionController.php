@@ -38,14 +38,12 @@ class AdminAudioVersionController extends BaseController
             'audio_duration' => 'required|numeric|min:0',
             'language' => 'required|string|max:10',
             'audio_review_file' => 'nullable|file|mimes:mp3,wav,aac|max:65536', // 64MB
-            'audio_format_review' => 'required|string|in:MP3,AAC,WAV',
-            'audio_format_full_audio' => 'required|string|in:MP3,AAC,WAV'
         ]);
 
         $book = Book::findOrFail($validated['book_id']);
 
         // Store audio file
-        $validated['audio_link'] = $request->file('audio_file')->store('books/audio', 'public');
+        $validated['audio_link'] = $request->file('audio_file')->store('books/books_audio_links', 'public');
       
         // Store review file if exists
         if ($request->hasFile('audio_review_file')) {
@@ -83,8 +81,6 @@ class AdminAudioVersionController extends BaseController
             'audio_duration' => 'required|numeric|min:0',
             'language' => 'required|string|max:10',
             'audio_review_file' => 'nullable|file|mimes:mp3,wav,aac|max:65536', // 64MB in KB
-            'audio_format_review' => 'required|string|in:MP3,AAC,WAV',
-            'audio_format_full_audio' => 'required|string|in:MP3,AAC,WAV'
         ]);
 
         if ($request->hasFile('audio_file')) {
@@ -92,7 +88,7 @@ class AdminAudioVersionController extends BaseController
             if ($audioVersion->audio_link) {
                 Storage::disk('public')->delete($audioVersion->audio_link);
             }
-            $validated['audio_link'] = $request->file('audio_file')->store('books/audio', 'public');
+            $validated['audio_link'] = $request->file('audio_file')->store('books/books_audio_links', 'public');
           
         }
         if ($request->hasFile('audio_review_file')) {

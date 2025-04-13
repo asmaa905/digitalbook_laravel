@@ -1,8 +1,8 @@
-@extends('layouts.publisher')
+@extends('layouts.profile-layout')
 
-@section('title', 'Book Details')
+@section('page-title', 'Book Details')
 
-@section('content')
+@section('page-content')
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Book Details</h5>
@@ -11,7 +11,7 @@
                 <i class="fas fa-edit"></i> Edit
             </a>
             <a href="{{ route('publisher.audio-versions.create', ['book_id' => $book->id]) }}" 
-               class="btn btn-primary btn-sm">
+               class="btn bg-orange btn-sm">
                 <i class="fas fa-headphones"></i> Add Audio Version
             </a>
         </div>
@@ -40,10 +40,10 @@
                 </div>
                 
                 <div class="row mb-4">
-                    <div class="col-md-4">
+                   {{--<div class="col-md-4">
                         <h6>Price</h6>
                         <p>${{ number_format($book->price, 2) }}</p>
-                    </div>
+                    </div>--}} 
                     <div class="col-md-4">
                         <h6>Published Date</h6>
                         <p>{{ $book->publish_date->format('M d, Y') }}</p>
@@ -57,11 +57,26 @@
                 <h5>Description</h5>
                 <p>{{ $book->description }}</p>
                 
-                @if($book->pdf_link)
-                    <a href="{{ $book->pdf_link }}" target="_blank" class="btn btn-outline-primary">
-                        <i class="fas fa-file-pdf"></i> View PDF
-                    </a>
-                @endif
+                
+              
+                @if(isset($book) && $book->pdf_link)
+                        <div class="mt-2" id="existing-file-container">
+                            <div class="d-flex align-items-center">
+                              
+                                <div>
+                                <a href="{{ asset('storage/'.$book->pdf_link) }}"  class="btn btn-orange-outline">
+                                    <i class="fas fa-file-pdf"></i> View PDF
+                                </a>
+
+                       
+
+                                <a href="{{ asset('storage/'.$book->pdf_link) }}" target="_blank" class="btn bg-orange rounded-sm" download="{{$book->title}}.pdf" >
+                                    <i class="fas fa-file-pdf"></i> Download
+                                </a>  
+                                </div>
+                            </div>
+                        </div>
+                    @endif
             </div>
         </div>
         
@@ -87,7 +102,7 @@
                             <td>{{ gmdate("H:i:s", $audio->audio_duration) }}</td>
                             <td>
                                 @if($audio->audio_link)
-                                    <a href="{{ $audio->audio_link }}" target="_blank">Listen</a>
+                                <a href="{{  asset('storage/'.$audio->audio_link) }}" target="_blank">Listen</a>
                                 @else
                                     N/A
                                 @endif

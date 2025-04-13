@@ -104,7 +104,7 @@
                             <thead>
                                 <tr>
                                     <th>Title</th>
-                                    <th>Status</th>
+                                 <th>Status</th>
                                     <th>Date</th>
                                 </tr>
                             </thead>
@@ -113,12 +113,14 @@
                                 <tr>
                                     <td>{{ $book->title }}</td>
                                     <td>
-                                        @if($book->is_draft)
-                                            <span class="badge badge-warning">Draft</span>
-                                        @else
-                                            <span class="badge badge-success">Published</span>
+                                        @if($book->is_published =='accepted')
+                                            <span class="badge bg-warning">Published</span>
+                                        @elseif($book->is_published =='rejected')
+                                            <span class="badge bg-danger">Rejected</span>
+                                        @else($book->is_published =='waiting')
+                                            <span class="badge bg-success">Waiting</span>
                                         @endif
-                                    </td>
+                                    </td>                                    </td>
                                     <td>{{ $book->created_at->format('M d, Y') }}</td>
                                 </tr>
                                 @empty

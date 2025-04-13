@@ -1,7 +1,12 @@
 @extends('layouts.admin')
 
-@section('admin-title', 'Create New Book')
-@section('admin-nav-title', 'Create New Book')
+@section('Admin-title')
+{{ isset($book) ? 'Edit' : 'Create' }} Book -
+
+@endsection
+@section('admin-nav-title')
+{{ isset($book) ? 'Edit' : 'Create' }} Book
+@endsection
 
 @section('admin-content')
 <div class="card">
@@ -14,7 +19,6 @@
             @if(isset($book))
                 @method('PUT')
             @endif
-
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="title" class="form-label">Title*</label>
@@ -64,18 +68,14 @@
 
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="price" class="form-label">Price*</label>
-                    <input type="number" step="0.01" class="form-control" id="price" name="price" 
-                           value="{{ old('price', $book->price ?? '') }}" required>
-                </div>
-                <div class="col-md-4">
-                    <label for="publish_date" class="form-label">Publish Date*</label>
+                    <label for="publish_date" class="form-label">Publish Date</label>
                     <input type="date" class="form-control" id="publish_date" name="publish_date" 
-                    value="{{ old('publish_date', isset($book) ? $book->publish_date->format('Y-m-d') : '') }}" required>
+                    value="{{ old('publish_date', isset($book) ? $book->publish_date->format('Y-m-d') : '') }}" >
                     </div>
                 <div class="col-md-4">
                     <label for="language" class="form-label">Language*</label>
                     <select class="form-select" id="language" name="language" required>
+                        <option value="ar" {{ old('language', $book->language ?? '') == 'ar' ? 'selected' : '' }}>Arabic</option>
                         <option value="en" {{ old('language', $book->language ?? '') == 'en' ? 'selected' : '' }}>English</option>
                         <option value="es" {{ old('language', $book->language ?? '') == 'es' ? 'selected' : '' }}>Spanish</option>
                         <option value="fr" {{ old('language', $book->language ?? '') == 'fr' ? 'selected' : '' }}>French</option>
@@ -91,8 +91,9 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="image" class="form-label">Cover Image</label>
-                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
-                    @if(isset($book) && $book->image)
+                    <input type="file" class="file-upload-input" name="image" accept="image/*" 
+                        />    
+                        @if(isset($book) && $book->image)
                         <div class="mt-2">
                             <img src="{{ asset('storage/'.$book->image) }}" width="100" class="img-thumbnail">
                         </div>
@@ -100,9 +101,11 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="pdf_link" class="form-label">Book File (PDF or DOCX only)</label>
-                    <input type="file" class="form-control" id="pdf_link" name="pdf_link" accept=".pdf,.docx">
-                    
+                    <label for="pdf_link" class="form-label">Book File (PDF or DOCX only)*</label>
+               
+
+                     <input type="file" class="form-control" id="pdf_link" name="pdf_link" accept=".pdf,.docx"
+                       />   
                     @if(isset($book) && $book->pdf_link)
                         <div class="mt-2" id="existing-file-container">
                             <div class="d-flex align-items-center">
@@ -138,6 +141,26 @@
                        {{ old('is_featured', $book->is_featured ?? false) ? 'checked' : '' }}>
                 <label class="form-check-label" for="is_featured">Featured Book</label>
             </div>
+            <div class="mb-3">
+
+            <label for="is_published" class="form-label">Accept Publish</label>
+                    <select class="form-select" id="is_published" name="is_published">
+                        <option value="">Select reject/ accept</option>
+                     
+                            <option value="waiting" 
+                                {{ old('is_published', $book->is_published ?? '') == 'waiting' ? 'selected' : '' }}>
+                                waiting
+                            </option>
+                            <option value="accepted" 
+                                {{ old('is_published', $book->is_published ?? '') == 'accepted' ? 'selected' : '' }}>
+                                accepted
+                            </option>
+                            <option value="rejected" 
+                                {{ old('is_published', $book->is_published ?? '') == 'rejected' ? 'selected' : '' }}>
+                                rejected
+                            </option>
+                    </select>
+                    </div>
 
             <div class="d-flex justify-content-between">
                 <a href="{{ route('admin.books.index') }}" class="btn btn-secondary">Cancel</a>
@@ -200,6 +223,9 @@
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
+        document.querySelector('form').addEventListener('submit', function(e) {
+            console.log('Form submitted'); // Check browser console
+        });
     });
 </script>
 @endpush

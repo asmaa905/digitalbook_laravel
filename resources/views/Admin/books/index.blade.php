@@ -24,7 +24,6 @@
                         <th>Title</th>
                         <th>Author</th>
                         <th>Category</th>
-                        <th>Price</th>
                         <th>Published</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -45,7 +44,6 @@
                         <td>{{ $book->title }}</td>
                         <td>{{ $book->author->name ?? 'N/A' }}</td>
                         <td>{{ $book->category->name }}</td>
-                        <td>${{ number_format($book->price, 2) }}</td>
                         <td>{{ $book->publish_date->format('M d, Y') }}</td>
                         <td>
                             @if($book->is_featured)

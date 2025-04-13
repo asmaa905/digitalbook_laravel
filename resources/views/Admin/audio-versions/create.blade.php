@@ -77,24 +77,7 @@
                {{-- <input type="text" class="form-control" id="review_record_file" name="review_record_file" 
                        value="{{ old('review_record_link', $audioVersion->review_record_link ?? '') }}"> --}}
             </div>
-            <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="audio_format_full_audio" class="form-label">Audio Format*</label>
-                <select class="form-select" id="audio_format_full_audio" name="audio_format_full_audio" required>
-                    <option value="MP3">MP3</option>
-                    <option value="AAC">AAC</option>
-                    <option value="WAV">WAV</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label for="audio_format_review" class="form-label">Review Format*</label>
-                <select class="form-select" id="audio_format_review" name="audio_format_review" required>
-                    <option value="MP3">MP3</option>
-                    <option value="AAC">AAC</option>
-                    <option value="WAV">WAV</option>
-                </select>
-            </div>
-        </div>
+        
             <div class="d-flex justify-content-between">
                 <a href="{{ isset($book) ?? route('admin.books.show', $book->id)}}"
                    class="btn btn-secondary">Cancel</a>

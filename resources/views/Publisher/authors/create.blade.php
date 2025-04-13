@@ -1,8 +1,8 @@
-@extends('layouts.publisher')
+@extends('layouts.profile-layout')
 
-@section('title', 'Manage Authors')
+@section('page-title', 'Manage Authors')
 
-@section('content')
+@section('page-content')
 <div class="card">
     <div class="card-header">
         <h5 class="mb-0">{{ isset($author) ? 'Edit' : 'Create' }} Author</h5>

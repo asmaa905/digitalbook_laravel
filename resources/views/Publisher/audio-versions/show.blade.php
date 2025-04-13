@@ -49,22 +49,19 @@
     <div class="container">
         <div class="dashboard-header">
             <div>
-                <h1 class="dashboard-title">{{ isset($audioVersion) ? 'Edit' : 'Upload' }} Audio Version</h1>
+                <h1 class="dashboard-title">{{ isset($audioVersion) ? $audioVersion->book->title:''}} Audio Version</h1>
                 <div class="breadcrumb">
                     <a href="{{route('publisher.books.index')}}">Published Books</a>
                     <span class="separator">/</span>
                     <a href="{{route('publisher.books.index', ['#audio'])}}">Audio Versions</a>
                     <span class="separator">/</span>
-                    <span>{{ isset($audioVersion) ? 'Edit' : 'Upload' }}</span>
+                    <span>{{ isset($audioVersion) ? $audioVersion->book->title:''}}</span>
                 </div>
             </div>
         </div>
 
-        <form method="POST" action="{{ isset($audioVersion) ? route('publisher.audio-versions.update', $audioVersion->id) : route('publisher.audio-versions.store') }}" enctype="multipart/form-data">
-                        @csrf
-            @if(isset($audioVersion))
-                @method('PUT')
-            @endif
+        <form method="POST" action="#" enctype="multipart/form-data">
+    
 
             <div class="form-section">
                 <div class="section-header">
@@ -78,31 +75,18 @@
 
                 <div class="form-group">
                     <label>Book*</label>
-                    <select name="book_id" class="form-control"  required {{ isset($audioVersion) ? 'disabled' : '' }}>
-                        <option value="">Select a book</option>
-                        @if(isset($book))
-                            <option value="{{ $book->id }}" selected>{{ $book->title }}</option>
-                            <input type="hidden" name="book_id" value="{{ $book->id }}">
-                        @else
-                        @foreach($books as $b)
-                            <option value="{{ $b->id }}" 
-                                @if(((isset($book) && $b->id == $book->id) || (isset($audioVersion) && $b->id == $audioVersion->book_id)))
-                                selected 
-                                @endif
-                                
-                                >
-                                {{ $b->title }}
-                            </option>
-                        @endforeach
-                        @endif
-                    </select>
+                    <select name="book_id" class="form-control"  {{ isset($audioVersion) ? 'disabled' : '' }}>
+                        @if(isset($audioVersion->book))
+                            <option value="{{ $audioVersion->book->id }}" selected>{{ $audioVersion->book->title }}</option>
+                            <input type="hidden" name="book_id" value="{{ $audioVersion->book->id }}">
+                                                @endif
+                    </select> 
+                      
                 </div>
-                <p><a href="{{ route('publisher.books.create') }}" class="text-orange">
-                    If you need to add a new book, click here</a></p>
-
+               
                 <div class="form-group">
                     <label>Language*</label>
-                    <select name="language" class="form-control" required>
+                    <select name="language" class="form-control" disabled>
                         <option value="en" @if(isset($audioVersion) && $audioVersion->language == 'en') selected @endif>English</option>
                         <option value="ar" @if(isset($audioVersion) && $audioVersion->language == 'ar') selected @endif>Arabic</option>
                         <option value="es" @if(isset($audioVersion) && $audioVersion->language == 'es') selected @endif>Spanish</option>
@@ -122,7 +106,7 @@
                             placeholder="00:00:00"
                             pattern="\d{2}:[0-5][0-9]:[0-5][0-9]"
                             title="Please enter duration in HH:MM:SS format (e.g., 01:20:00)"
-                            required
+                            disabled
                         />
                         <small class="text-muted">Format: HH:MM:SS (e.g., 01:20:00 for 1 hour 20 minutes). Will be calculated automatically if left empty when uploading file.</small>
                     </div>
@@ -130,23 +114,7 @@
 
                 <div class="form-group">
                     <label>Full Audio File*</label>
-                    <div class="file-upload" id="audioUploadArea">
-                        <input
-                            type="file"
-                            class="file-upload-input"
-                            name="audio_full"
-                            id="audio_full"
-                            accept="audio/*"
-                            @if(!isset($audioVersion)) required @endif
-                        />
-                        <i class="fas fa-microphone-alt"></i>
-                        <div class="file-upload-text">
-                            Drag & drop your audio file here
-                        </div>
-                        <div class="file-upload-subtext">
-                            or click to browse files (MP3, AAC, WAV)
-                        </div>
-                    </div>
+            
                     @if(isset($audioVersion) && $audioVersion->audio_link)
                         <div class="mt-2">
                             <audio controls src="{{ Storage::url($audioVersion->audio_link) }}"></audio>
@@ -157,37 +125,21 @@
 
                 <div class="form-group">
                     <label>Review Audio File (Optional)</label>
-                    <div class="file-upload" id="reviewUploadArea">
-                        <input
-                            type="file"
-                            class="file-upload-input"
-                            name="audio_review"
-                            id="audio_review"
-                            accept="audio/*"
-                        />
-                        <i class="fas fa-headphones"></i>
-                        <div class="file-upload-text">
-                            Drag & drop your review audio here
-                        </div>
-                        <div class="file-upload-subtext">
-                            or click to browse files (MP3, AAC, WAV)
-                        </div>
-                    </div>
+                   
                     @if(isset($audioVersion) && $audioVersion->review_record_link)
                         <div class="mt-2">
                             <audio controls src="{{ Storage::url($audioVersion->review_record_link) }}"></audio>
                             <small>Current file: {{ basename($audioVersion->review_record_link) }}</small>
                         </div>
+                    @else
+                        <div class="mt-2">
+                            no review audio uploaded
+                        </div>
                     @endif
                 </div>
             </div>
 
-            <div class="action-buttons">
-                <a href="{{ route('publisher.audio-versions.index') }}" class="btn btn-outline">Cancel</a>
-                <button type="submit" class="btn btn-primary">
-                    {{ isset($audioVersion) ? 'Update' : 'Publish' }} Audio Version
-                </button>
-            </div>
+          
         </form>
     </div>
 </div>

@@ -20,4 +20,12 @@ class AudioVersion extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+    public function getFormattedDurationAttribute()
+    {
+        $hours = floor($this->audio_duration / 3600);
+        $minutes = floor(($this->audio_duration % 3600) / 60);
+        $seconds = $this->audio_duration % 60;
+        
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    }
 }

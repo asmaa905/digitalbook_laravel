@@ -1,87 +1,193 @@
-@extends('layouts.publisher')
+@extends('layouts.profile-layout')
 
-@section('title', 'Manage Books')
+@section('page-title', 'My Books -')
+@section('page-styles')
+<link rel="stylesheet" type="text/css" media="screen" href="{{ asset('assets/css/postbook.css')}}" />
+@endsection
 
-@section('content')
+@section('page-header-cont')
+<h1>My Books</h1>
+<p class="account-name">Manage your published ebooks and audiobooks</p>
+@endsection
+
+@section('page-content')
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Books Management</h5>
-        <a href="{{ route('publisher.books.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Add Book
-        </a>
+        <h5 class="mb-0">My Books</h5>
+        <div>
+            <a href="{{ route('publisher.books.create') }}" class="btn bg-orange">
+                <i class="fas fa-plus"></i> Add Book
+            </a>
+            <a href="{{ route('publisher.audio-versions.create') }}" class="btn bg-orange">
+                <i class="fas fa-plus"></i> Add Audio Version
+            </a>
+        </div>
     </div>
+    
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Cover</th>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Published</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($books as $book)
-                    <tr>
-                        <td>
-                            @if($book->image)
-                                <img src="{{ asset('storage/'.$book->image) }}" width="50" height="70" class="img-thumbnail">
-                            @else
-                                <div class="bg-light d-flex align-items-center justify-content-center" style="width:50px;height:70px;">
-                                    <i class="fas fa-book text-muted"></i>
-                                </div>
-                            @endif
-                        </td>
-                        <td>{{ $book->title }}</td>
-                        <td>{{ $book->author->name ?? 'N/A' }}</td>
-                        <td>{{ $book->category->name }}</td>
-                        <td>${{ number_format($book->price, 2) }}</td>
-                        <td>{{ $book->publish_date->format('M d, Y') }}</td>
-                        <td>
-                            @if($book->is_featured)
-                                <span class="badge bg-success">Featured</span>
-                            @else
-                                <span class="badge bg-secondary">Regular</span>
-                            @endif
-                        </td>
-                        <td>
-                            <div class="d-flex gap-2">
-                                <a href="{{ route('publisher.books.show', $book->id) }}" class="btn btn-sm btn-info">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a href="{{ route('publisher.books.edit', $book->id) }}" class="btn btn-sm btn-warning">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="{{ route('publisher.books.destroy', $book->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                                <a href="{{ route('publisher.audio-versions.create', ['book_id' => $book->id]) }}" 
-                                   class="btn btn-sm btn-primary" title="Add Audio Version">
-                                    <i class="fas fa-headphones"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="8" class="text-center">No books found</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-        <div class="mt-3">
-            {{ $books->links() }}
-        </div>
-    </div>
-</div>
+        <ul class="nav nav-tabs" id="booksTabs" role="tablist">
+        <li class="nav-item">
+              <button type="button"  class="nav-link text-dark active" id="published-tab" data-bs-toggle="tab"  data-bs-target="#published" role="presentation">Published</button>
+            </li>
+            <li class="nav-item">
+              <button type="button"  class="nav-link text-dark" id="waiting-tab" data-bs-toggle="tab"  data-bs-target="#waiting" role="presentation">Waiting</button>
+            </li>
+            
+            <li class="nav-item">
+              <button type="button"  class="nav-link text-dark" id="rejected-tab" data-bs-toggle="tab"  data-bs-target="#rejected" role="presentation">Rejected</button>
+            </li>
+          
+            <li class="nav-item">
+              <button type="button" class="nav-link text-dark" id="audio-tab" data-bs-toggle="tab"  data-bs-target="#audio" role="presentation">Audio Versions</button>
+            </li>
+
+        </ul>
+        
+        <div class="tab-content" id="booksTabsContent">
+            <!-- Published Books Tab -->
+            <div class="tab-pane fade show active" id="published" role="tabpanel">
+            @include('publisher.books.partials.books-table', [
+                    'books' => $publishedBooks,
+                    'type' => 'published'
+                ])
+            </div>
+            <!-- waiting Books Tab -->
+            <div class="tab-pane fade" id="waiting" role="tabpanel">
+                @include('publisher.books.partials.books-table', [
+                    'books' => $waitingBooks,
+                    'type' => 'waiting'
+                ])
+            </div>
+            <!-- rejected Books Tab -->
+            <div class="tab-pane fade" id="rejected" role="tabpanel">
+                @include('publisher.books.partials.books-table', [
+                    'books' => $rejectedBooks,
+                    'type' => 'rejected'
+                ])
+            </div>
+          
+
+            <!-- Audio Versions Tab -->
+            <div class="tab-pane fade" id="audio" role="tabpanel">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Cover</th>
+                                <th>Title</th>
+                                <th>Narrator</th>
+                                <th>Duration</th>
+                                <th>Review Audio</th>
+
+                                <th>Full Audios</th>
+
+                                <th>Audio Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($audioVersions as $audio)
+                            <tr>
+                                <td>
+                                    @if($audio->book->image)
+                                        <img src="{{ asset('storage/'.$audio->book->image) }}" width="50" height="70" class="img-thumbnail">
+                                    @else
+                                        <div class="bg-light d-flex align-items-center justify-content-center" style="width:50px;height:70px;">
+                                            <i class="fas fa-book text-muted"></i>
+                                        </div>
+                                    @endif
+                                </td>
+                                <td>{{ $audio->book->title }}</td>
+                                <td>{{ $audio->creator->name ?? 'Unknown' }}</td>
+                                <td>{{ $audio->audio_duration }}</td>
+                                <td><span class="badge bg-success">
+                                    Found
+                                    </span></th>
+
+                                <td>
+                                @if($audio->audio_link)
+                                        <audio controls style="width: 150px">
+                                            <source src="{{ asset('storage/'.$audio->audio_link) }}" type="audio/{{ pathinfo($audio->audio_link, PATHINFO_EXTENSION) }}">
+                                        </audio>
+                                    @else
+                                        <span class="text-muted">N/A</span>
+                                    @endif 
+                               </td>
+                                <td>
+                                    <span class="badge bg-{{ $audio->is_published === 'accepted' ? 'success' : ($audio->is_published === 'rejected' ? 'danger' : 'info') }}">
+                                        {{ ucfirst($audio->is_published) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="{{ route('publisher.audio-versions.show', $audio->id) }}" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('publisher.audio-versions.edit', $audio->id) }}" class="btn btn-sm btn-warning">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form action="{{ route('publisher.audio-versions.destroy', $audio->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="8" class="text-center">No audio versions found</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-3">
+                    {{ $audioVersions->links() }}
+                </div>
+            </div>
+
+
+                    </div>
+                </div>
+            </div>
+@endsection
+@section('page-scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if we have a hash in the URL
+        const hash = window.location.hash;
+    
+        // If hash is present and matches a tab, activate it
+        if(hash) {
+            const triggerEl = document.querySelector(`.nav-tabs button[data-bs-target="${hash}"]`);
+            if(triggerEl) {
+            // Remove active class from all tabs and panes
+            document.querySelectorAll('.nav-tabs .nav-link').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-pane').forEach(el => {
+                el.classList.remove('show', 'active');
+            });
+            
+            // Add active class to the target tab and pane
+            triggerEl.classList.add('active');
+            const targetPane = document.querySelector(hash);
+            if(targetPane) {
+                targetPane.classList.add('show', 'active');
+            }
+            }
+        }
+        
+        // Change hash for page-reload
+        const tabEls = document.querySelectorAll('.nav-tabs button[data-bs-toggle="tab"]');
+        tabEls.forEach(tabEl => {
+            tabEl.addEventListener('shown.bs.tab', function(e) {
+                window.location.hash = e.target.getAttribute('data-bs-target');
+            });
+        });
+    });
+</script>
 @endsection

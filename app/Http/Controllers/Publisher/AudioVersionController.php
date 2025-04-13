@@ -6,140 +6,189 @@ use App\Models\Book;
 use App\Models\AudioVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use getID3;
 
 class AudioVersionController extends BaseController
 {
-    public function indexAudioOfSingleBook(Book $book)
-    {
-        $this->authorize('view', $book);
-        
-        $audioVersions = $book->audioVersions()->latest()->paginate(10);
-        
-        return $this->view('audio-versions.index', compact('book', 'audioVersions'));
-    }
 
     public function index()
     {
-        // Get all books that belong to the current publisher with their audio versions
-        $books = Book::where('published_by', auth()->id())
-            ->with(['audioVersions', 'author', 'category'])
+        // Get all audio versions that belong to the current publisher
+        $audioVersions = AudioVersion::where('created_by', auth()->id())
+            ->with(['book', 'creator'])
             ->latest()
-            ->paginate(10);
+            ->get();
+            // $audioVersions = AudioVersion::with(['book', 'creator'])
+            // ->where('created_by', auth()->id())
+            // ->latest()
+            // ->get();
             
-        return $this->view('audio-versions.index', compact('books'));
+        return $this->view('audio-versions.index', compact('audioVersions'));
     }
 
     public function create(Request $request)
     {
         $book = null;
-        $books = Book::where('published_by', auth()->id())->get();
+        $books = Book::where('is_published', true)->get();
         
         if ($request->has('book_id')) {
             $book = Book::findOrFail($request->book_id);
-            $this->authorize('view', $book);
         }
         
-        return $this->view('audio-versions.create', compact('book', 'books'));
+        $type = 'create';
+        return $this->view('audio-versions.create', compact('books', 'book', 'type'));
     }
+    
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'book_id' => 'required|exists:books,id',
-            'audio_file' => 'required|file|mimes:mp3,wav,aac',
-            'audio_duration' => 'required|numeric|min:0',
+            'audio_full' => 'required|file|mimes:mp3,wav,aac|max:65536',
             'language' => 'required|string|max:10',
-            'audio_review_file' => 'nullable|file|mimes:mp3,wav,aac',
-            'audio_format_review' => 'required|string|in:MP3,AAC,WAV',
-            'audio_format_full_audio' => 'required|string|in:MP3,AAC,WAV'
+            'audio_review' => 'nullable|file|mimes:mp3,wav,aac|max:65536',
+            'audio_duration' => 'required|string|regex:/^\d{2,3}:[0-5][0-9]:[0-5][0-9]$/', // HH:MM:SS format
         ]);
 
         $book = Book::findOrFail($validated['book_id']);
-        $this->authorize('update', $book);
+        
+        // Convert HH:MM:SS to seconds
+        $durationInSeconds = $this->timeToSeconds($validated['audio_duration']);
 
-        // Store audio file
-        $validated['audio_link'] = $request->file('audio_file')->store('books/audio', 'public');
-      
-        // Store review file if exists
-        if ($request->hasFile('audio_review_file')) {
-            $validated['review_record_link'] = $request->file('audio_review_file')->store('books/review_audios', 'public');
+        // Store files
+        $audioPath = $request->file('audio_full')->store('books/audio_versions', 'public');
+        $reviewPath = null;
+        
+        if ($request->hasFile('audio_review')) {
+            $reviewPath = $request->file('audio_review')->store('books/audio_reviews', 'public');
         }
-        
-        $validated['created_by'] = auth()->id();
 
-        AudioVersion::create($validated);
-
-        return redirect()->route('publisher.audio-versions.index')
-            ->with('success', 'Audio version added successfully!');
-    }
-
-    public function show(AudioVersion $audioVersion)
-    {
-        $this->authorize('view', $audioVersion->book);
-        
-        return $this->view('audio-versions.show', compact('audioVersion'));
-    }
-
-    public function edit(AudioVersion $audioVersion)
-    {
-        $this->authorize('update', $audioVersion->book);
-        
-        $books = Book::where('published_by', auth()->id())->get();
-        
-        return $this->view('audio-versions.create', compact('audioVersion', 'books'));
-    }
-
-    public function update(Request $request, AudioVersion $audioVersion)
-    {
-        $this->authorize('update', $audioVersion->book);
-        
-        $validated = $request->validate([
-            'book_id' => 'required|exists:books,id',
-            'audio_file' => 'nullable|file|mimes:mp3,wav,aac',
-            'audio_duration' => 'required|numeric|min:0',
-            'language' => 'required|string|max:10',
-            'audio_review_file' => 'nullable|file|mimes:mp3,wav,aac',
-            'audio_format_review' => 'required|string|in:MP3,AAC,WAV',
-            'audio_format_full_audio' => 'required|string|in:MP3,AAC,WAV'
+        AudioVersion::create([
+            'book_id' => $validated['book_id'],
+            'audio_link' => $audioPath,
+            'review_record_link' => $reviewPath,
+            'language' => $validated['language'],
+            'audio_duration' => $durationInSeconds,
+            'created_by' => auth()->id(),
+            'is_published' => 'waiting',
         ]);
 
-        if ($request->hasFile('audio_file')) {
-            // Delete old audio file if exists
+        return redirect()->route('publisher.books.index', ['#audio'])
+        ->with('success', 'Audio version added successfully!');
+    }
+
+
+    public function show($id)
+    {        
+        $audioVersion = AudioVersion::with('book')
+            ->where('created_by', auth()->id())
+            ->findOrFail($id);
+            $books = Book::where('is_published', true)->get();
+
+        return $this->view('audio-versions.show', compact('audioVersion', 'books'));
+    }
+
+    public function edit($id)
+    {        
+        $audioVersion = AudioVersion::where('created_by', auth()->id())
+            ->with('book')
+            ->findOrFail($id);
+            
+            $books = Book::where('is_published', true)->get();
+        $type = 'edit';
+        return $this->view('audio-versions.create', compact('audioVersion', 'books', 'type'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $audioVersion = AudioVersion::where('created_by', auth()->id())
+            ->findOrFail($id);
+
+        $validated = $request->validate([
+            'book_id' => 'required|exists:books,id',
+            'audio_full' => 'nullable|file|mimes:mp3,wav,aac|max:65536',
+            'language' => 'required|string|max:10',
+            'audio_review' => 'nullable|file|mimes:mp3,wav,aac|max:65536',
+            'audio_duration' => 'required|string|regex:/^\d{2,3}:[0-5][0-9]:[0-5][0-9]$/', // HH:MM:SS format
+        ]);
+
+        $book = Book::where('published_by', auth()->id())
+                   ->findOrFail($validated['book_id']);
+
+        // Convert HH:MM:SS to seconds
+        $durationInSeconds = $this->timeToSeconds($validated['audio_duration']);
+
+        $data = [
+            'book_id' => $validated['book_id'],
+            'language' => $validated['language'],
+            'audio_duration' => $durationInSeconds,
+        ];
+
+        // Update audio file if provided
+        if ($request->hasFile('audio_full')) {
+            // Delete old file
             if ($audioVersion->audio_link) {
                 Storage::disk('public')->delete($audioVersion->audio_link);
             }
-            $validated['audio_link'] = $request->file('audio_file')->store('books/audio', 'public');
+            
+            $data['audio_link'] = $request->file('audio_full')->store('books/audio_versions', 'public');
         }
 
-        if ($request->hasFile('audio_review_file')) {
-            // Delete old review file if exists
+        // Update review file if provided
+        if ($request->hasFile('audio_review')) {
+            // Delete old file
             if ($audioVersion->review_record_link) {
                 Storage::disk('public')->delete($audioVersion->review_record_link);
             }
-            $validated['review_record_link'] = $request->file('audio_review_file')->store('books/review_audios', 'public');
+            
+            $data['review_record_link'] = $request->file('audio_review')->store('books/audio_reviews', 'public');
         }
 
-        $audioVersion->update($validated);
+        $audioVersion->update($data);
 
-        return redirect()->route('publisher.audio-versions.index')
-            ->with('success', 'Audio version updated successfully!');
+        return redirect()->route('publisher.books.index', ['#audio'])
+        ->with('success', 'Audio version added updated!');
     }
 
-    public function destroy(AudioVersion $audioVersion)
+    public function destroy($id)
     {
-        $this->authorize('delete', $audioVersion->book);
-        
-        // Delete audio files if they exist
+        $audioVersion = AudioVersion::where('created_by', auth()->id())
+            ->findOrFail($id);
+
         if ($audioVersion->audio_link) {
             Storage::disk('public')->delete($audioVersion->audio_link);
         }
+        
         if ($audioVersion->review_record_link) {
             Storage::disk('public')->delete($audioVersion->review_record_link);
         }
         
         $audioVersion->delete();
 
-        return redirect()->route('publisher.audio-versions.index')
+        return redirect()->route('publisher.books.index', ['#audio'])
             ->with('success', 'Audio version deleted successfully!');
+    }
+    /**
+     * Convert HH:MM:SS time format to seconds
+     */
+    protected function timeToSeconds($time)
+    {
+        $parts = explode(':', $time);
+        $hours = (int)$parts[0];
+        $minutes = (int)$parts[1];
+        $seconds = (int)$parts[2];
+        
+        return ($hours * 3600) + ($minutes * 60) + $seconds;
+    }
+
+    /**
+     * Get audio duration in seconds using getID3 library
+     */
+    protected function getAudioDuration($file)
+    {
+        $getID3 = new getID3();
+        $fileInfo = $getID3->analyze($file->getPathname());
+        
+        return $fileInfo['playtime_seconds'] ?? 0;
     }
 }

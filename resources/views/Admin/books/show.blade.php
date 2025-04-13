@@ -40,10 +40,7 @@
                 </div>
                 
                 <div class="row mb-4">
-                    <div class="col-md-4">
-                        <h6>Price</h6>
-                        <p>${{ number_format($book->price, 2) }}</p>
-                    </div>
+                    
                     <div class="col-md-4">
                         <h6>Published Date</h6>
                         <p>{{ $book->publish_date->format('M d, Y') }}</p>

@@ -27,36 +27,46 @@ class AdminBookController extends BaseController
         
         return $this->view('books.create', compact('authors', 'categories', 'publishingHouses'));
     }
-
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'publish_date' => 'required|date',
-            'pdf_link' => 'nullable|file|mimes:pdf,docx|max:20480', // 20MB max
-            'publish_house_id' => 'nullable|exists:publishing_houses,id',
             'category_id' => 'required|exists:categories,id',
-            'author_id' => 'nullable|exists:authors,id',
             'language' => 'required|string|max:10',
+            'publish_house_id' => 'required|exists:publishing_houses,id',
+            'is_published' => 'nullable|in:waiting,accepted,rejected',
             'image' => 'nullable|image|max:2048',
-            'is_featured' => 'boolean',
+            'pdf_link' => 'nullable|file|mimes:pdf,docx|max:65240',
+            'publish_date' => 'nullable|date',
+            'is_featured' => 'nullable|boolean',
+            'author_id' => 'required|exists:authors,id',
         ]);
+
+        if (empty($validated['publish_date'])) {//
+            $validated['publish_date'] = now();
+        }
+    
         if ($request->hasFile('pdf_link')) {
             $validated['pdf_link'] = $request->file('pdf_link')->store('books/pdfs', 'public');
         }
-
-
+    
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('books/covers', 'public');
         }
 
-        $validated['published_by'] = auth()->id();
-        $validated['is_featured'] = $request->has('is_featured');
-
+        if (empty($validated['is_published'])) {
+            $validated['is_published'] = 'waiting';
+        }
+        if (empty($validated['published_by'])) {
+            $validated['published_by'] = auth()->id();
+        }
+        if (empty($validated['is_featured'])) {
+            $validated['is_featured'] = false;
+        }
+    
         Book::create($validated);
-
+    
         return redirect()->route('admin.books.index')
             ->with('success', 'Book created successfully!');
     }
@@ -83,17 +93,18 @@ class AdminBookController extends BaseController
     {
         
         $validated = $request->validate([
+            
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'publish_date' => 'required|date',
-            'pdf_link' => 'nullable|file|mimes:pdf,docx|max:20480', // 20MB max
-            'publish_house_id' => 'nullable|exists:publishing_houses,id',
             'category_id' => 'required|exists:categories,id',
-            'author_id' => 'nullable|exists:authors,id',
             'language' => 'required|string|max:10',
-            'image' => 'nullable|image|max:2048',
+            'publish_house_id' => 'nullable|exists:publishing_houses,id',
+            'is_published' => 'required|in:waiting,accepted,rejected',
+            'image' => 'required|image|max:2048',
+            'pdf_link' => 'required|file|mimes:pdf,docx|max:65240',
+            'publish_date' => 'required|date',
             'is_featured' => 'boolean',
+            'author_id' => 'required|exists:authors,id',
         ]);
 
         if ($request->hasFile('pdf_link')) {
