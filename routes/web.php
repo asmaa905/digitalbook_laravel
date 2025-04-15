@@ -5,14 +5,29 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 
 
-// routes/web.php
-Route::get('/', function () {
-    return redirect()->route('login'); // Or your home route
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+
+// ✅ Alias route (outside admin group)
+Route::get('/dashboard', function () {
+    return redirect()->route('admin.dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// routes/web.php
+// ✅ Admin routes
 Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+    
     
     // Users
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');

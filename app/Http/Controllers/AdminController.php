@@ -18,6 +18,6 @@ class AdminController extends Controller
         $totalReviews = Review::count();
         $recentBooks = Book::latest()->take(5)->get();
         
-        return view('admin.dashboard', compact('totalBooks', 'totalUsers', 'totalReviews', 'recentBooks'));
+        return view('layouts.admin.dashboard', compact('totalBooks', 'totalUsers', 'totalReviews', 'recentBooks'));
     }
 }

@@ -25,6 +25,11 @@ protected $fillable = [
     'role', // admin, publisher, reader
 ];
 
+public function isAdmin(): bool
+{
+    return $this->role === 'admin';
+}
+
 public function books()
 {
     return $this->hasMany(Book::class);
