@@ -148,7 +148,8 @@ Route::middleware(['auth', 'role:Publisher'])->group(function () {
             // Subscription routes
             Route::post('/subscribe/{plan}', [SubscriptionController::class, 'subscribe'])->name('subscriptions.subscribe');
             Route::post('/renew/{plan}', [SubscriptionController::class, 'renew'])->name('subscriptions.renew');
-            
+            Route::post('/{subscription}/cancel', [SubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
+           
             // Payment callback routes
             Route::get('/payment/callback', [SubscriptionController::class, 'paymentCallback'])->name('subscriptions.payment.callback');
             Route::get('/payment/error', [SubscriptionController::class, 'paymentError'])->name('subscriptions.payment.error');
