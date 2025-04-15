@@ -227,7 +227,6 @@ class SubscriptionController extends BaseController
         ];
 
         $paymentStatus = $this->fatooraService->getPaymentStatus($data);
-        
         if (!$paymentStatus || !$paymentStatus['IsSuccess']) {
             return redirect()->route('publisher.subscriptions.payment.error')
                 ->with('error', 'Payment verification failed.');
@@ -268,7 +267,7 @@ class SubscriptionController extends BaseController
             'subscription' => $subscription,
             'user' => $user,
             'paymentId' => $paymentData['paymentId'] ?? $payment->transaction_id,
-            'amount' => $paymentData['InvoiceValue'] ?? $payment->total_amount,
+            'amount' => $paymentData['InvoiceDisplayValue'] ?? $payment->total_amount,
             'data_transaction' => $paymentData
         ]);
     }
@@ -300,16 +299,20 @@ class SubscriptionController extends BaseController
     protected function createPaymentRecord($user, $plan, $paymentData)
     {
         $payment = new Payment();
-        $payment->user_id = $user->id;
-        $payment->total_amount = $paymentData['InvoiceValue'] ?? $plan->price;
-        $payment->payment_method = $paymentData['PaymentMethod'] ?? 'MyFatoorah';
-        $payment->transaction_id = $paymentData['paymentId'] ?? uniqid('pay_');
-        $payment->status = strtolower($paymentData['InvoiceStatus'] ?? '') === 'paid' ? 'paid' : 'failed';
+        $payment->user_id = $user->id;        
+        // Use the first transaction if available
+        $transaction = $paymentData['InvoiceTransactions'][0] ?? null;
+        $payment->total_amount = $plan->price;       
+        $payment->payment_method = $transaction['PaymentGateway'] ?? 'MyFatoorah';
+        $payment->transaction_id = $paymentData['InvoiceId'] ?? uniqid('pay_');       
+        $payment->status = (strtolower($paymentData['InvoiceStatus'] ?? '') === 'paid' && 
+                           ($transaction['TransactionStatus'] ?? '') === 'Succss') 
+                           ? 'paid' : 'failed';
+        // dd($paymentData);
         $payment->invoice_reference = $paymentData['InvoiceReference'] ?? 'INV-'.strtoupper(uniqid());
         $payment->paid_date = Carbon::now();
-        $payment->card_number = $paymentData['CardNumber'] ?? '**** **** **** ****';
+        $payment->card_number = $transaction['CardNumber'] ?? '**** **** **** ****';       
         $payment->save();
-
         return $payment;
     }
 
@@ -353,6 +356,30 @@ class SubscriptionController extends BaseController
         $subscription->save();
 
         return $subscription;
+    }
+    /**
+     * Cancel a subscription before it expires
+     */
+    public function cancel(Subscription $subscription)
+    {
+        // Authorization
+        if ($subscription->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        // Check if subscription is already expired
+        if ($subscription->end_date && $subscription->end_date->lt(now())) {
+            return redirect()->back()->with('error', 'This subscription has already expired.');
+        }
+
+        // Update the end date to now
+        $subscription->update([
+            'end_date' => now(),
+            'status' => 'canceled'
+        ]);
+
+        return redirect()->route('publisher.subscriptions.index')
+            ->with('success', 'Subscription canceled successfully.');
     }
     public function downloadPaymentDetails(Payment $payment)
     {

@@ -30,7 +30,7 @@
                         @forelse($payments as $payment)
                             <tr>
                                 <td>{{ $payment->created_at->format('M d, Y') }}</td>
-                                <td>KWT {{ number_format($payment->total_amount, 2) }}</td>
+                                <td>EGP {{ number_format($payment->total_amount, 2) }}</td>
                                 <td>{{ $payment->subscription->plan->name ?? 'N/A' }}</td>
                                 <td>{{ ucfirst($payment->payment_method) }}</td>
                                 <td>

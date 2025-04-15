@@ -34,7 +34,7 @@
                             </tr>
                             <tr>
                                 <th>Amount:</th>
-                                <td>KWT {{ number_format($payment->total_amount, 2) }}</td>
+                                <td>EGP {{ number_format($payment->total_amount, 2) }}</td>
                             </tr>
                             <tr>
                                 <th>Payment Method:</th>

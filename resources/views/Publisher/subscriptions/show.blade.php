@@ -23,7 +23,7 @@
                             <tr>
                                 <th>Status:</th>
                                 <td>
-                                    <span class="badge bg-{{ $subscription->status === 'confirmed' ? 'success' : 'warning' }}">
+                                    <span class="badge bg-{{ $subscription->status === 'confirm' ? 'success' : 'warning' }}">
                                         {{ ucfirst($subscription->status) }}
                                     </span>
                                 </td>
@@ -107,6 +107,16 @@
                         </button>
                     </form>
                 @endif
+                @if($subscription->end_date && $subscription->end_date->gt(now()))
+                <form action="{{ route('publisher.subscriptions.cancel', $subscription) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('POST')
+                    <button type="submit" class="btn btn-danger" 
+                        onclick="return confirm('Are you sure you want to cancel this subscription?')">
+                        Cancel Subscription
+                    </button>
+                </form>
+            @endif
             </div>
         </div>
     </div>
