@@ -59,6 +59,8 @@
                 </div>
             </div>
         </div>
+        @if($canCreateAudio)
+
             <!-- Display validation errors at the top -->
             @if($errors->any())
                         <div class="alert alert-danger">
@@ -202,6 +204,11 @@
                 </button>
             </div>
         </form>
+        @else
+            <div class="alert alert-danger">
+              You have reached your book limit. <a href="{{ route('publisher.subscriptions.plans') }}">Subscribe</a> to publish more books.
+          </div>
+        @endif
     </div>
 </div>
 @endsection

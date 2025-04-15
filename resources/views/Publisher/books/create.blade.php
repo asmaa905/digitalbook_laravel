@@ -30,7 +30,16 @@
            
         </div>
         @if($canCreateBook)
-
+   <!-- Display validation errors at the top -->
+   @if($errors->any())
+                        <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form method="POST" action="{{ isset($book) ? route('publisher.books.update', $book->id) : route('publisher.books.store') }}" enctype="multipart/form-data">
             @csrf
             @if(isset($book))

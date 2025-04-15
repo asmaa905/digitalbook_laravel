@@ -25,6 +25,14 @@ class AudioVersionController extends BaseController
 
     public function create(Request $request)
     {
+         // Check if publisher can create more books
+         $user = auth()->user();
+        //  $canCreateBook = $user->publishedBooks()->count() < 5 || $user->hasActiveSubscription;
+         $canCreateAudio = $user->audioVersionsCreated()->count() < 5 || $user->hasActiveSubscription;
+         if (!$canCreateAudio) {
+            return redirect()->route('publisher.books.index')
+                ->with('error', 'You have reached your book limit. Please subscribe to publish more.');
+        }
         $book = null;
         $books = Book::where('is_published', 'accepted')->get();
         
@@ -33,7 +41,8 @@ class AudioVersionController extends BaseController
         }
         
         $type = 'create';
-        return $this->view('audio-versions.create', compact('books', 'book', 'type'));
+        return $this->view('audio-versions.create', compact('books', 'book', 'type',
+        'canCreateAudio'));
     }
     
 
@@ -89,14 +98,14 @@ class AudioVersionController extends BaseController
     }
 
     public function edit($id)
-    {        
+    {          $canCreateAudio =true;
         $audioVersion = AudioVersion::where('created_by', auth()->id())
             ->with('book')
             ->findOrFail($id);
             
             $books = Book::where('is_published', 'accepted')->get();
         $type = 'edit';
-        return $this->view('audio-versions.create', compact('audioVersion', 'books', 'type'));
+        return $this->view('audio-versions.create', compact('audioVersion', 'books', 'type','canCreateAudio'));
     }
 
     public function update(Request $request, $id)
