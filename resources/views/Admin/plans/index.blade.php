@@ -36,7 +36,7 @@
                             <td>{{ $plan->name }}</td>
                             <td>${{ number_format($plan->price, 2) }}</td>
                             <td>{{ $plan->book_limit ?? 'Unlimited' }}</td>
-                           {{-- <td>{{ $plan->free_trial_days ? $plan->free_trial_days.' days' : 'No' }}</td>--}}
+                          <td>{{ $plan->free_trial_days ? $plan->free_trial_days.' days' : 'No' }}</td>
                             <td>
                                 @if($plan->is_featured)
                                     <span class="badge bg-success">Yes</span>

@@ -59,7 +59,16 @@
                 </div>
             </div>
         </div>
-
+            <!-- Display validation errors at the top -->
+            @if($errors->any())
+                        <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form method="POST" action="{{ isset($audioVersion) ? route('publisher.audio-versions.update', $audioVersion->id) : route('publisher.audio-versions.store') }}" enctype="multipart/form-data">
                         @csrf
             @if(isset($audioVersion))
@@ -78,7 +87,7 @@
 
                 <div class="form-group">
                     <label>Book*</label>
-                    <select name="book_id" class="form-control"  required {{ isset($audioVersion) ? 'disabled' : '' }}>
+                    <select name="book_id" class="form-control" required @if(isset($audioVersion)) readonly @endif>
                         <option value="">Select a book</option>
                         @if(isset($book))
                             <option value="{{ $book->id }}" selected>{{ $book->title }}</option>
@@ -96,6 +105,10 @@
                         @endforeach
                         @endif
                     </select>
+                    @if(isset($audioVersion))
+                            <input type="hidden" name="book_id" value="{{ $audioVersion->book_id }}">
+                        @endif
+
                 </div>
                 <p><a href="{{ route('publisher.books.create') }}" class="text-orange">
                     If you need to add a new book, click here</a></p>

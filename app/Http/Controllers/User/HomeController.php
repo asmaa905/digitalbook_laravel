@@ -18,30 +18,38 @@ class HomeController extends Controller
         // Top 50 rated books
         $topRatedBooks = Book::with(['author', 'audioVersions'])
             ->orderByDesc('rating')
+            ->where('is_published', 'accepted')
             ->take(20)
             ->get();
         // All books with required info
         $allBooks = Book::with(['author', 'audioVersions'])
             ->orderBy('title')
+            ->where('is_published', 'accepted')
+
             ->get();
     
         $isFeasuredBooks = Book::with(['author', 'audioVersions'])
+            ->where('is_published', 'accepted')
             ->where('is_featured', true)
             ->take(20)
             ->get();
     
-            $plans = Plan::all();
-            $user = auth()->user();
             
-            // Check if user has any active subscription
+        $plans = Plan::all();
+        $hasActiveSubscription = false;
+        
+        if (auth()->check()) { // Check if user is logged in
+            $user = auth()->user();
             $hasActiveSubscription = $user->subscriptions()
                 ->where('status', 'confirm')
                 ->where(function($query) {
                     $query->where('end_date', '>', now())
-                          ->orWhereNull('end_date');
+                        ->orWhereNull('end_date');
                 })
                 ->exists();
-    
+        }
+        
+        
         return view('user.home', compact('topRatedBooks', 'allBooks', 'plans' ,
         'hasActiveSubscription', 'isFeasuredBooks'));
     }

@@ -16,12 +16,9 @@ class AudioVersionController extends BaseController
         // Get all audio versions that belong to the current publisher
         $audioVersions = AudioVersion::where('created_by', auth()->id())
             ->with(['book', 'creator'])
+            ->where('is_published', 'accepted')
             ->latest()
             ->get();
-            // $audioVersions = AudioVersion::with(['book', 'creator'])
-            // ->where('created_by', auth()->id())
-            // ->latest()
-            // ->get();
             
         return $this->view('audio-versions.index', compact('audioVersions'));
     }
@@ -29,7 +26,7 @@ class AudioVersionController extends BaseController
     public function create(Request $request)
     {
         $book = null;
-        $books = Book::where('is_published', true)->get();
+        $books = Book::where('is_published', 'accepted')->get();
         
         if ($request->has('book_id')) {
             $book = Book::findOrFail($request->book_id);
@@ -45,9 +42,12 @@ class AudioVersionController extends BaseController
         $validated = $request->validate([
             'book_id' => 'required|exists:books,id',
             'audio_full' => 'required|file|mimes:mp3,wav,aac|max:65536',
+            'audio_duration' => 'numeric|min:0',
+
             'language' => 'required|string|max:10',
-            'audio_review' => 'nullable|file|mimes:mp3,wav,aac|max:65536',
+            'audio_review' => 'nullable|file|mimes:mp3,wav,aac|max:2048', 
             'audio_duration' => 'required|string|regex:/^\d{2,3}:[0-5][0-9]:[0-5][0-9]$/', // HH:MM:SS format
+
         ]);
 
         $book = Book::findOrFail($validated['book_id']);
@@ -60,7 +60,7 @@ class AudioVersionController extends BaseController
         $reviewPath = null;
         
         if ($request->hasFile('audio_review')) {
-            $reviewPath = $request->file('audio_review')->store('books/audio_reviews', 'public');
+            $reviewPath = $request->file('audio_review')->store('books/review_audios', 'public');
         }
 
         AudioVersion::create([
@@ -83,7 +83,7 @@ class AudioVersionController extends BaseController
         $audioVersion = AudioVersion::with('book')
             ->where('created_by', auth()->id())
             ->findOrFail($id);
-            $books = Book::where('is_published', true)->get();
+            $books = Book::where('is_published', 'accepted')->get();
 
         return $this->view('audio-versions.show', compact('audioVersion', 'books'));
     }
@@ -94,7 +94,7 @@ class AudioVersionController extends BaseController
             ->with('book')
             ->findOrFail($id);
             
-            $books = Book::where('is_published', true)->get();
+            $books = Book::where('is_published', 'accepted')->get();
         $type = 'edit';
         return $this->view('audio-versions.create', compact('audioVersion', 'books', 'type'));
     }
@@ -110,6 +110,7 @@ class AudioVersionController extends BaseController
             'language' => 'required|string|max:10',
             'audio_review' => 'nullable|file|mimes:mp3,wav,aac|max:65536',
             'audio_duration' => 'required|string|regex:/^\d{2,3}:[0-5][0-9]:[0-5][0-9]$/', // HH:MM:SS format
+
         ]);
 
         $book = Book::where('published_by', auth()->id())

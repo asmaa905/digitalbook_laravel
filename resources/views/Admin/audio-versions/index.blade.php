@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('admin-title', 'Manage Audio Books')
+@section('admin-title', 'Manage Audio Versions')
 
 @section('admin-content')
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Books Management</h5>
-        <a href="{{ route('admin.books.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Add Book
+        <h5 class="mb-0">Audio Versions Management</h5>
+        <a href="{{ route('admin.audio-versions.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Audio Version
         </a>
     </div>
     <div class="card-body">
@@ -15,71 +15,81 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Cover</th>
-                        <th>Title</th>
+                        <th>Book Cover</th>
+                        <th>Book Title</th>
                         <th>Author</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Published</th>
+                        <th>Audio File</th>
+                        <th>Duration</th>
+                        <th>Language</th>
                         <th>Status</th>
+                        <th>Creator</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($books as $book)
+                    @forelse($audioVersions as $audio)
                     <tr>
                         <td>
-                            @if($book->image)
-                                <img src="{{ asset('storage/'.$book->image) }}" width="50" height="70" class="img-thumbnail">
+                            @if($audio->book->image)
+                                <img src="{{ asset('storage/'.$audio->book->image) }}" width="50" height="70" class="img-thumbnail">
                             @else
                                 <div class="bg-light d-flex align-items-center justify-content-center" style="width:50px;height:70px;">
                                     <i class="fas fa-book text-muted"></i>
                                 </div>
                             @endif
                         </td>
-                        <td>{{ $book->title }}</td>
-                        <td>{{ $book->author->name ?? 'N/A' }}</td>
-                        <td>{{ $book->category->name }}</td>
-                        <td>{{ $book->publish_date->format('M d, Y') }}</td>
+                        <td>{{ $audio->book->title }}</td>
+                        <td>{{ $audio->book->author->name ?? 'N/A' }}</td>
                         <td>
-                            @if($book->is_featured)
-                                <span class="badge bg-success">Featured</span>
+                            @if($audio->audio_link)
+                                <audio controls style="width: 150px; height: 40px;">
+                                    <source src="{{ asset('storage/'.$audio->audio_link) }}" type="audio/mpeg">
+                                </audio>
                             @else
-                                <span class="badge bg-secondary">Regular</span>
+                                <span class="text-danger">No audio</span>
                             @endif
                         </td>
+                        <td>{{ gmdate("H:i:s", $audio->audio_duration) }}</td>
+                        <td>{{ strtoupper($audio->language) }}</td>
+                        <td>
+                            @if($audio->is_published == 'accepted')
+                                <span class="badge bg-success">Published</span>
+                            @elseif($audio->is_published == 'waiting')
+                                <span class="badge bg-warning">Pending</span>
+                            @else
+                                <span class="badge bg-danger">Rejected</span>
+                            @endif
+                        </td>
+                        <td>{{ $audio->creator->name ?? 'System' }}</td>
                         <td>
                             <div class="d-flex gap-2">
-                                <a href="{{ route('admin.books.show', $book->id) }}" class="btn btn-sm btn-info">
+                                <a href="{{ route('admin.audio-versions.show', $audio->id) }}" class="btn btn-sm btn-info">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('admin.books.edit', $book->id) }}" class="btn btn-sm btn-warning">
+                                <a href="{{ route('admin.audio-versions.edit', $audio->id) }}" class="btn btn-sm btn-warning">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('admin.books.destroy', $book->id) }}" method="POST">
+                                
+                                <form action="{{ route('admin.audio-versions.destroy', $audio->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
-                                <a href="{{ route('admin.audio-versions.create', ['book_id' => $book->id]) }}" 
-                                   class="btn btn-sm btn-primary" title="Add Audio Version">
-                                    <i class="fas fa-headphones"></i>
-                                </a>
                             </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="text-center">No books found</td>
+                        <td colspan="9" class="text-center">No audio versions found</td>
                     </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
         <div class="mt-3">
-            {{ $books->links() }}
+            {{ $audioVersions->links() }}
         </div>
     </div>
 </div>

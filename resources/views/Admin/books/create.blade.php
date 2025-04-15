@@ -142,25 +142,24 @@
                 <label class="form-check-label" for="is_featured">Featured Book</label>
             </div>
             <div class="mb-3">
-
-            <label for="is_published" class="form-label">Accept Publish</label>
-                    <select class="form-select" id="is_published" name="is_published">
-                        <option value="">Select reject/ accept</option>
-                     
-                            <option value="waiting" 
-                                {{ old('is_published', $book->is_published ?? '') == 'waiting' ? 'selected' : '' }}>
-                                waiting
-                            </option>
-                            <option value="accepted" 
-                                {{ old('is_published', $book->is_published ?? '') == 'accepted' ? 'selected' : '' }}>
-                                accepted
-                            </option>
-                            <option value="rejected" 
-                                {{ old('is_published', $book->is_published ?? '') == 'rejected' ? 'selected' : '' }}>
-                                rejected
-                            </option>
-                    </select>
-                    </div>
+                <label for="is_published" class="form-label">Accept Publish</label>
+                <select class="form-select" id="is_published" name="is_published">
+                    <option value="">Select reject/ accept</option>
+                    
+                        <option value="waiting" 
+                            {{ old('is_published', $book->is_published ?? '') == 'waiting' ? 'selected' : '' }}>
+                            waiting
+                        </option>
+                        <option value="accepted" 
+                            {{ old('is_published', $book->is_published ?? '') == 'accepted' ? 'selected' : '' }}>
+                            accepted
+                        </option>
+                        <option value="rejected" 
+                            {{ old('is_published', $book->is_published ?? '') == 'rejected' ? 'selected' : '' }}>
+                            rejected
+                        </option>
+                </select>
+            </div>
 
             <div class="d-flex justify-content-between">
                 <a href="{{ route('admin.books.index') }}" class="btn btn-secondary">Cancel</a>

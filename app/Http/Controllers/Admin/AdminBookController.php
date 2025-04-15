@@ -14,6 +14,7 @@ class AdminBookController extends BaseController
     public function index()
     {
         $books = Book::with(['author', 'category', 'publishingHouse', 'audioVersions'])
+        
             ->latest()
             ->paginate(10);
         return $this->view('books.index', compact('books'));
@@ -100,8 +101,8 @@ class AdminBookController extends BaseController
             'language' => 'required|string|max:10',
             'publish_house_id' => 'nullable|exists:publishing_houses,id',
             'is_published' => 'required|in:waiting,accepted,rejected',
-            'image' => 'required|image|max:2048',
-            'pdf_link' => 'required|file|mimes:pdf,docx|max:65240',
+            'image' => 'image|max:2048',
+            'pdf_link' => 'file|mimes:pdf,docx|max:65240',
             'publish_date' => 'required|date',
             'is_featured' => 'boolean',
             'author_id' => 'required|exists:authors,id',
@@ -125,7 +126,13 @@ class AdminBookController extends BaseController
         }
 
         $validated['is_featured'] = $request->has('is_featured');
-
+        if (empty($validated['is_featured'])) {
+            $validated['is_featured'] = false;
+        }
+        
+        // if (empty($validated['published_by'])) {
+        //     $validated['published_by'] = auth()->id();
+        // }
         $book->update($validated);
 
         return redirect()->route('admin.books.index')

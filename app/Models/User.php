@@ -93,15 +93,25 @@ class User extends Authenticatable
             return $this->hasOne(\App\Models\Publisher::class);
         }
         public function canEditUser(User $targetUser)
-{
-    // Admins can edit themselves and all non-admin users
-    if ($this->role === 'Admin') {
-        return $targetUser->id === $this->id || $targetUser->role !== 'Admin';
-    }
-    
-    // Other users can only edit themselves
-    return $targetUser->id === $this->id;
-}
+        {
+            // Admins can edit themselves and all non-admin users
+            if ($this->role === 'Admin') {
+                return $targetUser->id === $this->id || $targetUser->role !== 'Admin';
+            }
+            
+            // Other users can only edit themselves
+            return $targetUser->id === $this->id;
+        }
+        public function getHasActiveSubscriptionAttribute()
+        {
+            return $this->subscriptions()
+                ->where('status', 'confirm')
+                ->where(function($query) {
+                    $query->where('end_date', '>', now())
+                        ->orWhereNull('end_date');
+                })
+                ->exists();
+        }
 
 }
 

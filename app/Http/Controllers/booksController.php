@@ -52,6 +52,8 @@ class BooksController extends Controller
         $books = Book::whereHas('audioVersions', function($query) {
                 $query->whereNotNull('audio_link');
             })
+            ->where('is_published', 'accepted')
+
             ->with(['author', 'audioVersions'])
             ->orderBy('title')
             ->get();
@@ -59,6 +61,8 @@ class BooksController extends Controller
         $topRatedBooks = Book::whereHas('audioVersions', function($query) {
                 $query->whereNotNull('audio_link');
             })
+            ->where('is_published', 'accepted')
+
             ->with(['author', 'audioVersions'])
             ->orderByDesc('rating')
             ->take(20)
@@ -67,8 +71,22 @@ class BooksController extends Controller
         $isFeaturedBooks = Book::whereHas('audioVersions', function($query) {
                 $query->whereNotNull('audio_link');
             })
+            ->where('is_published', 'accepted')
+
             ->with(['author', 'audioVersions'])
-            ->where('is_featured', true)
+            ->where(function($query) {
+                $query->where('is_featured', 1)
+                    ->orWhereHas('publisher', function($publisherQuery) {
+                        // Use the full subscription check here
+                        $publisherQuery->whereHas('subscriptions', function($subQuery) {
+                            $subQuery->where('status', 'confirm')
+                                ->where(function($q) {
+                                    $q->where('end_date', '>', now())
+                                      ->orWhereNull('end_date');
+                                });
+                        });
+                    });
+            })
             ->take(20)
             ->get();
     
@@ -81,19 +99,36 @@ class BooksController extends Controller
     {
         // Get books that have PDF link AND no audio versions
         $books = Book::whereNotNull('pdf_link')
+            ->where('is_published', 'accepted')
+
             ->with(['author', 'audioVersions'])
             ->orderBy('title')
             ->get();
     
         $topRatedBooks = Book::whereNotNull('pdf_link')
             ->with(['author', 'audioVersions'])
+            ->where('is_published', 'accepted')
+
             ->orderByDesc('rating')
             ->take(20)
             ->get();
     
-        $isFeasuredBooks = Book::whereNotNull('pdf_link')
+            $isFeasuredBooks = Book::whereNotNull('pdf_link')
+            ->where('is_published', 'accepted')
+            ->where(function($query) {
+                $query->where('is_featured', 1)
+                    ->orWhereHas('publisher', function($publisherQuery) {
+                        // Use the full subscription check here
+                        $publisherQuery->whereHas('subscriptions', function($subQuery) {
+                            $subQuery->where('status', 'confirm')
+                                ->where(function($q) {
+                                    $q->where('end_date', '>', now())
+                                      ->orWhereNull('end_date');
+                                });
+                        });
+                    });
+            })
             ->with(['author', 'audioVersions'])
-            ->where('is_featured', true)
             ->take(20)
             ->get();
     
@@ -143,8 +178,8 @@ class BooksController extends Controller
     
         // Get related books (same category and language)
         $relatedBooks = Book::where('category_id', $book->category_id)
+           ->where('is_published', 'accepted')
             ->where('id', '!=', $book->id)
-
             ->with(['author', 'category'])
             ->orderBy('rating', 'desc')
             ->take(8)
@@ -152,6 +187,8 @@ class BooksController extends Controller
     
         // Get similar books (by same author and language)
         $authorBooks = Book::where('author_id', $book->author_id)
+           ->where('is_published', 'accepted')
+
             ->where('id', '!=', $book->id)
             ->when($book->language, function($query, $language) {
                 $query->where('language', $language); // Filter by same language if available

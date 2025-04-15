@@ -659,25 +659,30 @@ Home -
                                 @endif
 
                                 <div class="plan-features">
-                                    @foreach(json_decode($plan->features) as $feature)
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>{{ $feature }}</span>
-                                        </div>
+                                @foreach(is_array($plan->features) ? $plan->features : $plan->features as $feature)
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>{{ $feature }}</span>
+                                </div>
                                     @endforeach
                                 </div>
                                 
                                 @php
-                                    $userSubscription = auth()->user()->subscriptions()
-                                        ->where('plan_id', $plan->id)
-                                        ->where('status', 'confirm')
-                                        ->latest()
-                                        ->first();
-                                        
-                                    $isActive = $userSubscription && 
-                                            ($userSubscription->end_date === null || 
-                                                $userSubscription->end_date->gt(now()));
-                                                
+                                    $userSubscription = null;
+                                    $isActive = false;
+                                    
+                                    if (auth()->check()) {
+                                        $userSubscription = auth()->user()->subscriptions()
+                                            ->where('plan_id', $plan->id)
+                                            ->where('status', 'confirm')
+                                            ->latest()
+                                            ->first();
+                                            
+                                        $isActive = $userSubscription && 
+                                                ($userSubscription->end_date === null || 
+                                                    $userSubscription->end_date->gt(now()));
+                                    }
+       
                                     // Check if user has any active subscription (from controller)
                                     $disableSubscribe = $hasActiveSubscription && !$isActive;
                                 @endphp

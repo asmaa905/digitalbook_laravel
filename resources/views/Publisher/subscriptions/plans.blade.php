@@ -203,7 +203,7 @@
                                 @endif
 
                                 <div class="plan-features">
-                                    @foreach(json_decode($plan->features) as $feature)
+                                    @foreach(is_array($plan->features) ? $plan->features : $plan->features as $feature)
                                         <div class="feature-item">
                                             <i class="fas fa-check-circle"></i>
                                             <span>{{ $feature }}</span>
@@ -262,7 +262,7 @@
                                     @endif
                                 @endif
                             </div>
-                        @endforeach
-                    </div>
+                            @endforeach
+                        </div>
 </div>
 @endsection

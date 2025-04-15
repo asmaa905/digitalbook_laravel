@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Book;
+use App\Models\User;
 use App\Models\AudioVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -11,45 +12,57 @@ class AdminAudioVersionController extends BaseController
 {
     public function index()
     {
-        $books = Book::with(['audioVersions', 'author', 'category'])
-            ->latest()
+        $audioVersions = AudioVersion::with(['book', 'book.author', 'creator'])
+        ->with(['book', 'creator'])
+        ->latest()
             ->paginate(10);
             
-        return $this->view('audio-versions.index', compact('books'));
+        return $this->view('audio-versions.index', compact('audioVersions'));
     }
 
     public function create(Request $request)
     {
-        $book = null;
-        $books = Book::get();
         
-        if ($request->has('book_id')) {
-            $book = Book::findOrFail($request->book_id);
-        }
+        $books = Book::with(['author', 'category', 'publishingHouse', 'audioVersions'])
+        ->where('is_published', 'accepted')
+        ->latest()
+        ->get();
+        $users = User::get();
         
-        return $this->view('audio-versions.create', compact('book', 'books'));
+        $selectedBook = $request->has('book_id') 
+            ? Book::findOrFail($request->book_id)
+            : null;
+            
+        return $this->view('audio-versions.create', compact('books', 'users', 'selectedBook'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'book_id' => 'required|exists:books,id',
-            'audio_file' => 'required|file|mimes:mp3,wav,aac|max:65536', // 64MB
+            // 'creator_by' => 'required|exists:users,id',
+            'audio_file' => 'required|file|mimes:mp3,wav,aac|max:65536',
             'audio_duration' => 'required|numeric|min:0',
             'language' => 'required|string|max:10',
-            'audio_review_file' => 'nullable|file|mimes:mp3,wav,aac|max:65536', // 64MB
+            'review_record_file' => 'nullable|file|mimes:mp3,wav,aac|max:2048', 
+            'is_published' => 'required|in:waiting,accepted,rejected',
         ]);
 
-        $book = Book::findOrFail($validated['book_id']);
-
         // Store audio file
-        $validated['audio_link'] = $request->file('audio_file')->store('books/books_audio_links', 'public');
-      
-        // Store review file if exists
-        if ($request->hasFile('audio_review_file')) {
-            $validated['review_record_link'] = $request->file('audio_review_file')->store('books/review_audios', 'public');
+        $validated['audio_link'] = $request->file('audio_file')->store(
+            'books/audio_versions', 'public'
+        );
+        if ($request->hasFile('review_record_file')) {
+            $validated['review_record_link'] = $request->file('review_record_file')->store(
+                'books/review_audios', 'public'
+            );
         }
         
+        
+    
+        // if (empty($validated['is_published'])) {
+        //     $validated['is_published'] = 'waiting';
+        // }
         $validated['created_by'] = auth()->id();
 
         AudioVersion::create($validated);
@@ -60,45 +73,59 @@ class AdminAudioVersionController extends BaseController
 
     public function show(AudioVersion $audioVersion)
     {
-        
-        return $this->view('audio-versions.show', compact('audioVersion'));
+        $books = Book::with(['author', 'category', 'publishingHouse', 'audioVersions'])
+            ->where('is_published', 'accepted')
+            ->latest()
+            ->get();
+        $audio =AudioVersion::with(['creator']);
+        return $this->view('audio-versions.show', compact('audioVersion', 'books'));
     }
 
     public function edit(AudioVersion $audioVersion)
     {
         
-        $books = Book::get();
+        $books = Book::with(['author', 'category', 'publishingHouse', 'audioVersions'])
+        ->where('is_published', 'accepted')
+        ->latest()
+        ->get();
+        $users = User::get();
         
-        return $this->view('audio-versions.create', compact('audioVersion', 'books'));
+        return $this->view('audio-versions.create', compact('audioVersion', 'books', 'users'));
     }
 
     public function update(Request $request, AudioVersion $audioVersion)
     {
-        
         $validated = $request->validate([
             'book_id' => 'required|exists:books,id',
-            'audio_file' => 'required|file|mimes:mp3,wav,aac|max:65536', // 64MB in KB
+            // 'creator_by' => 'required|exists:users,id',
+            'audio_file' => 'nullable|file|mimes:mp3,wav,aac|max:65536',
             'audio_duration' => 'required|numeric|min:0',
             'language' => 'required|string|max:10',
-            'audio_review_file' => 'nullable|file|mimes:mp3,wav,aac|max:65536', // 64MB in KB
+            'review_record_file' => 'nullable|file|mimes:mp3,wav,aac|max:2048', 
+            'is_published' => 'required|in:waiting,accepted,rejected',
         ]);
 
+        // Update audio file if provided
         if ($request->hasFile('audio_file')) {
-            // Delete old audio file if exists
+            // Delete old file
             if ($audioVersion->audio_link) {
                 Storage::disk('public')->delete($audioVersion->audio_link);
             }
-            $validated['audio_link'] = $request->file('audio_file')->store('books/books_audio_links', 'public');
-          
+            $validated['audio_link'] = $request->file('audio_file')->store(
+                'books/books_audio_links', 'public'
+            );
         }
-        if ($request->hasFile('audio_review_file')) {
-            // Delete old audio file if exists
+
+        // Update review file if provided
+        if ($request->hasFile('review_record_file')) {
             if ($audioVersion->review_record_link) {
                 Storage::disk('public')->delete($audioVersion->review_record_link);
             }
-          //audio_review_file
-            $validated['review_record_link'] = $request->file('audio_review_file')->store('books/review_audios', 'public');
+            $validated['review_record_link'] = $request->file('review_record_file')->store(
+                'books/review_audios', 'public'
+            );
         }
+        
 
         $audioVersion->update($validated);
 
@@ -108,14 +135,14 @@ class AdminAudioVersionController extends BaseController
 
     public function destroy(AudioVersion $audioVersion)
     {
-        
-        // Delete audio file if exists
+        // Delete files
         if ($audioVersion->audio_link) {
             Storage::disk('public')->delete($audioVersion->audio_link);
         }
         if ($audioVersion->review_record_link) {
             Storage::disk('public')->delete($audioVersion->review_record_link);
         }
+        
         $audioVersion->delete();
 
         return redirect()->route('admin.audio-versions.index')

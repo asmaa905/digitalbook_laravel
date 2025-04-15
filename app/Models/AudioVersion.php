@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AudioVersion extends Model
 {
     use HasFactory;
-    protected $fillable = ['book_id', 'audio_link', 'created_by',  'audio_duration','language'];
+    protected $fillable = ['book_id', 'audio_link', 'created_by', 'audio_duration', 'language', 'is_published', 'review_record_link'];
 
     // Relationships
     public function book()

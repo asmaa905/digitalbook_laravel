@@ -1,34 +1,16 @@
 @extends('layouts.admin')
 
-@section('admin-title', '- Create New Audio')
-@section('admin-nav-title', 'Create New Audio')
+@section('admin-title', 'Show New Audio - ')
 @section('admin-content')
 <div class="card">
     <div class="card-header">
-        <h5 class="mb-0">{{ isset($audioVersion) ? 'Edit' : 'Create' }} Audio Version</h5>
+        <h5 class="mb-0">Show Audio Version</h5>
     </div>
     <div class="card-body">
-        <!-- Display validation errors at the top -->
-        @if($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form method="POST" action="{{ isset($audioVersion) ? route('admin.audio-versions.update', $audioVersion->id) :  route('admin.audio-versions.store') }}" enctype="multipart/form-data">
-            @csrf
-            @if(isset($audioVersion))
-                @method('PUT')
-            @endif
-
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="book_id" class="form-label">Book*</label>
-                    <select class="form-select @error('book_id') is-invalid @enderror" id="book_id" name="book_id" required {{ isset($book) ? 'disabled' : '' }}>
+                    <label for="book_id" class="form-label">Book</label>
+                    <select class="form-select @error('book_id') is-invalid @enderror" id="book_id" name="book_id" disabled>
                         @if(isset($book))
                             <option value="{{ $book->id }}" selected>{{ $book->title }}</option>
                             <input type="hidden" name="book_id" value="{{ $book->id }}">
@@ -42,39 +24,31 @@
                             @endforeach
                         @endif
                     </select>
-                    @error('book_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+
                 </div>
                 <div class="col-md-6">
-                    <label for="language" class="form-label">Language*</label>
-                    <select class="form-select @error('language') is-invalid @enderror" id="language" name="language" required>
+                    <label for="language" class="form-label">Language</label>
+                    <select class="form-select @error('language') is-invalid @enderror" id="language" name="language" disabled>
                         <option value="en" {{ old('language', $audioVersion->language ?? '') == 'en' ? 'selected' : '' }}>English</option>
                         <option value="es" {{ old('language', $audioVersion->language ?? '') == 'es' ? 'selected' : '' }}>Spanish</option>
                         <option value="fr" {{ old('language', $audioVersion->language ?? '') == 'fr' ? 'selected' : '' }}>French</option>
                         <option value="de" {{ old('language', $audioVersion->language ?? '') == 'de' ? 'selected' : '' }}>German</option>
                     </select>
-                    @error('language')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                  
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="audio_duration" class="form-label">Duration (in seconds)*</label>
+                    <label for="audio_duration" class="form-label">Duration (in seconds)</label>
                     <input type="number" class="form-control @error('audio_duration') is-invalid @enderror" id="audio_duration" name="audio_duration" 
-                           value="{{ old('audio_duration', $audioVersion->audio_duration ?? '') }}" required>
-                    @error('audio_duration')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                           value="{{ old('audio_duration', $audioVersion->audio_duration ?? '') }}" disabled>
+                   
                 </div>
                 <div class="col-md-6">
-                    <label for="audio_file" class="form-label">Audio File* (Max: 64MB)</label>
-                    <input type="file" class="form-control @error('audio_file') is-invalid @enderror" id="audio_file" name="audio_file" accept="audio/*" {{ !isset($audioVersion) ? 'required' : '' }}>
-                    @error('audio_file')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <label for="audio_file" class="form-label">Audio File (Max: 64MB)</label>
+                    <input type="file" class="form-control @error('audio_file') is-invalid @enderror" id="audio_file" name="audio_file" accept="audio/*" disabled>
+                  
                     @if(isset($audioVersion) && $audioVersion->audio_link)
                         <div class="mt-2">
                             <audio controls>
@@ -87,12 +61,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="review_record_file" class="form-label">Review Record Link</label>
-                <input type="file" class="form-control @error('review_record_file') is-invalid @enderror" 
-               id="review_record_file" name="review_record_file" accept="audio/*">
-                @error('review_record_link')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <label for="review_record_link" class="form-label">Review Record Link</label>
+                <input type="file" class="form-control @error('review_record_link') is-invalid @enderror" id="review_record_link" name="review_record_link" accept="audio/*" disabled>
                 @if(isset($audioVersion) && $audioVersion->review_record_link)
                     <div class="mt-2">
                         <audio controls>
@@ -103,25 +73,26 @@
                 @endif
             </div>
 
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label  class="form-label">Narrior</label>
+                    <p type="text" class="form-control"  >{{$audioVersion->creator->name}}</p>
+                   
+                </div>
+                </div>
             <div class="mb-3">
-                <label for="is_published" class="form-label">Publish Status*</label>
-                <select class="form-select @error('is_published') is-invalid @enderror" id="is_published" name="is_published" required>
+                <label for="is_published" class="form-label">Publish Status</label>
+                <select class="form-select @error('is_published') is-invalid @enderror" id="is_published" name="is_published" disabled>
                     <option value="">Select status</option>
                     <option value="waiting" {{ old('is_published', $audioVersion->is_published ?? '') == 'waiting' ? 'selected' : '' }}>waiting</option>
                     <option value="accepted" {{ old('is_published', $audioVersion->is_published ?? '') == 'accepted' ? 'selected' : '' }}>accepted</option>
                     <option value="rejected" {{ old('is_published', $audioVersion->is_published ?? '') == 'rejected' ? 'selected' : '' }}>rejected</option>
                 </select>
-                @error('is_published')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+           
             </div>
 
 
-            <div class="d-flex justify-content-between">
-                <a href="{{ route('admin.audio-versions.index') }}" class="btn btn-secondary">Cancel</a>
-                <button type="submit" class="btn btn-primary">Save Audio Version</button>
-            </div>
-        </form>
+           
     </div>
 </div>
 @endsection

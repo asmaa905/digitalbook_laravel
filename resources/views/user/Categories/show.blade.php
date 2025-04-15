@@ -421,7 +421,7 @@
                     <div
                         class="sec-header col-md-12 d-flex justify-content-between align-items-center"
                     >
-                        <h3 class="sec-title">Most Poplular</h3>
+                        <h3 class="sec-title">Feature Books</h3>
                         <div class="all-books-link d-flex">
                         <a style="text-decoration-line:none; color:#000" href="{{route('user.categories.topBooks',$category->id)}}"> View all titles</a>
                         <div
@@ -447,9 +447,10 @@
                 <div class="cards row p-0 m-0">
                 @if( $featuredBooks->count() > 0)
                 @foreach( $featuredBooks as $book)
-                    <div
-                        class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
-                        style="border-radius: 5px"
+                <a
+                    class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
+                    style="border-radius: 5px;text-decoration-line:none"
+                    href="{{ route('user.books.show', $book->id) }}" 
                     >
                         <div class="image" style="width:95%;height:60%">
                         @php
@@ -522,11 +523,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        </a>
                     @endforeach
                     @endif
 
-                </div>
+                        </div>
             </section>
         </div>
     </div>

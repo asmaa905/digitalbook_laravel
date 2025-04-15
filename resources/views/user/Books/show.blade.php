@@ -62,6 +62,20 @@
 
 
 <div class="main-sections">
+            <div id="download-timer" style="display:none; background-color:rgba(0,0,0,0.6);margin-auto;text-align:center;height:100vh " class=" w-100  position-absolute top-0 right-0 bottom-0 left-0">
+                <div class="d-flex justify-content-center align-items-center flex-column ">
+                    <p class="text-white w-25 mx-auto" style="padding: 349px 0 0;"><i class="fas fa-spinner"></i> 
+                        Download will start in <span id="countdowndownload">10</span> seconds...
+                    </p>
+                </div>      
+            </div>
+            <div id="audios-timer" style="display:none; background-color:rgba(0,0,0,0.6);margin-auto;text-align:center;height:100vh " class=" w-100  position-absolute top-0 right-0 bottom-0 left-0">
+                <div class="d-flex justify-content-center align-items-center flex-column ">
+                    <p class="text-white w-25 mx-auto" style="padding: 349px 0 0;"><i class="fas fa-spinner"></i>  
+                        Audio will start in <span id="countdownaudio">10</span> seconds...
+                    </p>
+                </div>      
+            </div>
             <div class="container p-0">
                 <div class="single-cat-header py-5">
                     <nav>
@@ -330,15 +344,33 @@
                             <div class="d-flex align-items-center">
                                 <div class="d-flex g-2" style="gap:5px">
                                     @if(isset($book) && $book->audioVersions->count())
-                                        <button id="audio-full-btn" class="btn btn-outline-dark">
+                                        @if(( $book->publisher->role == 'Publisher' && $book->publisher->hasActiveSubscription))
+                                            <!-- Immediate download for subscribed publishers -->
+                                            <button id="audio-full-btn" class="btn btn-outline-dark">
+                                                <i class="fas fa-music"></i> Watch all Audios
+                                            </button>
+                                            @else
+                                                <!-- Timer for other users -->
+                                                <button id="audio-full-btn" class="btn btn-outline-dark">
                                             <i class="fas fa-music"></i> Watch all Audio
                                         </button>
+                                            @endif
                                     @endif
                                     @if(isset($book) && $book->pdf_link)
-                                        <a href="{{ asset('storage/'.$book->pdf_link) }}" target="_blank" class="btn btn-dark rounded-sm" download="{{$book->title}}.pdf">
-                                            <i class="fas fa-file-pdf"></i> Download PDF
-                                        </a>
+                                        @if(( $book->publisher->role == 'Publisher' && $book->publisher->hasActiveSubscription))
+                                                <!-- Immediate download for subscribed publishers -->
+                                                <a href="{{ asset('storage/'.$book->pdf_link) }}"   target="_blank" class="btn btn-dark rounded-sm" download="{{$book->title}}.pdf">
+                                                    <i class="fas fa-file-pdf"></i> Download PDF
+                                                </a>
+                                                @else
+                                                <!-- Timer for other users -->
+                                                <button id="pdf-download-btn" class="btn btn-dark rounded-sm">
+                                                    <i class="fas fa-file-pdf"></i> Download PDF
+                                                </button>
+                                            @endif
+                                          
                                     @endif
+
                                     @auth
                                         @if(auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Publisher' && isset($book) && ($book->pdf_link || $book->audioVersions->count()))
                                         @php
@@ -599,6 +631,7 @@
                     @endif
                     </div>
                 </section>
+
                 <section class="rating-review-section">
                     <div class="row px-0 mx-0">
                         <div class="sec-header col-md-12">
@@ -879,13 +912,11 @@
             </div>
         </div>
 
-
-
 @endsection
 @section('user-scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const audioReviewDiv = document.querySelector('.audio-review');
+    document.addEventListener('DOMContentLoaded', function() {
+        const audioReviewDiv = document.querySelector('.audio-review');
     if (audioReviewDiv) {
         const audioElement = audioReviewDiv.querySelector('#audio_review');
         
@@ -902,23 +933,65 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+        // PDF Download logic
+        const pdfDownloadBtn = document.getElementById('pdf-download-btn');
+        if (pdfDownloadBtn) {
+            pdfDownloadBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const timerDisplay = document.getElementById('download-timer');
+                const countdownElement = document.getElementById('countdowndownload');
+                let seconds = 10;
+                
+                timerDisplay.style.display = 'block';
+                pdfDownloadBtn.disabled = true;
+                
+                const countdown = setInterval(function() {
+                    seconds--;
+                    countdownElement.textContent = seconds;
+                    
+                    if (seconds <= 0) {
+                        clearInterval(countdown);
+                        window.location.href = "{{ asset('storage/'.$book->pdf_link) }}?download=true";
+                        timerDisplay.style.display = 'none';
+                        pdfDownloadBtn.disabled = false;
+                    }
+                }, 1000);
+            });
+        }
 
-    //show full audio
-    const audioFullBtn = document.querySelector('#audio-full-btn');
-    if (audioFullBtn) {
-        const allAudiosDiv = document.querySelector('.all-audios');
-        
-        audioFullBtn.addEventListener('click', function() {
-            // Toggle the display of the audio container
-            if (allAudiosDiv.style.display === 'none') {
-                allAudiosDiv.style.display = 'block';
-            } else {
-                allAudiosDiv.style.display = 'none';
-            }
-        });
-    }
+        // Audio show logic
+        const audioFullBtn = document.getElementById('audio-full-btn');
+        if (audioFullBtn) {
+            audioFullBtn.addEventListener('click', function(e) {
+                @if(( $book->publisher->role == 'Publisher' && $book->publisher->hasActiveSubscription))
+                        // Immediate show for subscribed publishers
+                        document.querySelector('.all-audios').style.display = 'block';
+                    @else
+                        // Timer for others
+                        e.preventDefault();
+                        const timerAudioDisplay = document.getElementById('audios-timer');
+                        const countdownElement = document.getElementById('countdownaudio');
+                        let seconds = 10;
+                        
+                        timerAudioDisplay.style.display = 'block';
+                        audioFullBtn.disabled = true;
+                        
+                        const countdown = setInterval(function() {
+                            seconds--;
+                            countdownElement.textContent = seconds;
+                            
+                            if (seconds <= 0) {
+                                clearInterval(countdown);
+                                document.querySelector('.all-audios').style.display = 'block';
+                                timerAudioDisplay.style.display = 'none';
+                                audioFullBtn.disabled = false;
+                            }
+                        }, 1000);
+                    @endif
+                
+            });
+        }
 
-    //
         // Star Rating Functionality
         document.querySelectorAll('.star-rating').forEach(ratingContainer => {
         const stars = ratingContainer.querySelectorAll('.star-icon');
