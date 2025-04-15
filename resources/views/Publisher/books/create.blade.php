@@ -29,6 +29,7 @@
             </div>
            
         </div>
+        @if($canCreateBook)
 
         <form method="POST" action="{{ isset($book) ? route('publisher.books.update', $book->id) : route('publisher.books.store') }}" enctype="multipart/form-data">
             @csrf
@@ -168,7 +169,7 @@
 
                   <!-- Fix the PDF file input -->
 
-    <div class="form-group">
+          <div class="form-group">
         <label for="pdf_link" class="form-label">Book File (PDF or DOCX only)*</label>
         @php
             $isnotpdfRequired = ($type == 'edit' && asset($book) && $book->pdf_link);
@@ -231,6 +232,11 @@
                 
             </div>
         </form>
+        @else
+            <div class="alert alert-danger">
+              You have reached your book limit. <a href="{{ route('publisher.subscriptions.plans') }}">Subscribe</a> to publish more books.
+          </div>
+        @endif
     </div>
 </div>
 @endsection

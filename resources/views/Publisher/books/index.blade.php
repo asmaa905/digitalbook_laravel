@@ -12,16 +12,41 @@
 
 @section('page-content')
 <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">My Books</h5>
-        <div>
+    <div class="card-header ">
+        
+    @auth
+                @if(count(auth()->user()->publishedBooks) >= 5  && !auth()->user()->hasActiveSubscription)
+                   <p>You have reached the maximum books you can publish, <a href="{{ route('publisher.subscriptions.plans') }}">subscribe now to publish more</a></p>
+                   @endif
+
+                   @endauth 
+                   <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">My Books</h5>
+        <div class="d-flex flex-column justify-content-between align-items-center">
+<div>
+            @auth
+                @if(count(auth()->user()->publishedBooks) < 5  || auth()->user()->hasActiveSubscription)
             <a href="{{ route('publisher.books.create') }}" class="btn bg-orange">
                 <i class="fas fa-plus"></i> Add Book
             </a>
+                @else
+                <button  class="btn btn-orange btn-secondary" disabled> Subscribe to publish</button>
+                     @endif
+                
+                @if(count(auth()->user()->audioVersionsCreated) < 5   || auth()->user()->hasActiveSubscription)
             <a href="{{ route('publisher.audio-versions.create') }}" class="btn bg-orange">
                 <i class="fas fa-plus"></i> Add Audio Version
             </a>
-        </div>
+                @else
+                <button  class="btn btn-orange btn-secondary" disabled> Subscribe to publish</button>
+                @endif
+            @endauth
+          
+        </div>   
+        </div>   
+                   </div>
+     
+      
     </div>
     
     <div class="card-body">
