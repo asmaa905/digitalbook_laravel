@@ -8,15 +8,27 @@
   @yield('admin-styles')
 @endsection
 
+
 @section('content')
     <div class="d-flex">
         <!-- Sidebar -->
         <div class="bg-dark text-white" style="width: 250px; min-height: 100vh;">
             <div class="p-4">
                 <h4 class="text-center mb-4">Admin Dashboard</h4>
-                <div class="text-center mb-4">
-                    <img src="{{ auth()->user()->image ?? 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name).'&background=random' }}" 
-                         class="rounded-circle" width="80" height="80" alt="Profile">
+                <div class="text-center mb-4 d-flex flex-column justify-content-center">
+                @if(auth()->user()->image)
+                            <div class="current-image me-1">
+                                <img src="{{ asset('storage/' . auth()->user()->image) }}" 
+                                    alt="Current Profile Image"
+                                    class="rounded-circle" width="40" height="40" >
+                            </div>
+                        @else
+                            <div class="current-image ">
+                                <div class="account-avatar" style="background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-user" style="font-size: 2rem; color: #666;"></i>
+                                </div>
+                            </div>
+                        @endif
                     <h5 class="mt-2">{{ auth()->user()->name }}</h5>
                     <small>{{ auth()->user()->email }}</small>
                 </div>
@@ -57,6 +69,17 @@
                             <i class="fas fa-tags me-2"></i> Categories
                         </a>
                     </li>
+                    <!-- resources\views\Admin\subscribtons\index.blade.php -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('admin.subscriptions.index') }}">
+                        <i class="fa-solid fa-subscript  me-2"></i> Subscribtons
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('admin.plans.index') }}">
+                            <i class="fas fa-list-alt me-2"></i> Plans
+                        </a>
+                    </li>
                     <li class="nav-item mt-3">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -74,10 +97,22 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                     <span class="navbar-brand">@yield('admin-nav-title')</span>
-                    <div class="d-flex align-items-center">
-                        <span class="me-3">{{ auth()->user()->role }}</span>
-                        <img src="{{ auth()->user()->image ?? 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name).'&background=random' }}" 
-                             class="rounded-circle" width="40" height="40" alt="Profile">
+                    <div class="d-flex align-items-center g-2">
+                        @if(auth()->user()->image)
+                            <div class="current-image me-1">
+                                <img src="{{ asset('storage/' . auth()->user()->image) }}" 
+                                    alt="Current Profile Image"
+                                    class="rounded-circle" width="40" height="40" >
+                            </div>
+                        @else
+                            <div class="current-image ">
+                                <div class="account-avatar" style="background-color: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-user" style="font-size: 2rem; color: #666;"></i>
+                                </div>
+                            </div>
+                        @endif
+                        <span class="">{{ auth()->user()->name }}</span>
+                          
                     </div>
                 </div>
             </nav>
@@ -88,7 +123,5 @@
     </div>
     @endsection
     @section('scripts')
-      @yield('user-scripts')
+      @yield('admin-scripts')
     @endsection
-</body>
-</html>

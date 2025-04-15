@@ -37,11 +37,14 @@
                 {{--when open Published Books  it show me publised books page with muli tabs include drafts , published with  create books button and create audio book button and
                      when press on it show create book form, reject books--}}
             </a>
-            <a href="{{ route('subscription.index') }}" class="account-menu-item">
+            <a href="{{ route('publisher.subscriptions.index') }}" class="account-menu-item">
             <i class="fas fa-subscript"></i> Subscriptions
             </a>
-            {{--"{{ route('payments.index') }}" --}}
-            <a href="#" class="account-menu-item">
+            <a href="{{ route('publisher.subscriptions.plans') }}" class="account-menu-item">
+            <i class="fas fa-table-list"></i> plans
+            </a>
+            {{--"" --}}
+            <a href="{{ route('publisher.subscriptions.payments') }}#" class="account-menu-item">
                 <i class="fas fa-credit-card"></i> Payments
             </a>
             @endif

@@ -76,7 +76,6 @@ Register
     }
 </style>
 @endsection
-</head>
 
 
 @section('user-content')

@@ -1,7 +1,30 @@
 @extends('layouts.admin')
 
-@section('title', 'Admin Dashboard')
-
+@section('admin-title')
+  Admin Dashboard
+@endsection
+@section('admin-nav-title')
+  Dashboard
+@endsection
+@section('admin-styles')
+<style>
+    .card {
+        border-radius: 0.35rem;
+    }
+    .card-header {
+        background-color: #f8f9fc;
+        border-bottom: 1px solid #e3e6f0;
+    }
+    .badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.35em 0.65em;
+    }
+    .badge-warning {
+        color: #212529;
+    }
+</style>
+@endsection
 @section('admin-content')
 <div class="container-fluid py-4">
     <div class="row">
@@ -173,25 +196,7 @@
 </div>
 @endsection
 
-@section('admin-styles')
-<style>
-    .card {
-        border-radius: 0.35rem;
-    }
-    .card-header {
-        background-color: #f8f9fc;
-        border-bottom: 1px solid #e3e6f0;
-    }
-    .badge {
-        font-size: 0.75rem;
-        font-weight: 600;
-        padding: 0.35em 0.65em;
-    }
-    .badge-warning {
-        color: #212529;
-    }
-</style>
-@endsection
+
 
 @section('admin-scripts')
 <script>

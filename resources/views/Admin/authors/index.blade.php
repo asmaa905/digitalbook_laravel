@@ -1,11 +1,16 @@
 @extends('layouts.admin')
 
-@section('admin-title', 'Mange Authors')
+@section('admin-title')
+   Mange Authors
+@endsection
+
 
 @section('admin-content')
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Authors Management</h5>
+        <h5 class="mb-0">@section('admin-nav-title')
+Mange Authors
+@endsection</h5>
         <a href="{{ route('admin.authors.create') }}" class="btn btn-primary">
             <i class="fas fa-plus"></i> Add Author
         </a>

@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             AuthorSeeder::class,
             BooksSeeder::class,
             AudioVersionsSeeder::class,
+            PlanSeeder::class,
+
         ]);
     }
     

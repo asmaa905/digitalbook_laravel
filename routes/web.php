@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\AdminAudioVersionController;
 use App\Http\Controllers\Admin\AdminAuthorController;
 use App\Http\Controllers\Admin\AdminPublishingHouseController;
 use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\PlanController;
 //=================================
 // Admin Auth
 //==================================
@@ -101,58 +102,61 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->grou
         'update' => 'users.update',
         'destroy' => 'users.destroy',
     ]);
+
+    //plans and subscribtions and payments routes
+    //plans
+    Route::resource('plans', PlanController::class);
+    Route::get('/subscriptions', [AdminDashboardController::class, 'subscriptions'])->name('subscriptions.index');
+    Route::get('/payments', [AdminDashboardController::class, 'payments'])->name('payments.index');
 });
 // =============================
 // ✅ Publisher Routes appear for login and non login users
 // =============================
 Route::middleware(['auth', 'role:Publisher'])->group(function () {
-    // Subscription Routes
-    Route::get('/subscription', [SubscriptionController::class, 'index'])->name('subscription.index');
-    Route::post('/subscription/upgrade', [SubscriptionController::class, 'upgrade'])->name('subscription.upgrade');
-    Route::post('/subscription/cancel', [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
-    // Book Routes
-    // Route::get('/books/create/{id}', [booksController::class, 'create'])->name('books.create');
-    // Route::post('/books/{id}', [booksController::class, 'store'])->name('books.store');
+    //published books
     Route::get('/my-published-books', [booksController::class, 'indexPublishedBooks'])->name('books.publisher.index');
 
+    // Publisher Routes Group
+    Route::prefix('publisher')->name('publisher.')->group(function () {
+        // Dashboard
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        
+        // Books Resource
+        Route::resource('books', BookController::class);
+        
+        // Audio Versions Resource
+        Route::resource('audio-versions', AudioVersionController::class);
+        Route::get('books/{book}/audio-versions', [AudioVersionController::class, 'indexAudioOfSingleBook'])->name('audio-versions.indexAudioOfSingleBook');
+        
+        // Authors Resource
+        Route::resource('authors', AuthorController::class);
+        
+        // Publishing Houses Resource
+        Route::resource('publishing-houses', PublishingHouseController::class);
+        
+        // Categories Resource
+        Route::resource('categories', PublisherCategoryController::class);
+        
+        // Publisher subscription routes
+        Route::prefix('subscriptions')->group(function() {
+            Route::get('/plans', [SubscriptionController::class, 'plans'])->name('subscriptions.plans');
+            Route::get('/', [SubscriptionController::class, 'index'])->name('subscriptions.index');
+            Route::get('/payments', [SubscriptionController::class, 'payments'])->name('subscriptions.payments');
+            Route::get('/payments/{payment}', [SubscriptionController::class, 'payment_show'])->name('subscriptions.payments.show');
+            // Route::get('/payments/{payment}/download', [SubscriptionController::class, 'downloadPaymentDetails'])->name('payments.download');
+            Route::get('/{subscription}', [SubscriptionController::class, 'show'])->name('subscriptions.show');           
+            // Subscription routes
+            Route::post('/subscribe/{plan}', [SubscriptionController::class, 'subscribe'])->name('subscriptions.subscribe');
+            Route::post('/renew/{plan}', [SubscriptionController::class, 'renew'])->name('subscriptions.renew');
+            
+            // Payment callback routes
+            Route::get('/payment/callback', [SubscriptionController::class, 'paymentCallback'])->name('subscriptions.payment.callback');
+            Route::get('/payment/error', [SubscriptionController::class, 'paymentError'])->name('subscriptions.payment.error');
+        });
+    });
 
-// Publisher Routes Group
-Route::prefix('publisher')->name('publisher.')->group(function () {
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
-    // Books Resource
-    Route::resource('books', BookController::class);
-    
-    // Audio Versions Resource
-    Route::resource('audio-versions', AudioVersionController::class);
-    Route::get('books/{book}/audio-versions', [AudioVersionController::class, 'indexAudioOfSingleBook'])->name('audio-versions.indexAudioOfSingleBook');
-    
-    // Authors Resource
-    Route::resource('authors', AuthorController::class);
-    
-    // Publishing Houses Resource
-    Route::resource('publishing-houses', PublishingHouseController::class);
-    
-    // Categories Resource
-    Route::resource('categories', PublisherCategoryController::class);
 });
 
-});
-
-
-
-// Home route that redirects based on role
-// Route::get('/', function () {
-//     if (auth()->check()) {
-//         return auth()->user()->role === 'Publisher' 
-//             ? redirect()->route('publisher.dashboard')
-//             : (auth()->user()->role === 'Reader' ?
-//               redirect()->route('books.reader.index')
-//               : redirect()->route('admin.dashboard'));
-//     }
-//     return redirect()->route('login');
-// });
 // =============================
 // ✅ Reader Routes appear for login and non login users
 // =============================

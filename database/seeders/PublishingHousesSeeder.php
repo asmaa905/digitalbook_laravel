@@ -15,7 +15,6 @@ public function run()
         'location' => '123 Main St',
         'website' => 'http://example.com',
         'image' => 'publishing_houses/aseer_alkutib.jpg',
-        // Add 'image' if needed
     ]);
 }
 }
