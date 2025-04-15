@@ -80,6 +80,11 @@
                             <i class="fas fa-list-alt me-2"></i> Plans
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ route('admin.reviews.index') }}">
+                            <i class="fas fa-star me-2"></i> Reviews
+                        </a>
+                    </li>
                     <li class="nav-item mt-3">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
