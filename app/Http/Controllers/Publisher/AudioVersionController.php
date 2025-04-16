@@ -16,7 +16,7 @@ class AudioVersionController extends BaseController
         // Get all audio versions that belong to the current publisher
         $audioVersions = AudioVersion::where('created_by', auth()->id())
             ->with(['book', 'creator'])
-            ->where('is_published', 'accepted')
+            // ->where('is_published', 'accepted')
             ->latest()
             ->get();
             

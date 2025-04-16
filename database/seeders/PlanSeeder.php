@@ -14,11 +14,11 @@ class PlanSeeder extends Seeder
             'price' => 0,
             'features' => json_encode([
                 'Publish any book',
-                'Up to 10 books only',
+                'Up to 5 books only',
                 'Users wait 10s to download',
                 '1 account'
             ]),
-            'book_limit' => 10,
+            'book_limit' => 5,
             'instant_download' => false,
             'free_trial_days' => 0,
             'is_featured' => false

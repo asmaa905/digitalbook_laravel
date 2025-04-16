@@ -16,7 +16,7 @@ class BookController extends BaseController
     {
         $userId = auth()->id();
         
-        $publishedBooks = Book::with(['author', 'category', 'publishingHouse', 'audioVersions'])
+        $publishedBooks = Book::with(['author', 'category', 'publishingHouse', 'audioVersions','reviews'])
             ->where('published_by', $userId)
             ->where('is_published', 'accepted')
             ->latest()
@@ -40,7 +40,6 @@ class BookController extends BaseController
             ->where('created_by', $userId)
             ->latest()
             ->paginate(10);
-    
         return $this->view('books.index', compact('waitingBooks','audioVersions', 'publishedBooks', 'rejectedBooks'));
     }
 
