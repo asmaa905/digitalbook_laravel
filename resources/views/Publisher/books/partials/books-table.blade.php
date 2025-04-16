@@ -39,7 +39,7 @@
                 <td>{{ $book->category->name ?? 'Uncategorized' }}</td>
 
                 <td><a href="{{ route('user.books.show', $book->id) }}" class="btn  btn-sm bg-light">{{ $book->rating ?? 0 }} <i class="fas fa-star fa-sm text-gray-300"></i></a></td>
-                <td><a href="{{ route('user.books.show', $book->id) }}" class="btn  btn-sm bg-light">{{ $book->reviews_count ?? 0 }} <i class="fas fa-comment fa-sm text-gray-300"></i></a></td>
+                <td><a href="{{ route('user.books.show', $book->id) }}" class="btn  btn-sm bg-light">{{ count($book->reviews) ?? 0 }} <i class="fas fa-comment fa-sm text-gray-300"></i></a></td>
                 <td>{{ $book->publish_date ? $book->publish_date->format('M d, Y') : 'Not published' }}</td>
                 <td>
                 <span class="badge bg-{{$book->is_published === 'accepted' 

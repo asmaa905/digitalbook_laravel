@@ -80,7 +80,9 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('profile.show') }}">
-                                        <i class="fas fa-user me-2"></i> My Profile
+                                        <i class="fas fa-user me-2"></i> 
+                                         <span class="" >{{auth()->user()->role}}</span>
+
                                     </a>
                                     <a class="dropdown-item" href="{{ route('user.home') }}">
                                         <i class="fas fa-home me-2"></i> Home
@@ -91,8 +93,8 @@
                                     </a>
                                    
                                     @elseif(Auth::check() && Auth::user()->role === 'Publisher')
-                                    <a class="dropdown-item" href="{{ route('publisher.books.index') }}">
-                                      <i class="fa-solid fa-book"></i> My Published Books
+                                    <a class="dropdown-item " style="" href="{{ route('publisher.books.index') }}">
+                                      <i class="fa-solid fa-book"></i> My published books
                                     </a>
                                     @elseif(Auth::check() && Auth::user()->role === 'Admin')
                                     <a class="dropdown-item" href="{{ route('admin.dashboard') }}">

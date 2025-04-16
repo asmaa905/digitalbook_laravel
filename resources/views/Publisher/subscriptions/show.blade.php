@@ -86,8 +86,8 @@
             <div class="mt-4">
                 <h4>Plan Features</h4>
                 <ul class="list-group">
-                   {{-- @foreach(json_decode($subscription->plan->features) as $feature)--}}
-                   @foreach(is_array($subscription->plan->features) ? $subscription->plan->features :$subscription->plan->features as $feature)
+
+                   @foreach(json_decode($subscription->plan->features[0])  as $feature)
                         <li class="list-group-item">
                             <i class="fas fa-check-circle text-success me-2"></i>
                             {{ $feature }}

@@ -29,7 +29,8 @@
             </div>
             <div class="col-md-8">
                 <h2>{{ $book->title }}</h2>
-                <p class="text-muted">by {{ $book->author->name ?? 'Unknown Author' }}</p>
+                {{--<p class="text-muted"><strong>By</strong> {{ $book->author->name ?? 'Unknown author' }}</p>--}}
+
                 
                 <div class="mb-4">
                     <span class="badge bg-primary">{{ $book->category->name }}</span>
@@ -40,18 +41,15 @@
                 </div>
                 
                 <div class="row mb-4">
-                   {{--<div class="col-md-4">
-                        <h6>Price</h6>
-                        <p>${{ number_format($book->price, 2) }}</p>
-                    </div>--}} 
+                <div class="col-md-4">
+                        <h6>Published By</h6>
+                        <p> {{ $book->publisher->name ?? 'Unknown publisher' }}</p>
+                    </div>
                     <div class="col-md-4">
                         <h6>Published Date</h6>
                         <p>{{ $book->publish_date->format('M d, Y') }}</p>
                     </div>
-                    <div class="col-md-4">
-                        <h6>Publishing House</h6>
-                        <p>{{ $book->publishingHouse->name ?? 'N/A' }}</p>
-                    </div>
+                  
                 </div>
                 
                 <h5>Description</h5>
@@ -91,6 +89,8 @@
                             <th>Language</th>
                             <th>Duration</th>
                             <th>Audio Link</th>
+                            <th>Narrior</th>
+
                             <th>Created At</th>
                             <th>Actions</th>
                         </tr>
@@ -107,19 +107,30 @@
                                     N/A
                                 @endif
                             </td>
+                            <td>{{ $audio->creator->name }}</td>
+
                             <td>{{ $audio->created_at->format('M d, Y') }}</td>
+                           
                             <td>
-                                <div class="d-flex gap-2">
-                                    <a href="{{ route('publisher.audio-versions.edit', $audio->id) }}" class="btn btn-sm btn-warning">
-                                        <i class="fas fa-edit"></i>
+                                <div class="d-flex gap-2"> 
+                               
+                                    @auth
+                                        @if(auth()->user()->id == $audio->creator->id)
+                                        <a href="{{ route('publisher.audio-versions.show', $audio->id) }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i>
                                     </a>
-                                    <form action="{{ route('publisher.audio-versions.destroy', $audio->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                            <a href="{{ route('publisher.audio-versions.edit', $audio->id) }}" class="btn btn-sm btn-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form action="{{ route('publisher.audio-versions.destroy', $audio->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>  
+                                        @endif
+                                    @endauth
                                 </div>
                             </td>
                         </tr>
