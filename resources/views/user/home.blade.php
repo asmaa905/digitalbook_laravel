@@ -1033,7 +1033,7 @@ Home -
                                 <div
                                     class="sec-header col-md-12 d-flex justify-content-between align-items-center"
                                 >
-                                <a class="sec-title" style="" href="{{route('user.books.ebooks')}}">Most Poplular</a>
+                                <a class="sec-title" style="" href="{{route('user.books.ebooks')}}">Featured  Books</a>
                                     <div class="all-books-link d-flex">
                                     <a style="color: #000; text-decoration-line:none" href="{{route('user.books.ebooks')}}"> View all titles</a>
                                     <div

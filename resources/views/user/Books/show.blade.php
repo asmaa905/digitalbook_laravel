@@ -62,14 +62,16 @@
 
 
 <div class="main-sections">
-            <div id="download-timer" style="display:none; background-color:rgba(0,0,0,0.6);margin-auto;text-align:center;height:100vh " class=" w-100  position-absolute top-0 right-0 bottom-0 left-0">
+            <div id="download-timer" style="z-index:9999;display:none;  background-color:rgba(0,0,0,0.6);margin-auto;text-align:center;height:2800px " 
+            
+            class=" w-100  position-absolute top-0 right-0 bottom-0 left-0">
                 <div class="d-flex justify-content-center align-items-center flex-column ">
                     <p class="text-white w-25 mx-auto" style="padding: 349px 0 0;"><i class="fas fa-spinner"></i> 
                         Download will start in <span id="countdowndownload">10</span> seconds...
                     </p>
                 </div>      
             </div>
-            <div id="audios-timer" style="display:none; background-color:rgba(0,0,0,0.6);margin-auto;text-align:center;height:100vh " class=" w-100  position-absolute top-0 right-0 bottom-0 left-0">
+            <div id="audios-timer" style="z-index:9999;display:none; background-color:rgba(0,0,0,0.6);margin-auto;text-align:center;height:2800px " class=" w-100  position-absolute top-0 right-0 bottom-0 left-0">
                 <div class="d-flex justify-content-center align-items-center flex-column ">
                     <p class="text-white w-25 mx-auto" style="padding: 349px 0 0;"><i class="fas fa-spinner"></i>  
                         Audio will start in <span id="countdownaudio">10</span> seconds...
@@ -157,7 +159,18 @@
                             
                                 <p class="text m-0">Sample</p>
                             </div>
-                            <audio id="audio_review" src="{{asset('assets/images/books_audio_reviews/defualt.mp3')}}"></audio>
+                            @php
+                                $storageAudio_reviewPath = public_path('storage/' .$book->audioVersions[0]->review_record_link);
+                                $publicAudio_reviewPath = public_path('assets/images/' . $book->audioVersions[0]->review_record_link);
+                                if (!empty($book->audioVersions[0]->review_record_link) && file_exists($storageAudio_reviewPath)) {
+                                    $audio_reviewUrl = asset('storage/' . $book->audioVersions[0]->review_record_link);
+                                } elseif (!empty($book->audioVersions[0]->review_record_link) && file_exists($publicAudio_reviewPath)) {
+                                    $audio_reviewUrl = asset('assets/images/' .$book->audioVersions[0]->review_record_link);
+                                } else {
+                                    $audio_reviewUrl = asset('assets/images/books_audio_reviews/defualt.mp3');
+                                }      
+                            @endphp
+                            <audio id="audio_review" src="{{$audio_reviewUrl}}"></audio>
                         </div>
                         @endif
 
@@ -337,7 +350,8 @@
                         </div>
                         <div class="release-info">
                             <h5>Release Date</h5>
-                            <p>Ebook: <span>{{$book->publish_date}}</span></p>
+
+                            <p>Ebook: <span>{{$book->publish_date->format('M d, Y') }}</span></p>
                         </div>
                       
                         <div class="mt-2" id="existing-file-container">

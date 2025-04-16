@@ -220,10 +220,9 @@
                 <div class="cards row p-0 m-0">
                 @if($topRatedBooks->count() > 0)
                 @foreach($topRatedBooks as $book)
-                    <div
-                        class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
-                        style="border-radius: 5px"
-                    >
+                     <a href="{{ route('user.books.show', $book->id) }}" 
+                            class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none"
+                            style="border-radius: 5px">
                         <div class="image" style="width:95%;height:60%">
                         @php
                             $storagePath = public_path('storage/' .$book->image);
@@ -295,7 +294,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        </a>
                     @endforeach
                     @endif
 
@@ -334,10 +333,9 @@
                 <div class="cards row p-0 m-0">
                 @if($category->books->count() > 0)
                 @foreach($category->books as $book)
-                    <div
-                        class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
-                        style="border-radius: 5px"
-                    >
+                    <a href="{{ route('user.books.show', $book->id) }}" 
+                            class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none"
+                            style="border-radius: 5px">
                         <div class="image" style="width:95%;height:60%">
                         @php
                             $storagePath = public_path('storage/' .$book->image);
@@ -409,7 +407,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        </a>
                     @endforeach
                     @endif
 
