@@ -66,12 +66,13 @@ public function update(ProfileUpdateRequest $request): RedirectResponse
         if ($request->hasFile('identity_document')) {
             // Delete old document if exists
             if ($publisher->identity_document && Storage::disk('public')->exists($publisher->identity_document)) {
-                Storage::disk('public')->delete($publisher->identity_document);
+                Storage::disk('public')->delete($publisher->identity);
             }
             
             $path = $request->file('identity_document')->store('identity_documents', 'public');
-            $publisher->identity_document = $path;
+            $publisher->identity = $path;
         }
+        $publisher->identity = $publisher->identity ?? ''; 
 
         $publisher->save();
     }

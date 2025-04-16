@@ -135,6 +135,10 @@
         margin-bottom: 1rem;
     }
 </style>
+@section('page-header-cont')
+<h1>My Account</h1>
+<p class="account-name">Manage your account and update it</p>
+@endsection
 @section('page-content')
 <div class="account-content">
     <h2 class="section-title">Account</h2>
@@ -218,7 +222,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="identity">Identity Document</label>
+                    <label class="form-label" for="identity_document">Identity Document</label>
                     
                     @if(auth()->user()->publisher && auth()->user()->publisher->identity)
                         <div class="current-document mb-3">
@@ -230,7 +234,7 @@
                         </div>
                     @endif
                     
-                    <input id="identity" name="identity" type="file" class="form-input">
+                    <input id="identity_document" name="identity_document" type="file" class="form-input">
                     <small class="form-text text-muted">Upload identity document (PDF/JPG/PNG, Max 2MB)</small>
                 </div>
             </div>
