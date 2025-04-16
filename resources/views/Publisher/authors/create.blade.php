@@ -37,7 +37,7 @@
             </div>
 
             <div class="d-flex justify-content-between">
-                <a href="{{ route('publisher.authors.index') }}" class="btn btn-secondary">Cancel</a>
+                <a href="{{ route('publisher.books.create') }}" class="btn btn-secondary">Cancel</a>
                 <button type="submit" class="btn btn-primary">Save Author</button>
             </div>
         </form>

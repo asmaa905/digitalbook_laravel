@@ -26,8 +26,8 @@
             </div>
 
             <div class="d-flex justify-content-between">
-                <a href="{{ route('publisher.categories.index') }}" class="btn btn-secondary">Cancel</a>
-                <button type="submit" class="btn btn-primary">Save Category</button>
+            <a href="{{ route('publisher.books.create') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save Category</button>
             </div>
         </form>
     </div>
