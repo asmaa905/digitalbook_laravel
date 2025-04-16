@@ -46,8 +46,8 @@ class CategoryController extends Controller
     $featuredBooks = $category->books()
         ->where('is_published', 'accepted')
         ->where(function($query) {
-            $query->where('is_featured', 1)
-                ->orWhereHas('publisher', function($publisherQuery) {
+            // $query->where('is_featured', 1)
+            $query->orWhereHas('publisher', function($publisherQuery) {
                     // Use the full subscription check here
                     $publisherQuery->whereHas('subscriptions', function($subQuery) {
                         $subQuery->where('status', 'confirm')
