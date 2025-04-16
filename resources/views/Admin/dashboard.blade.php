@@ -26,7 +26,7 @@
 </style>
 @endsection
 @section('admin-content')
-<div class="container-fluid py-4">
+<div class="container py-4">
     <div class="row">
         <!-- Stats Cards -->
         <div class="col-xl-3 col-md-6 mb-4">
@@ -112,6 +112,57 @@
                 </div>
             </div>
         </div>
+        
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Reviews</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['reviews'] }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-star fa-2x text-warning "></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Subscribtions</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['subscribtions'] }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa-solid fa-subscript fa-2x text-danger"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Transactions</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['transactions'] }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-credit-card fa-2x text-info"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Recent Books Section -->
@@ -127,7 +178,8 @@
                             <thead>
                                 <tr>
                                     <th>Title</th>
-                                 <th>Status</th>
+                                    <th>Publisher</th>
+                                    <th>Status</th>
                                     <th>Date</th>
                                 </tr>
                             </thead>
@@ -135,13 +187,15 @@
                                 @forelse($recentBooks as $book)
                                 <tr>
                                     <td>{{ $book->title }}</td>
+                                    <td>{{$book->publisher->name}}</td>
+
                                     <td>
                                         @if($book->is_published =='accepted')
-                                            <span class="badge bg-warning">Published</span>
+                                            <span class="badge bg-success">Published</span>
                                         @elseif($book->is_published =='rejected')
                                             <span class="badge bg-danger">Rejected</span>
                                         @else($book->is_published =='waiting')
-                                            <span class="badge bg-success">Waiting</span>
+                                            <span class="badge bg-warning">Pending</span>
                                         @endif
                                     </td>                                    </td>
                                     <td>{{ $book->created_at->format('M d, Y') }}</td>
@@ -170,7 +224,12 @@
                             <thead>
                                 <tr>
                                     <th>Book</th>
+                                    <th>Book Publisher</th>
+
                                     <th>Language</th>
+                                    <th>Narrior</th>
+                                    <th>Status</th>
+
                                     <th>Date</th>
                                 </tr>
                             </thead>
@@ -178,7 +237,21 @@
                                 @forelse($recentAudio as $audio)
                                 <tr>
                                     <td>{{ $audio->book->title ?? 'N/A' }}</td>
+                                    <td>{{ $audio->book->publisher->name ?? 'N/A' }}</td>
+
                                     <td>{{ strtoupper($audio->language) }}</td>
+                                    <td>{{$audio->creator->name}}</td>
+                                    <td>
+                                        @if($audio->is_published == 'accepted')
+                                            <span class="badge bg-success">Published</span>
+                                        @elseif($audio->is_published == 'waiting')
+                                            <span class="badge bg-warning">Pending</span>
+                                        @else
+                                            <span class="badge bg-danger">Rejected</span>
+                                        @endif
+                                    </td>
+                   
+
                                     <td>{{ $audio->created_at->format('M d, Y') }}</td>
                                 </tr>
                                 @empty

@@ -21,8 +21,9 @@
                         <th>Audio File</th>
                         <th>Duration</th>
                         <th>Language</th>
-                        <th>Status</th>
                         <th>Creator</th>
+
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -51,6 +52,7 @@
                         </td>
                         <td>{{ gmdate("H:i:s", $audio->audio_duration) }}</td>
                         <td>{{ strtoupper($audio->language) }}</td>
+                        <td>{{ $audio->creator->name ?? 'System' }}</td>
                         <td>
                             @if($audio->is_published == 'accepted')
                                 <span class="badge bg-success">Published</span>
@@ -60,7 +62,7 @@
                                 <span class="badge bg-danger">Rejected</span>
                             @endif
                         </td>
-                        <td>{{ $audio->creator->name ?? 'System' }}</td>
+                   
                         <td>
                             <div class="d-flex gap-2">
                                 <a href="{{ route('admin.audio-versions.show', $audio->id) }}" class="btn btn-sm btn-info">

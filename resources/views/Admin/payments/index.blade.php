@@ -23,6 +23,7 @@
         border-radius: 0.25rem;
         margin-bottom: 1.5rem;
     }
+
 </style>
 @endsection
 
@@ -115,7 +116,7 @@
                 </table>
             </div>
             
-            <div class="d-flex justify-content-center mt-3">
+            <div>
                 {{ $payments->links() }}
             </div>
         </div>

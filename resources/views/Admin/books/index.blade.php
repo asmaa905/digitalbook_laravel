@@ -25,6 +25,8 @@
                         <th>Author</th>
                         <th>Category</th>
                         <th>Published</th>
+                        <th>Creator</th>
+
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -45,6 +47,7 @@
                         <td>{{ $book->author->name ?? 'N/A' }}</td>
                         <td>{{ $book->category->name }}</td>
                         <td>{{ $book->publish_date->format('M d, Y') }}</td>
+                        <td>{{ $book->publisher->name }}</td>
                         <td>
                             @if($book->is_featured)
                                 <span class="badge bg-success">Featured</span>

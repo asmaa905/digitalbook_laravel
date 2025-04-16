@@ -82,7 +82,13 @@ class UsersController extends BaseController
 
         return redirect()->route('users.index')->with('success', 'User created successfully');
     }
-
+    /**
+     * Display the specified user.
+     */
+    public function show(User $user)
+    {
+        return view('Admin.users.show', compact('user'));
+    }
     /**
      * Show the form for editing the specified user.
      */

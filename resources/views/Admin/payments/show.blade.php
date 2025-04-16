@@ -86,9 +86,9 @@
                         <p><strong>User Since:</strong> {{ $payment->user->created_at->format('M d, Y') }}</p>
                         
                         <a href="{{ route('admin.users.show', $payment->user) }}" 
-                           class="btn btn-sm btn-outline-primary mt-2">
-                            View User Profile
-                        </a>
+                            class="btn btn-sm btn-outline-primary mt-2">
+                                View User Profile
+                            </a>
                     @else
                         <p class="text-muted">User account deleted</p>
                     @endif
