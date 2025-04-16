@@ -6,7 +6,9 @@
 
 @section('styles')
   @yield('admin-styles')
-@endsection
+
+  <link href="{{asset('assets/css/navigation-pagination.css')}}" rel="stylesheet">
+  @endsection
 
 
 @section('content')
