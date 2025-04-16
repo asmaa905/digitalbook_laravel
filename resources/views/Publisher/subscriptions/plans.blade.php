@@ -201,16 +201,14 @@
                                         {{ $plan->free_trial_days }} days free trial
                                     </p>
                                 @endif
-
                                 <div class="plan-features">
-                                    @foreach(is_array($plan->features) ? $plan->features : $plan->features as $feature)
+                                    @foreach( json_decode($plan->features[0]) as $feature)
                                         <div class="feature-item">
                                             <i class="fas fa-check-circle"></i>
                                             <span>{{ $feature }}</span>
                                         </div>
                                     @endforeach
                                 </div>
-                                
                                 @php
                                     $userSubscription = auth()->user()->subscriptions()
                                         ->where('plan_id', $plan->id)

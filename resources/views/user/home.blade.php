@@ -6,6 +6,23 @@ Home -
 @endsection
 @section('user-styles')
     <style>
+        .feature-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.feature-list li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 8px;
+}
+
+.feature-list li:before {
+    content: "✓";
+    color: #28a745;
+    position: absolute;
+    left: 0;
+}
         body {
             font-family: "Euclid Circular A", sans-serif;
             background: rgb(255, 251, 250);
@@ -659,12 +676,14 @@ Home -
                                 @endif
 
                                 <div class="plan-features">
-                                @foreach(is_array($plan->features) ? $plan->features : $plan->features as $feature)
-                                <div class="feature-item">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>{{ $feature }}</span>
-                                </div>
+                                <ul class="list-unstyled">
+                                    @foreach( json_decode($plan->features[0]) as $feature)
+                                        <li class="mb-2">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            {{ $feature }}
+                                        </li>
                                     @endforeach
+                                </ul>
                                 </div>
                                 
                                 @php
