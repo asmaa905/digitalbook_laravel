@@ -60,6 +60,11 @@
                     <a class="nav-link"  href="{{route('user.categories.index')}}">Categories</a>
 
                     </li>
+                    @if(!Auth::check() )
+                    <li class="nav-item">
+                      <a class="nav-link"  href="{{route('admin.login.create')}}">Login as a staff</a>
+                    </li>
+                    @endif
                 </ul>
                 
                 <ul class="navbar-nav" style="padding-left: 20px">
@@ -104,9 +109,7 @@
                                     
                                     
                                     <div class="dropdown-divider"></div>
-                                   {{--
-                                    <form method="POST" action="{{ route('logout') }}"> 
-                                    --}}
+                                 
                                     <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                         <button type="submit" class="dropdown-item">
