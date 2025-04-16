@@ -250,7 +250,7 @@ class SubscriptionController extends BaseController
         $plan = Plan::find($subscriptionData['plan_id']);
 
         // Create payment record
-        $payment = $this->createPaymentRecord($user, $plan, $paymentData);
+        $payment = $this->createSuccessPaymentRecord($user, $plan, $paymentData);
 
         // Create or update subscription based on payment type
         if ($subscriptionData['type'] === 'renewal') {
@@ -279,8 +279,14 @@ class SubscriptionController extends BaseController
      */
     public function paymentError(Request $request)
     {
+        $paymentData = $paymentStatus['Data'] ?? null;
+        $subscriptionData = session('subscription_payment');
         $errorMessage = $request->input('Error') ?? 'Payment was cancelled or failed';
-        
+        $user = Auth::user();
+        $plan = Plan::find($subscriptionData['plan_id']);
+
+        // Create payment record
+        $payment = $this->createFailedPaymentRecord($user, $plan, $paymentData);
         // Clear session data
         $request->session()->forget(['subscription_payment', 'myfatoorah_invoice_id']);
 
@@ -296,11 +302,10 @@ class SubscriptionController extends BaseController
      /**
      * Create payment record with proper MyFatoorah fields
      */
-    protected function createPaymentRecord($user, $plan, $paymentData)
+    protected function createSuccessPaymentRecord($user, $plan, $paymentData)
     {
         $payment = new Payment();
-        $payment->user_id = $user->id;        
-        // Use the first transaction if available
+        $payment->user_id = $user->id;
         $transaction = $paymentData['InvoiceTransactions'][0] ?? null;
         $payment->total_amount = $plan->price;       
         $payment->payment_method = $transaction['PaymentGateway'] ?? 'MyFatoorah';
@@ -312,10 +317,37 @@ class SubscriptionController extends BaseController
         $payment->invoice_reference = $paymentData['InvoiceReference'] ?? 'INV-'.strtoupper(uniqid());
         $payment->paid_date = Carbon::now();
         $payment->card_number = $transaction['CardNumber'] ?? '**** **** **** ****';       
+    
+        // Handle auth code for failed transactions
+        $authCode = ($transaction['TransactionStatus'] ?? '') === 'Succss' 
+            ? ($transaction['AuthCode'] ?? '')
+            : ($paymentData['InvoiceId'] ?? 'N/A'); // Use InvoiceID if failed
+        
+        $payment->auth_code = $authCode;
         $payment->save();
         return $payment;
     }
+protected function createFailedPaymentRecord($user, $plan, $paymentData)
+{
+        $payment = new Payment();
+        $payment->user_id = $user->id;
+        $transaction = $paymentData['InvoiceTransactions'][0] ?? null;
+        $payment->total_amount = $plan->price;       
+        $payment->payment_method = $transaction['PaymentGateway'] ?? 'MyFatoorah';
+        $payment->transaction_id = $paymentData['InvoiceId'] ?? uniqid('pay_');       
+        $payment->status = (strtolower($paymentData['InvoiceStatus'] ?? '') === 'paid' && 
+                        ($transaction['TransactionStatus'] ?? '') === 'Succss') 
+                        ? 'paid' : 'failed';
+        // dd($paymentData);
+        $payment->invoice_reference = $paymentData['InvoiceReference'] ?? 'INV-'.strtoupper(uniqid());
+        $payment->paid_date = Carbon::now();
+        $payment->card_number = $transaction['CardNumber'] ?? '**** **** **** ****';       
+    
+        // Handle auth code for failed transactions
 
+        $payment->save();
+        return $payment;
+    }
     /**
      * Create new subscription
      */

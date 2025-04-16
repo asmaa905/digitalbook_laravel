@@ -17,7 +17,7 @@
                     <div class="table-responsive">
                         <table class="table table-borderless">
                             <tr>
-                                <th>Payment ID:</th>
+                                <th>Transaction ID:</th>
                                 <td>{{ $payment->transaction_id }}</td>
                             </tr>
                             <tr>

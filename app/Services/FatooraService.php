@@ -22,7 +22,7 @@ class FatooraService
         $this->base_url = env('fatoora_base_url');
         $this->headers =[
             'Content-Type'=>'application/json',
-             'authorization'=>'Bearer AsTYfKprDDtGNNlhy1T6LV85yZtK4VrGjcKu6KMkOjudglh9fkY4R_xbnFoOweMlmzwk84QaJaxtX2eUXVbgVaBLIUKORnNRKJpBlG-qee9cZQQMesVetN9mMhsS23RjxjBK5__BJxI8QE9Mf3lxFlnkwq3DOaltFJ9GmT4D3NLsa5t0t3w21s9NEaIdxiF7QI_ZgvqW9tbr1j2bUyjgz1JAKgFkOQPFZrOW7Fkqh6aVIfGyVqwd5eI6ysBa3wtrttCy0-VGEUu42QQTKWUJPA3HsgEu-XxDR_4ZTHE4Y1xPjOF9QC4wNvu0CF8UsO9xUlX6Gek-xzyrOp4ssAHYPnim-M3y2jhLfsKylR6DWdhd328l2a9Rt_omMCN-MRHbGdzdvGFKG2X0te6CVPOyWtujH5B9vqHhNrxQ_vtphTs9rjCMMo69xSDcaysCDIQfzJt5Y0Kk1DOlN-UHBSGt5Y56m7VdFD9koXoN5FZqCHhS_0jaq25nvg62pvOFYlvUTHuDnS161jrWPOo8TtWuCtjvL68j9vu6VgktmI2ZQ7w7o8D4n4yvAlk9f2gX7n3eIMAHJB-p1DgmseTEpyYX5pK6EJDcg66th8CSQJcI3LRuxcqqVQZ8tPdgJHXK0rr9fHgGVUMyrb1o0Uhh30C7X3HylLYkKbb6lphTdAvuXFANrMgj'       ];
+             'authorization'=>'Bearer U6XIE2F4VQqjF49SPPr8h56tjVPJA39UPUxP8XyYJlGPt0LMkgastLXyg6KsO4VEbiBp-y9GBZCy1iFvDYtqpQd_l6HULTqP8kM17pFfMN85vkRfFezKJt7CuI8eLJDadJPlmLNl-gJyCt0lJK-NEpPDckp0XgOxLtkkG7gMPmv-zyR_WUni70PyM62gs6imXu0Y-SUl-MiLB-iulyaNlmdTGOSdmErCuJkxTxert7-7wnbNzBKkxIXxdsCzIYKweOcMuida3hmBLzccOJE_-ulE0gObNhSmU0AymbWjtiToa-1dYqtx3AEsAWs_B5Mf1TZhOJ3qAszAZyflBnyvN2aYC9Bau-kLFvrrEk3yeyGo32vp4i_pl3kbf6xDXI32RA25PQKi2FkWxrXFGggtfwOo19tbT62RmPeStCPiW5SYgHwFm3Ld4b24_AFUivbif-xOIklu96XxH_NP8QZ3Ts89jUiPuysIjX8QIVscRzp3mt1-X96eFjiXMR0J9C1dvvui_QEI6EETGH-4tqFpurcUfk2oeBJt7os1zL-BDT5ZuBbvSpQqpV_lVd8aT8ukDbEEqOAuTdNaDJVKn1R5JPgF72tLXMaky7QP5LIMTs_3vFQqwpdn8zuCJX9KzFhd3KhX3AENPHFOsX32vnYkRxlIhTlLHeT6GK2Da6EnEU_NpOCx'       ];
     }
     private function buildRequest($url, $method, $data = []) {
       $request = new Request($method, $this->base_url.$url, $this->headers);
