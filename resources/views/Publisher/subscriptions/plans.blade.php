@@ -202,7 +202,14 @@
                                     </p>
                                 @endif
                                 <div class="plan-features">
-                                    @foreach( json_decode($plan->features[0]) as $feature)
+                                @php
+                                      if(is_array($plan->features) &&$plan->features[0]){
+                                        $decodedFeatured = json_decode($plan->features[0]);
+                                      }elseif(is_array($plan->features) ) {
+                                        $decodedFeatured = json_decode($plan->features);
+                                      }
+                                    @endphp
+                                    @foreach(  $decodedFeatured as $feature)
                                         <div class="feature-item">
                                             <i class="fas fa-check-circle"></i>
                                             <span>{{ $feature }}</span>

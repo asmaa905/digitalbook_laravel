@@ -94,9 +94,7 @@ Admin Login -
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-lg">
-                <div class="card-header text-center bg-dark text-white">
-                    <h4>Admin Login</h4>
-                </div>
+
                 <div class="card-body">
                     @if (session('success'))
                         <div class="alert alert-success">{{ session('success') }}</div>

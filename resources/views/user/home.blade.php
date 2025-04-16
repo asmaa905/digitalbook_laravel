@@ -677,7 +677,14 @@ Home -
 
                                 <div class="plan-features">
                                 <ul class="list-unstyled">
-                                    @foreach( json_decode($plan->features[0]) as $feature)
+                                    @php
+                                      if(is_array($plan->features) &&$plan->features[0]){
+                                        $decodedFeatured = json_decode($plan->features[0]);
+                                      }elseif(is_array($plan->features) ) {
+                                        $decodedFeatured = json_decode($plan->features);
+                                      }
+                                    @endphp
+                                    @foreach(  $decodedFeatured as $feature)
                                         <li class="mb-2">
                                             <i class="fas fa-check text-success me-2"></i>
                                             {{ $feature }}

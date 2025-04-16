@@ -86,8 +86,14 @@
             <div class="mt-4">
                 <h4>Plan Features</h4>
                 <ul class="list-group">
-
-                   @foreach(json_decode($subscription->plan->features[0])  as $feature)
+                @php
+                    if(is_array($subscription->plan->features) &&$subscription->plan->features[0]){
+                    $decodedFeatured = json_decode($subscription->plan->features[0]);
+                    }elseif(is_array($subscription->plan->features) ) {
+                    $decodedFeatured = json_decode($subscription->plan->features);
+                    }
+                @endphp
+                @foreach(  $decodedFeatured as $feature)
                         <li class="list-group-item">
                             <i class="fas fa-check-circle text-success me-2"></i>
                             {{ $feature }}
