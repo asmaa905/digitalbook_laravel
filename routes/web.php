@@ -32,6 +32,8 @@ use App\Http\Controllers\Admin\AdminPublishingHouseController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\AdminReviewController;
+use App\Http\Controllers\Admin\AdminPaymentsController;
+
 //=================================
 // Admin Auth
 //==================================
@@ -113,6 +115,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->grou
 
     Route::resource('reviews', AdminReviewController::class)->except(['show']);
     Route::get('reviews/{review}', [AdminReviewController::class, 'show'])->name('reviews.show');
+    ////////////////////////////////
+    Route::resource('payments', AdminPaymentsController::class)->only([
+        'index', 'show', 'destroy'
+    ]);
 });
 // =============================
 // ✅ Publisher Routes appear for login and non login users
