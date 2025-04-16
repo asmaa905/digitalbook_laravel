@@ -26,8 +26,9 @@
                         <th>Category</th>
                         <th>Published</th>
                         <th>Creator</th>
-
                         <th>Status</th>
+
+                        <th>Featured</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -49,10 +50,20 @@
                         <td>{{ $book->publish_date->format('M d, Y') }}</td>
                         <td>{{ $book->publisher->name }}</td>
                         <td>
+                        @if($book->is_published == 'accepted')
+                                <span class="badge bg-success">{{ $book->is_published }}</span>
+                            @elseif($book->is_published == 'rejected')
+                                <span class="badge bg-danger">{{ $book->is_published }}</span>
+                            @else 
+                                <span class="badge bg-warning">{{ $book->is_published }}</span>
+                            @endif
+                            </td>
+
+                        <td>
                             @if($book->is_featured)
-                                <span class="badge bg-success">Featured</span>
+                                <span class="badge bg-success">Yes</span>
                             @else
-                                <span class="badge bg-secondary">Regular</span>
+                                <span class="badge bg-secondary">No</span>
                             @endif
                         </td>
                         <td>

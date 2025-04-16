@@ -1,8 +1,8 @@
-@extends('layouts.publisher')
+@extends('layouts.profile-layout')
 
-@section('title', 'Manage Publishing Houses')
+@section('page-title', 'create  Publishing Houses')
 
-@section('content')
+@section('page-content')
 <div class="card">
     <div class="card-header">
         <h5 class="mb-0">{{ isset($publishingHouse) ? 'Edit' : 'Create' }} Publishing House</h5>
