@@ -36,7 +36,6 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'unique:'.User::class],
-
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
@@ -62,7 +61,7 @@ class RegisteredUserController extends Controller
         // If publisher, validate and create publisher record
         if ($request->account_type === 'Publisher') {
             $request->validate([
-                'identity' => ['required', 'file', 'mimes:pdf,jpeg,png,jpg', 'max:2048'],
+                'identity' => ['required', 'file', 'mimes:pdf', 'max:2048'],
                 'job_title' => ['required', 'string', 'max:255'],
                 'publishing_house_id' => ['nullable', 'exists:publishing_houses,id'],
             ]);
