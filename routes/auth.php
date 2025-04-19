@@ -9,9 +9,25 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\Auth\SocialiteController;
+
+use App\Http\Controllers\Auth\AdminAuthController;
+
+
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
+    
+    // Admin Login & Logout
+
+    Route::get('admin/register', [AdminAuthController::class, 'showRegistrationForm'])->name('admin.register.create');
+    Route::post('admin/register', [AdminAuthController::class, 'register'])->name('admin.register');
+
+    Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login.create');
+    Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login');
+    Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+    //normal user login & regsiter
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
 
@@ -33,6 +49,24 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
+
+    // login admin with google
+
+    Route::get('/auth/google/admin', [SocialiteController::class, 'redirectToGoogleAdmin'])->name('google.admin.redirect');
+    Route::get('/auth/google/admin/callback', [SocialiteController::class, 'handleLoginGoogleAdminCallback'])->name('google.admin.login');
+
+    // Admin social registration routes
+
+    Route::get('/admin/social/register', [SocialiteController::class, 'showAdminSocialRegistrationForm'])->name('admin.social.register');
+    Route::post('/admin/social/register', [SocialiteController::class, 'handleAdminSocialRegistration'])->name('admin.social.register.submit');
+    ////////////////////////////////////////////
+    // Noraml User Google Authentication
+    Route::get('/auth/google', [SocialiteController::class, 'redirectToGoogle'])->name('google.redirect');
+    Route::get('/auth/google/callback', [SocialiteController::class, 'handleLoginGoogleCallback'])->name('google.login');
+
+    // Social registration routes
+    Route::get('/social/register', [SocialiteController::class, 'showSocialRegistrationForm'])->name('social.register');
+    Route::post('/social/register', [SocialiteController::class, 'handleSocialRegistration'])->name('social.register.submit');
 });
 
 Route::middleware('auth')->group(function () {

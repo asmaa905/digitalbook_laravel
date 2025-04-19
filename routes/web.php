@@ -62,19 +62,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/profile/security', [ProfileController::class, 'security'])->name('profile.security');
+
+
 });
 // =============================
 // ✅ Admin Routes appear for login and non login users
 // =============================
 
-// Admin Login & Logout
-
-Route::get('admin/register', [AdminAuthController::class, 'showRegistrationForm'])->name('admin.register.create');
-Route::post('admin/register', [AdminAuthController::class, 'register'])->name('admin.register');
-
-Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login.create');
-Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login');
-Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->group(function () {
     // Dashboard

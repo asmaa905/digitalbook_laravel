@@ -1,4 +1,5 @@
 @extends('layouts.user')
+
 @section('user-title')
 Register
 @endsection
@@ -74,12 +75,24 @@ Register
         box-sizing: border-box;
         position: relative;
     }
+    .divider {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+    }
+    .divider::before, .divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid #ddd;
+    }
+    .divider-text {
+        padding: 0 10px;
+        color: #6c757d;
+    }
 </style>
 @endsection
 
-
 @section('user-content')
-
 <div class="background-page">
     <div class="bg-image">
         <img src="{{ asset('assets/images/login_hero.jpg') }}" alt="Background Image" class="img-fluid">
@@ -90,13 +103,39 @@ Register
             <div class="regsiter-form">
                 <div class="progress-bar"></div>
                 
+                <!-- Google Register Button -->
+                <a href="{{route('google.redirect')}}" style="
+                            display: inline-flex;
+                            justify-content: center;
+                            align-items: center;
+                            padding: 0.9rem 1rem;
+                            min-width: 15rem;
+                            max-width: 100%;
+                            white-space: nowrap;
+                            font: inherit;
+                            font-weight: 600;
+                            vertical-align: middle;
+                            border: 0;
+                            border-radius: 2.5rem;
+                            overflow: visible;
+                            cursor: pointer;
+                            transition: background-color 0.3s;
+                            margin-bottom: 18px;" 
+                            class="mt-2 btn btn-info d-flex flex-row justify-content-between align-items-center py-2 px-5" 
+                           >
+                              <span>Continue with Google</span>
+                              <i class="fa-brands fa-google bg-white p-2 " style="border-radius:50% !important"></i>
+                           </a>
+                
+                <div class="divider">
+                    <span class="divider-text">OR</span>
+                </div>
+                
                 <!-- Step 1: Basic Registration -->
                 <form id="multiStepForm" action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     
                     <div id="step1" class="form-step active">
-                        <!-- <h3 class="text-center mb-4">Create Account</h3> -->
-                        
                         @if($errors->any())
                             <div class="alert alert-danger">
                                 <ul>
@@ -116,21 +155,24 @@ Register
                         </div>
 
                         <div class="mb-3">
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required placeholder="Enter your email">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required>
                             @error('email')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
                                                 
                         <div class="mb-3">
-                            <label for="phone" class="form-label">  phone Number</label>
+                            <label for="phone" class="form-label">Phone Number</label>
                             <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required>
                             @error('phone')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        
                         <div class="mb-3">
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required placeholder="Enter your password">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
                             @error('password')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -140,6 +182,7 @@ Register
                             <label for="password_confirmation" class="form-label">Confirm Password</label>
                             <input type="password" class="form-control" name="password_confirmation" required>
                         </div>
+                        
                         <div class="mb-3">
                             <label for="image" class="form-label">Profile Image</label>
                             <input type="file" class="form-control @error('image') is-invalid @enderror" name="image">
@@ -147,12 +190,13 @@ Register
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                                            <!-- Inside your form -->
+                        
                     <button type="submit" id="hidden-submit" style="display: none;"></button>
                         <button type="button" class="btn w-100 btn-orange next-step">
                             Continue
                         </button>
                     </div>
+                    
                     
                     <!-- Step 2: Account Type Selection -->
                     <div id="step2" class="form-step">
@@ -228,7 +272,7 @@ Register
                 
                 <div class="text-center mt-3">
                     <a href="{{ route('login') }}" class="text-decoration-none text-orange">
-                        already have account? Login
+                        Already have an account? Login
                     </a>
                 </div>
             </div>
@@ -236,6 +280,7 @@ Register
     </div>
 </div>
 @endsection
+
 
 @section('user-scripts')
 <script>
@@ -334,13 +379,6 @@ Register
                 document.getElementById('hidden-submit').click(); // Triggers normal form submission
             }
         });
-//         continueToStep3.addEventListener('click', function() {
-//     if (accountTypeInput.value === 'publisher') {
-//         showStep(2);
-//     } else {
-//         document.getElementById('hidden-submit').click(); // Triggers normal form submission
-//     }
-// });
         // Initialize progress bar
         updateProgress();
         

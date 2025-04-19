@@ -102,20 +102,12 @@ class AdminAuthController extends Controller
     /**
      * Handle admin logout.
      */
-     // public function logout(Request $request)
-    // {
-    //     Auth::logout();
-    //     $request->session()->invalidate();
-    //     $request->session()->regenerateToken();
 
-    //     return redirect()->route('admin.login')->with('success', 'Logged out successfully.');
-    // }
-
-    // public function logout()
-    // {
-    //     Auth::logout();
-    //     return redirect()->route('admin.login')->with('success', 'Logged out successfully.');
-    // }
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('admin.login')->with('success', 'Logged out successfully.');
+    }
 
     /**
  * Show the admin profile edit form.

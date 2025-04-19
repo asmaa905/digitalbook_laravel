@@ -56,6 +56,7 @@ Admin Register -
     }
     .background-page {
         position: relative;
+        height: 1400px;
     }
     .overlay {
         background-color: rgba(0, 0, 0, 0.5);
@@ -68,7 +69,7 @@ Admin Register -
         height: 100%;
     }
     .regsiter-form {
-        width: 400px;
+        width: 600px;
         margin: auto;
         background-color: white;
         padding: 45px 30px;
@@ -78,6 +79,22 @@ Admin Register -
         box-sizing: border-box;
         position: relative;
     }
+   
+    
+    .divider {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+    }
+    .divider::before, .divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid #ddd;
+    }
+    .divider-text {
+        padding: 0 10px;
+        color: #6c757d;
+    }
 </style>
 @endsection
 
@@ -85,18 +102,16 @@ Admin Register -
 @section('user-content')
 
 <div class="background-page">
-    <div class="bg-image">
-        <img src="{{ asset('assets/images/login_hero.jpg') }}" alt="Background Image" class="img-fluid">
+    <div class="bg-image h-100 w-100">
+        <img src="{{ asset('assets/images/login_hero.jpg') }}" alt="Background Image" class="h-100 w-100 d-block">
     </div>
 
     <div class="overlay">
         <div class="content" style="padding:100px">
     <div class="row justify-content-center my-5">
         <div class="col-md-6">
-            <div class="card shadow-lg">
-                <div class="card-header text-center bg-dark text-white">
-                    <h4>Admin Registration</h4>
-                </div>
+            <div class="card regsiter-form">
+                
                 <div class="card-body">
                     @if (session('success'))
                         <div class="alert alert-success">{{ session('success') }}</div>
@@ -112,6 +127,37 @@ Admin Register -
                         </div>
                     @endif
 
+                     <!-- Google Login Button -->
+                     <a href="{{route('google.admin.redirect')}}" style="
+                            display: inline-flex
+;
+
+                            justify-content: center;
+                            align-items: center;
+                            padding: 0.9rem 1rem;
+                            min-width: 15rem;
+                            max-width: 100%;
+                            white-space: nowrap;
+                            font: inherit;
+                            font-weight: 600;
+                            vertical-align: middle;
+                            border: 0;
+                            border-radius: 2.5rem;
+                            overflow: visible;
+                            cursor: pointer;
+                            transition: background-color 0.3s;
+                                margin-bottom: 18px;" 
+                            class="mt-2 btn btn-info d-flex flex-row justify-content-between align-items-center py-2 px-5" 
+                           >
+                             <span>Continue with Google</span>
+                             <i class="fa-brands fa-google bg-white p-2 " style="border-radius:50% !important"></i></a>
+                  
+
+                    <div class="divider">
+                        <span class="divider-text">OR</span>
+                    </div>
+                    
+   
                     <form method="POST" action="{{ route('admin.register') }}" enctype="multipart/form-data">
                         @csrf
 
@@ -148,7 +194,7 @@ Admin Register -
                             <input type="file" name="image" class="form-control">
                         </div>
 
-                        <button type="submit" class="btn btn-dark w-100">Register</button>
+                        <button type="submit" class="btn btn-dark w-100">Register As Admin</button>
                     </form>
 
                     <!-- Already Have an Account Link -->

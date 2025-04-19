@@ -42,25 +42,64 @@ Login
         box-sizing: border-box;
         position: relative;
     }
+    .divider {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+    }
+    .divider::before, .divider::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid #ddd;
+    }
+    .divider-text {
+        padding: 0 10px;
+        color: #6c757d;
+    }
 </style>
 @endsection
 
-@section('user-content')<div class="background-page" >
+@section('user-content')
+<div class="background-page">
     <div class="bg-image">
         <img src="{{ asset('assets/images/login_hero.jpg') }}" alt="Background Image" class="img-fluid">
     </div>
 
     <div class="overlay">
         <div class="content">
-                    <div
-                        class="login-form"
 
-                    >
-                    <!--1 class="text-center">Login</h1>-->
+            <div class="login-form">
+                                    <!-- Google Login Button -->
+                                    <a href="{{route('google.redirect')}}" style="
+                            display: inline-flex;
+                            justify-content: center;
+                            align-items: center;
+                            padding: 0.9rem 1rem;
+                            min-width: 15rem;
+                            max-width: 100%;
+                            white-space: nowrap;
+                            font: inherit;
+                            font-weight: 600;
+                            vertical-align: middle;
+                            border: 0;
+                            border-radius: 2.5rem;
+                            overflow: visible;
+                            cursor: pointer;
+                            transition: background-color 0.3s;
+                                margin-bottom: 18px;" 
+                            class="mt-2 btn btn-info d-flex flex-row justify-content-between align-items-center py-2 px-5" 
+                           >
+                             <span>Continue with Google</span>
+                             <i class="fa-brands fa-google bg-white p-2 " style="border-radius:50% !important"></i></a>
+                    <div class="divider">
+                        <span class="divider-text">OR</span>
+                    </div>
+                        
+              
                     <form  action="{{ route('login') }}" method="POST">
                     @csrf
                     
-                                            
+
                     @if($errors->any())
                             <div class="alert alert-danger">
                                 <ul>
@@ -70,7 +109,6 @@ Login
                                 </ul>
                             </div>
                         @endif
-                        <!-- <input type="hidden" name="_token" value="{{ csrf_token() }}">  -->
 
                         <div class="mb-3">
                             <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" required placeholder="Enter your email">
@@ -86,6 +124,10 @@ Login
                             @enderror
                         </div>
                         
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                            <label class="form-check-label" for="remember">Remember me</label>
+                        </div>
                         <button  type="submit" id="hidden-submit"  class="btn w-100 btn-orange" style="
                             display: inline-flex
 ;
@@ -117,7 +159,7 @@ Login
                 </div>
             </div>
         </div>
-
+    <!-- </div> -->
 @endsection
 @section('user-scripts')
 <script>
