@@ -53,6 +53,7 @@ Register
     }
     .background-page {
         position: relative;
+        height:1000px;
     }
     .overlay {
         background-color: rgba(0, 0, 0, 0.5);
@@ -94,8 +95,8 @@ Register
 
 @section('user-content')
 <div class="background-page">
-    <div class="bg-image">
-        <img src="{{ asset('assets/images/login_hero.jpg') }}" alt="Background Image" class="img-fluid">
+    <div class="bg-image w-100 h-100">
+        <img src="{{ asset('assets/images/login_hero.jpg') }}" alt="Background Image" class="w-100 h-100">
     </div>
 
     <div class="overlay">
@@ -103,7 +104,15 @@ Register
             <div class="regsiter-form">
                 <div class="progress-bar"></div>
                 
-                <!-- Google Register Button -->
+               
+                
+                <!-- Step 1: Basic Registration -->
+                <form id="multiStepForm" action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
+
+                    @csrf
+                    
+                    <div id="step1" class="form-step active">
+                         <!-- Google Register Button -->
                 <a href="{{route('google.redirect')}}" style="
                             display: inline-flex;
                             justify-content: center;
@@ -130,12 +139,6 @@ Register
                 <div class="divider">
                     <span class="divider-text">OR</span>
                 </div>
-                
-                <!-- Step 1: Basic Registration -->
-                <form id="multiStepForm" action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    
-                    <div id="step1" class="form-step active">
                         @if($errors->any())
                             <div class="alert alert-danger">
                                 <ul>

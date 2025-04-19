@@ -128,31 +128,28 @@ Admin Register -
                     @endif
 
                      <!-- Google Login Button -->
-                     <a href="{{route('google.admin.redirect')}}" style="
-                            display: inline-flex
-;
-
-                            justify-content: center;
-                            align-items: center;
-                            padding: 0.9rem 1rem;
-                            min-width: 15rem;
-                            max-width: 100%;
-                            white-space: nowrap;
-                            font: inherit;
-                            font-weight: 600;
-                            vertical-align: middle;
-                            border: 0;
-                            border-radius: 2.5rem;
-                            overflow: visible;
-                            cursor: pointer;
-                            transition: background-color 0.3s;
-                                margin-bottom: 18px;" 
-                            class="mt-2 btn btn-info d-flex flex-row justify-content-between align-items-center py-2 px-5" 
-                           >
-                             <span>Continue with Google</span>
-                             <i class="fa-brands fa-google bg-white p-2 " style="border-radius:50% !important"></i></a>
-                  
-
+                    <a href="{{route('google.admin.redirect')}}" style="
+                        display: inline-flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 0.9rem 1rem;
+                        min-width: 15rem;
+                        max-width: 100%;
+                        white-space: nowrap;
+                        font: inherit;
+                        font-weight: 600;
+                        vertical-align: middle;
+                        border: 0;
+                        border-radius: 2.5rem;
+                        overflow: visible;
+                        cursor: pointer;
+                        transition: background-color 0.3s;
+                            margin-bottom: 18px;" 
+                        class="mt-2 btn btn-info d-flex flex-row justify-content-between align-items-center py-2 px-5" 
+                        >
+                          <span>Continue with Google</span>
+                          <i class="fa-brands fa-google bg-white p-2 " style="border-radius:50% !important"></i>
+                    </a>
                     <div class="divider">
                         <span class="divider-text">OR</span>
                     </div>
