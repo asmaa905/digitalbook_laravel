@@ -70,7 +70,10 @@ Login
 
             <div class="login-form">
                                     <!-- Google Login Button -->
-                                    <a href="{{route('google.redirect')}}" style="
+                @if (session('status'))
+                    <div class="alert alert-success">{{ session('status') }}</div>
+                @endif
+                <a href="{{route('google.redirect')}}" style="
                             display: inline-flex;
                             justify-content: center;
                             align-items: center;
@@ -149,7 +152,9 @@ Login
                             Login
                         </button>
                     </form>
-                    <div class="text-center mt-3">
+                <div class="text-center mt-3">
+                    <a href="{{ route('password.request') }}" class="text-decoration-none text-orange">Forgot password?</a>
+                    <span class="mx-2">|</span>
                         <a
                             href="{{ route('register') }}"
                             class="text-decoration-none text-orange"

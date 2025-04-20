@@ -1,7 +1,7 @@
 @extends('layouts.user')
 
 @section('user-content')
-<div class="container mt-5">
+<div class="container "style="padding:100px 0 100px 0">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
