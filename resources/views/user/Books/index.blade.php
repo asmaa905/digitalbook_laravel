@@ -249,6 +249,10 @@
         font-size: 13px;
         line-height: 16px;
     }
+    .btn-fav:hover{
+    background-color:rgb( 0 0 255/ 20%) !important;
+    }
+
 </style>
 @endsection
 
@@ -328,79 +332,90 @@
                         </div>
                     </div>
                     <div class="cards row p-0 m-0">
-                      @foreach($books as $book)
+                        @foreach($books as $book)
+                            <a href="{{ route('user.books.show', $book->id) }}" 
+                                class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none position-relative"
+                                style="border-radius: 5px">
+                                @auth
+                                    @if(auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Publisher' && isset($book) )
+                                        @php
+                                            $isFav = auth()->user()->favBooks->contains($book->id);
+                                        @endphp
 
-                      <a href="{{ route('user.books.show', $book->id) }}" 
-                            class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none"
-                            style="border-radius: 5px">
-                        
-                             
-                        <div class="image" style="width:95%;height:60%">
-                        @php
-                            $storagePath = public_path('storage/' .$book->image);
-                            $publicPath = public_path( 'assets/images/' . $book->image);
-                            if (!empty($book->image) && file_exists($storagePath)) {
-                                $imageUrl = asset('storage/' . $book->image);
-                            } elseif (!empty($book->image) && file_exists($publicPath)) {
-                                $imageUrl = asset( 'assets/images/' .$book->image);
-                            }else {
-                                $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
-                            }      
-                        @endphp
-                        <img
-                                src="{{ $imageUrl }}"
-                            alt="book"
-                            class="card-img-top w-100 h-100"
-                            /> </div>
-                            <div class="card-body p-0 w-100">
-                                <h5 class="card-title pb-0 mb-0">
-                                @if (strlen($book->title) > 15)
-                                    {{substr($book->title, 0, 15) . "..."}}
-                                @else 
-                                {{cutText($book->title)}} 
-                                @endif
-                                </h5>
-                                <p class="card-text pb-0 mb-0">
-                                {{ $book->author->name ?? 'Unknown Author' }}
-                                </p>
-                                <div
-                                    class="actions d-flex justify-content-between align-items-center"
-                                >
-                                    <div class="rates p-0">
-                                        <img
-                                            src="{{asset('assets/images/icons/star.svg')}}"
-                                            alt=""
-                                        />
-                                        <span class="rate-avg">{{$book->rating}}</span>
-                                        <small>({{ $book->reviews_count ?? 0 }})</small>
+                                        <form method="POST" action="{{ route('books.reader.makeFav', $book) }}" class="position-absolute" style="top:5px;right:5px">
+                                            @csrf
+                                            <button type="submit" class="btn  rounded-sm px-1  btn-fav" style="padding-top:1px;padding-bottom:1px ">
+                                                    <i class="{{ $isFav ? 'fas' : 'far' }} fa-heart mr-2 text-dark"></i>
+                                                
+                                            </button>
+                                        </form>
+                                    @endif
+                                @endauth
+                                <div class="image" style="width:95%;height:60%">
 
-                                    </div>
-                                    <div
-                                        class="book-versions d-flex justify-content-between align-items-center col-3 p-0"
-                                    >
-                                      @if($book->audioVersions->count() > 0)
-
-                                        <div class="audio-version">
-                                            <img
-                                                src="{{asset('assets/images/icons/headphones.svg')}}"
-                                                alt=""
-                                            />
-                                        </div>
-                                        @endif
-                                        @if($book->pdf_link !== null)
-                                        <div class="pdf-version">
-                                            <img
-                                                src="{{asset('assets/images/icons/glasses.svg')}}"
-                                                alt=""
-                                            />
-                                        </div>
-                                        @endif
-                                        
-                                    </div>
+                                    @php
+                                        $storagePath = public_path('storage/' .$book->image);
+                                        $publicPath = public_path( 'assets/images/' . $book->image);
+                                        if (!empty($book->image) && file_exists($storagePath)) {
+                                            $imageUrl = asset('storage/' . $book->image);
+                                        } elseif (!empty($book->image) && file_exists($publicPath)) {
+                                            $imageUrl = asset( 'assets/images/' .$book->image);
+                                        }else {
+                                            $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
+                                        }      
+                                    @endphp
+                                    <img
+                                        src="{{ $imageUrl }}"
+                                        alt="book"
+                                        class="card-img-top w-100 h-100"
+                                    />
                                 </div>
-                            </div>
-                        </a>
-                       @endforeach
+                                <div class="card-body p-0 w-100">
+                                        <h5 class="card-title pb-0 mb-0">
+                                        @if (strlen($book->title) > 15)
+                                            {{substr($book->title, 0, 15) . "..."}}
+                                        @else 
+                                        {{cutText($book->title)}} 
+                                        @endif
+                                        </h5>
+                                        <p class="card-text pb-0 mb-0">
+                                        {{ $book->author->name ?? 'Unknown Author' }}
+                                        </p>
+                                        <div
+                                            class="actions d-flex justify-content-between align-items-center"
+                                        >
+                                            <div class="rates p-0">
+                                                <img
+                                                    src="{{asset('assets/images/icons/star.svg')}}"
+                                                    alt=""
+                                                />
+                                                <span class="rate-avg">{{$book->rating}}</span>
+                                                <small>({{ $book->reviews_count ?? 0 }})</small>
+                                            </div>
+                                            <div
+                                                class="book-versions d-flex justify-content-between align-items-center col-3 p-0"
+                                            >
+                                                @if($book->audioVersions->count() > 0)
+                                                    <div class="audio-version">
+                                                        <img
+                                                            src="{{asset('assets/images/icons/headphones.svg')}}"
+                                                            alt=""
+                                                        />
+                                                    </div>
+                                                @endif
+                                                @if($book->pdf_link !== null)
+                                                    <div class="pdf-version">
+                                                        <img
+                                                            src="{{asset('assets/images/icons/glasses.svg')}}"
+                                                            alt=""
+                                                        />
+                                                    </div>
+                                                @endif 
+                                            </div>
+                                        </div>
+                                </div>
+                            </a>
+                        @endforeach
 
                 </section>
                 <section class="books-section world-books">
@@ -436,8 +451,21 @@
                       <a href="{{ route('user.books.show', $book->id) }}" 
                             class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none"
                             style="border-radius: 5px">
-                        
-                              
+                            @auth
+                                @if(auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Publisher' && isset($book) )
+                                    @php
+                                        $isFav = auth()->user()->favBooks->contains($book->id);
+                                    @endphp
+
+                                    <form method="POST" action="{{ route('books.reader.makeFav', $book) }}" class="position-absolute" style="top:5px;right:5px">
+                                        @csrf
+                                        <button type="submit" class="btn  rounded-sm px-1  btn-fav" style="padding-top:1px;padding-bottom:1px ">
+                                                <i class="{{ $isFav ? 'fas' : 'far' }} fa-heart mr-2 text-dark"></i>
+                                            
+                                        </button>
+                                    </form>
+                                @endif
+                            @endauth
                         <div class="image" style="width:95%;height:60%">
                         @php
                             $storagePath = public_path('storage/' .$book->image);
@@ -541,8 +569,21 @@
                       <a href="{{ route('user.books.show', $book->id) }}" 
                             class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none"
                             style="border-radius: 5px">
-                        
-                             
+                            @auth
+                                @if(auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Publisher' && isset($book) )
+                                    @php
+                                        $isFav = auth()->user()->favBooks->contains($book->id);
+                                    @endphp
+
+                                    <form method="POST" action="{{ route('books.reader.makeFav', $book) }}" class="position-absolute" style="top:5px;right:5px">
+                                        @csrf
+                                        <button type="submit" class="btn  rounded-sm px-1  btn-fav" style="padding-top:1px;padding-bottom:1px ">
+                                                <i class="{{ $isFav ? 'fas' : 'far' }} fa-heart mr-2 text-dark"></i>
+                                            
+                                        </button>
+                                    </form>
+                                @endif
+                            @endauth       
                         <div class="image" style="width:95%;height:60%">
                         @php
                             $storagePath = public_path('storage/' .$book->image);

@@ -1,5 +1,5 @@
 @extends('layouts.user')
-@section('user-title', 'Readed Books')
+@section('user-title', 'favorite Books')
 @section('user-styles')
 <style>
      body {
@@ -140,21 +140,21 @@
                             ></path>
                         </svg>
                         <a
-                            href="{{route('books.reader.index')}}"
+                            href="{{route('books.reader.fav')}}"
                             style="
                                 text-decoration-line: none !important;
                                 text-decoration: none !important;
                             "
                             class="sc-e408b72-0 kAwrBF"
-                            >Readed books</a
+                            >Favorite books</a
                         >
                     </li>
                 </ul>
             </nav>
                 
-            @if($readBooks->isEmpty())
+            @if($favBooks->isEmpty())
                 <div class="alert alert-info">
-                    You haven't read any books yet.
+                    You haven't add any books to favorite List yet.
                 </div>
             @else
             <section class="books-section featured-books">
@@ -162,12 +162,12 @@
                     <div
                         class="sec-header col-md-12 d-flex justify-content-between align-items-center"
                     >
-                        <h3 class="sec-title">Readed Books</h3>
+                        <h3 class="sec-title">Favorite Books</h3>
                         
                     </div>
                 </div>
                 <div class="cards row p-0 m-0">
-                @foreach($readBooks as $book)
+                @foreach($favBooks as $book)
 
                     <a href="{{ route('user.books.show', $book->id) }}" 
                         class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none"
@@ -216,7 +216,6 @@
                             <p class="card-text pb-0 mb-0">
                             {{ $book->author->name ?? 'Unknown Author' }}
                             </p>
-                            <p class="card-text pb-0 mb-0 pt-2"><strong class="text-dark">Read at:</strong> {{ $book->pivot->read_date }}</p>
                             <div
                                 class="actions d-flex justify-content-between align-items-center"
                             >
@@ -256,7 +255,7 @@
                     </a>
                     @endforeach
 
-                    {{ $readBooks->links() }}
+                    {{ $favBooks->links() }}
 
                 </section>
 

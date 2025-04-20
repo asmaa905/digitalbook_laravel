@@ -845,6 +845,21 @@ Home -
                                     style="border-radius: 5px;text-decoration-line:none"
                                     href="{{ route('user.books.show', $book->id) }}" 
                                 >
+                                @auth
+                                    @if(auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Publisher' && isset($book) )
+                                        @php
+                                            $isFav = auth()->user()->favBooks->contains($book->id);
+                                        @endphp
+
+                                        <form method="POST" action="{{ route('books.reader.makeFav', $book) }}" class="position-absolute" style="top:5px;right:5px">
+                                            @csrf
+                                            <button type="submit" class="btn  rounded-sm px-1  btn-fav" style="padding-top:1px;padding-bottom:1px ">
+                                                    <i class="{{ $isFav ? 'fas' : 'far' }} fa-heart mr-2 text-dark"></i>
+                                                
+                                            </button>
+                                        </form>
+                                    @endif
+                                @endauth   
                                     <div class="image"  style="width:95%;height:60%">
                                     @php
                                         $storagePath = public_path('storage/' .$book->image);
@@ -958,6 +973,21 @@ Home -
                                     class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
                                     style="border-radius: 5px;text-decoration-line:none"
                                     href="{{ route('user.books.show', $book->id) }}" >
+                                    @auth
+                                        @if(auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Publisher' && isset($book) )
+                                            @php
+                                                $isFav = auth()->user()->favBooks->contains($book->id);
+                                            @endphp
+
+                                            <form method="POST" action="{{ route('books.reader.makeFav', $book) }}" class="position-absolute" style="top:5px;right:5px">
+                                                @csrf
+                                                <button type="submit" class="btn  rounded-sm px-1  btn-fav" style="padding-top:1px;padding-bottom:1px ">
+                                                        <i class="{{ $isFav ? 'fas' : 'far' }} fa-heart mr-2 text-dark"></i>
+                                                    
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endauth   
                                     <div class="image" style="width:95%;height:60%">
                                     @php
                                         $storagePath = public_path('storage/' .$book->image);
@@ -1071,6 +1101,21 @@ Home -
                                     style="border-radius: 5px;text-decoration-line:none"
                                     href="{{ route('user.books.show', $book->id) }}" 
                                 >
+                                @auth
+                                    @if(auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Publisher' && isset($book) )
+                                        @php
+                                            $isFav = auth()->user()->favBooks->contains($book->id);
+                                        @endphp
+
+                                        <form method="POST" action="{{ route('books.reader.makeFav', $book) }}" class="position-absolute" style="top:5px;right:5px">
+                                            @csrf
+                                            <button type="submit" class="btn  rounded-sm px-1  btn-fav" style="padding-top:1px;padding-bottom:1px ">
+                                                    <i class="{{ $isFav ? 'fas' : 'far' }} fa-heart mr-2 text-dark"></i>
+                                                
+                                            </button>
+                                        </form>
+                                    @endif
+                                @endauth   
                                     <div class="image"  style="width:95%;height:60%">
                                     @php
                                         $storagePath = public_path('storage/' .$book->image);

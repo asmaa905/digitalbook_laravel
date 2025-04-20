@@ -26,6 +26,21 @@ class BooksController extends Controller
 
         return view('books.reader.index', compact('readBooks'));
     }
+    public function indexFavBooks()
+    {
+        // Ensure only readers can access this
+        if (Auth::user()->role !== 'Reader') {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Get books that the user has marked as read
+        $favBooks = Auth::user()->favBooks()
+            ->with(['author', 'category'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('books.reader.fav', compact('favBooks'));
+    }
 
     /**
      * Get all books published by the authenticated publisher
@@ -226,5 +241,18 @@ class BooksController extends Controller
         
         return back()->with('success', 'Book marked as read');
     }
-
+    public function toggleBookFav(Book $book)
+    {
+        $user = auth()->user();
+        
+        if ($user->favBooks()->where('book_id', $book->id)->exists()) {
+            // Remove from favorites
+            $user->favBooks()->detach($book->id);
+            return back()->with('success', 'Book removed from favorites');
+        }
+        
+        // Add to favorites
+        $user->favBooks()->attach($book->id);
+        return back()->with('success', 'Book added to favorites');
+    }
 }

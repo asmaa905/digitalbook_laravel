@@ -111,7 +111,15 @@ class User extends Authenticatable
                         ->orWhereNull('end_date');
                 })
                 ->exists();
+        } 
+        // For readers
+        //select favbooks
+        public function favBooks()
+        {
+            return $this->belongsToMany(Book::class, 'fav_books', 'user_id', 'book_id')
+                ->withTimestamps();
         }
+       
 
 }
 

@@ -56,6 +56,9 @@
     .star-rating .star-icon.active {
         color: #ffc107;
     }
+    .btn-fav:hover{
+    background-color:rgb( 0 0 255/ 20%) !important;
+    }
 </style>
 @endsection
 @section('user-content')
@@ -177,7 +180,25 @@
                     </div>
                     <div class="left-sec col-md-8">
                         <div class="head">
-                            <h1>{{$book->title}}</h1>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h1>{{$book->title}}</h1>
+                                @auth
+                                    @if(auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Publisher' && isset($book) && ($book->pdf_link || $book->audioVersions->count()))
+                                    @php
+                                        $isFav = auth()->user()->favBooks->contains($book->id);
+                                    @endphp
+
+                                    <form method="POST" action="{{ route('books.reader.makeFav', $book) }}">
+                                        @csrf
+                                        <button type="submit" class="btn btn-outline-danger rounded-sm px-2 py-1 btn-fav">
+                                                <i class="{{ $isFav ? 'fas' : 'far' }} fa-heart mr-2 text-danger"></i>
+                                            
+                                        </button>
+                                    </form>
+                                    @endif
+                                @endauth
+                            </div>
+                            
                             <div class="book-info d-flex">
                                 <div class="author">
                                     By

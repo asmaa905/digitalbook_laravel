@@ -167,12 +167,17 @@ Route::middleware(['auth', 'role:Publisher'])->group(function () {
 // ✅ Reader Routes appear for login and non login users
 // =============================
 Route::middleware(['auth', 'role:Reader'])->group(function () {
+
+    //readed books
     Route::get('/readed-books', [booksController::class, 'indexReadedBooks'])->name('books.reader.index');
 
     Route::post('/reviews', [ReviewController::class, 'store'])->name('user.review.store');
     Route::put('/reviews/{review}', [ReviewController::class, 'update'])->name('user.review.update');
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('user.review.destroy');
 
+    //fav books
+    Route::get('/fav-books', [booksController::class, 'indexFavBooks'])->name('books.reader.fav');
+    Route::post('/books/{book}/mark-as-fav', [BooksController::class, 'toggleBookFav'])->name('books.reader.makeFav');
     Route::post('/books/{book}/mark-as-read', [BooksController::class, 'markAsRead'])->name('books.reader.markAsRead');
 
 });

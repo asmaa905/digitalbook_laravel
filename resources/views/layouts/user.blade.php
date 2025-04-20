@@ -58,7 +58,11 @@
                     </li>
                     <li class="nav-item">
                     <a class="nav-link"  href="{{route('user.categories.index')}}">Categories</a>
-
+                    @if(Auth::check() && auth()->user()->role=='Reader')
+                    <li class="nav-item">
+                      <a class="nav-link"  href="{{route('books.reader.fav')}}">WishList</a>
+                    </li>
+                    @endif
                     </li>
                     @if(!Auth::check() )
                     <li class="nav-item">
