@@ -678,11 +678,17 @@ Home -
                                 <div class="plan-features">
                                 <ul class="list-unstyled">
                                     @php
+                                    $decodedFeatured = [];
                                       if(is_array($plan->features) &&$plan->features[0]){
                                         $decodedFeatured = json_decode($plan->features[0]);
                                       }elseif(is_array($plan->features) ) {
                                         $decodedFeatured = json_decode($plan->features);
-                                      }
+                                    } else{
+                                        $decoded = json_decode($plan->features, true);
+                                        if (json_last_error() === JSON_ERROR_NONE) {
+                                            $decodedFeatured = $decoded;
+                                        }
+                                    }
                                     @endphp
                                     @foreach(  $decodedFeatured as $feature)
                                         <li class="mb-2">

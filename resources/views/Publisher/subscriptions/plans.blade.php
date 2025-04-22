@@ -203,18 +203,24 @@
                                 @endif
                                 <div class="plan-features">
                                 @php
-                                      if(is_array($plan->features) &&$plan->features[0]){
+                                    $decodedFeatured = [];
+                                        if(is_array($plan->features) &&$plan->features[0]){
                                         $decodedFeatured = json_decode($plan->features[0]);
-                                      }elseif(is_array($plan->features) ) {
+                                        }elseif(is_array($plan->features) ) {
                                         $decodedFeatured = json_decode($plan->features);
-                                      }
-                                    @endphp
-                                    @foreach(  $decodedFeatured as $feature)
-                                        <div class="feature-item">
-                                            <i class="fas fa-check-circle"></i>
-                                            <span>{{ $feature }}</span>
-                                        </div>
-                                    @endforeach
+                                    } else{
+                                        $decoded = json_decode($plan->features, true);
+                                        if (json_last_error() === JSON_ERROR_NONE) {
+                                            $decodedFeatured = $decoded;
+                                        }
+                                    }
+                                @endphp
+                                @foreach(  $decodedFeatured as $feature)
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>{{ $feature }}</span>
+                                    </div>
+                                @endforeach
                                 </div>
                                 @php
                                     $userSubscription = auth()->user()->subscriptions()

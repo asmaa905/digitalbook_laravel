@@ -87,12 +87,19 @@
                 <h4>Plan Features</h4>
                 <ul class="list-group">
                 @php
-                    if(is_array($subscription->plan->features) &&$subscription->plan->features[0]){
-                    $decodedFeatured = json_decode($subscription->plan->features[0]);
-                    }elseif(is_array($subscription->plan->features) ) {
-                    $decodedFeatured = json_decode($subscription->plan->features);
+                    $decodedFeatured = [];
+                        if(is_array($subscription->plan->features) &&$subscription->plan->features[0]){
+                          $decodedFeatured = json_decode($subscription->plan->features[0]);
+                        }elseif(is_array($subscription->plan->features) ) {
+                          $decodedFeatured = json_decode($subscription->plan->features);
+                    } else{
+                        $decoded = json_decode($subscription->plan->features, true);
+                        if (json_last_error() === JSON_ERROR_NONE) {
+                            $decodedFeatured = $decoded;
+                        }
                     }
                 @endphp
+             
                 @foreach(  $decodedFeatured as $feature)
                         <li class="list-group-item">
                             <i class="fas fa-check-circle text-success me-2"></i>
