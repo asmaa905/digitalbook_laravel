@@ -38,7 +38,7 @@ composer install
 ```
 
 3- Set Up Environment
-
+ --- run this commands in git bash
 ```bash
 cp .env.example .env
 php artisan key:generate
