@@ -62,7 +62,6 @@ php artisan key:generate
 ```
 
 ```bash
-  php artisan db:seed
 
 ```
 
