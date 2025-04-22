@@ -30,7 +30,7 @@
 @section('admin-content')
 <div class="container-fluid">
     <div class="filter-container">
-        <form method="GET" action="{{ route('admin.payments.index') }}">
+        {{--<form method="GET" action="{{ route('admin.payments.index') }}">
             <div class="row">
                 <div class="col-md-3">
                     <label for="status" class="form-label">Status</label>
@@ -52,8 +52,10 @@
                     <button type="submit" class="btn btn-primary me-2">Filter</button>
                     <a href="{{ route('admin.payments.index') }}" class="btn btn-outline-secondary">Reset</a>
                 </div>
+               
             </div>
-        </form>
+        </form>--}}
+        <strong>Payments</strong>
     </div>
 
     <div class="card">

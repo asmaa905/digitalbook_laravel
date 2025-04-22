@@ -22,7 +22,7 @@
     </div>
     
     <div class="card-body">
-        <form method="GET" action="{{ route('admin.reviews.index') }}" class="mb-4">
+       {{-- <form method="GET" action="{{ route('admin.reviews.index') }}" class="mb-4">
             <div class="row g-3">
                 <div class="col-md-3">
                     <label for="rating" class="form-label">Filter by Rating</label>
@@ -66,7 +66,7 @@
                     </button>
                 </div>
             </div>
-        </form>
+        </form>--}}
         
         <div class="table-responsive">
             <table class="table table-hover">

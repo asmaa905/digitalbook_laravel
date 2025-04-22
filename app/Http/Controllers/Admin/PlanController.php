@@ -24,6 +24,8 @@ class PlanController extends BaseController
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'features' => 'required|string', // change from array to string
+            'plan_duration' => 'nullable|integer',
+
             'book_limit' => 'nullable|integer',
             'instant_download' => 'boolean',
             'free_trial_days' => 'integer|min:0',
@@ -50,6 +52,8 @@ class PlanController extends BaseController
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'features' => 'required|string', // change from array to string
+            'plan_duration' => 'nullable|integer',
+
             'book_limit' => 'nullable|integer',
             'instant_download' => 'boolean',
             'free_trial_days' => 'integer|min:0',

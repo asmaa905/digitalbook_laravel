@@ -23,6 +23,8 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Price</th>
+                        <th>plan Duration (in month)</th>
+
                         <th>Book Limit</th>
                         <th>Free Trial</th>
                         <th>Featured</th>
@@ -35,6 +37,8 @@
                             <td>{{ $plan->id }}</td>
                             <td>{{ $plan->name }}</td>
                             <td>${{ number_format($plan->price, 2) }}</td>
+                            <td>{{ $plan->plan_duration }}</td>
+
                             <td>{{ $plan->book_limit ?? 'Unlimited' }}</td>
                           <td>{{ $plan->free_trial_days ? $plan->free_trial_days.' days' : 'No' }}</td>
                             <td>

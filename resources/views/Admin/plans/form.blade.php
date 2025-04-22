@@ -38,6 +38,16 @@
                 @enderror
             </div>
             <div class="mb-3">
+                <label for="plan_duration" class="form-label">Plan Duration</label>
+                <input type="number" class="form-control" id="plan_duration" name="plan_duration" 
+                       value="{{ old('plan_duration', $plan?->plan_duration) }}">
+                <small class="text-muted">Leave empty for free plan</small>
+                @error('plan_duration')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
                 <label for="book_limit" class="form-label">Book Limit</label>
                 <input type="number" class="form-control" id="book_limit" name="book_limit" 
                        value="{{ old('book_limit', $plan?->book_limit) }}">
