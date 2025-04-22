@@ -29,7 +29,8 @@
 
             <div class="mb-3">
                 <label for="features" class="form-label">Features (One per line)</label>
-                <textarea class="form-control" id="features" name="features" rows="5">{{ old('features', is_array($plan->features) ? implode("\n", $plan->features) : $plan->features) }}
+                <textarea class="form-control" id="features" name="features" rows="5">
+                    {{ old('features', $plan ? (is_array($plan->features) ? implode("\n", $plan->features) : $plan->features) : '') }}
                 </textarea>
                 <small class="text-muted">Enter each feature on a new line</small>
                 @error('features')

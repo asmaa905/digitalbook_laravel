@@ -104,6 +104,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->grou
     //plans
     Route::resource('plans', PlanController::class);
     Route::get('/subscriptions', [AdminDashboardController::class, 'subscriptions'])->name('subscriptions.index');
+    Route::get('/subscriptions/{subscription}', [AdminDashboardController::class, 'showSubscription'])->name('subscriptions.show');
     Route::get('/payments', [AdminDashboardController::class, 'payments'])->name('payments.index');
     //////////////////////////////
 
