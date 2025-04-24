@@ -47,6 +47,8 @@ Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('user.
 Route::get('/categories/top-books/{id}', [CategoryController::class, 'topBooksInCat'])->name('user.categories.topBooks');
 Route::get('/audio-books', [BooksController::class, 'show_audio_books'])->name('user.books.audio');
 Route::get('/e-books', [BooksController::class, 'show_ebooks'])->name('user.books.ebooks');
+Route::get('/books/search', [BooksController::class, 'search'])->name('user.books.search');
+
 Route::get('/books/{id}', [BooksController::class, 'show'])->name('user.books.show');
 // =============================
 // ✅ Guest Routes appear for login and non login users

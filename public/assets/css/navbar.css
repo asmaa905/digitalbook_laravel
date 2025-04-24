@@ -160,3 +160,43 @@ button:focus:not(:focus-visible) {
         float: none;
     }
 }
+
+.search-modal {
+    transition: all 0.3s ease;
+}
+
+.search-modal .container {
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.close-search {
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.ssearch-btn {
+}
+.ssearch-btn:hover {
+    color: rgb(0, 0, 0) !important;
+    background-color: rgb(255, 255, 255) !important;
+}
+::placeholder {
+    font-size: 16px !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    line-height: 22px !important;
+    font-family: Arial !important;
+    color: rgb(217, 217, 217) !important;
+}

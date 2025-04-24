@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use  App\Models\Author;
+use  App\Models\Publisher;
+use  App\Models\User;
 
+use App\Models\Category;
 class BooksController extends Controller
 {
     /**
@@ -61,6 +65,109 @@ class BooksController extends Controller
         return view('publisher.books.index', compact('publishedBooks'));
     }
 
+    public function search(Request $request)
+    {
+        $query = Book::where('is_published', 'accepted')
+            ->where(function($q) {
+                // Books that have PDF link
+                $q->whereNotNull('pdf_link')
+                  // OR have published audio versions
+                  ->orWhereHas('audioVersions', function($audioQuery) {
+                      $audioQuery->whereNotNull('audio_link')
+                                ->where('is_published', true);
+                  });
+            })
+            ->with(['author', 'audioVersions', 'category', 'publisher']);
+        
+        // Search functionality
+        if ($request->has('search')) {
+            $searchTerm = $request->input('search');
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('title', 'like', "%$searchTerm%")
+                  ->orWhere('description', 'like', "%$searchTerm%")
+                  ->orWhereHas('publisher', function($pubQuery) use ($searchTerm) {
+                      $pubQuery->where('name', 'like', "%$searchTerm%");
+                  })
+                  ->orWhereHas('author', function($authorQuery) use ($searchTerm) {
+                      $authorQuery->where('name', 'like', "%$searchTerm%");
+                  })
+                  ->orWhereHas('category', function($categoryQuery) use ($searchTerm) {
+                      $categoryQuery->where('name', 'like', "%$searchTerm%");
+                  })
+                  ->orWhereHas('audioVersions', function($audioQuery) use ($searchTerm) {
+                      $audioQuery->whereHas('creator', function($creatorQuery) use ($searchTerm) {
+                          $creatorQuery->where('name', 'like', "%$searchTerm%");
+                      });
+                  });
+            });
+        }
+        
+        // Filter by category (works with both ID and name)
+        if ($request->has('category')) {
+            $category = $request->input('category');
+            if (is_numeric($category)) {
+                // If category is numeric, treat as ID
+                $query->where('category_id', $category);
+            } else {
+                // If category is string, search by name
+                $query->whereHas('category', function($q) use ($category) {
+                    $q->where('name', 'like', "%$category%");
+                });
+            }
+        }
+        
+        // Filter by author
+        if ($request->has('author')) {
+            $author = $request->input('author');
+            if (is_numeric($author)) {
+                $query->where('author_id', $author);
+            } else {
+                $query->whereHas('author', function($q) use ($author) {
+                    $q->where('name', 'like', "%$author%");
+                });
+            }
+        }
+        
+        // Filter by publisher
+        if ($request->has('publisher')) {
+            $publisher = $request->input('publisher');
+            if (is_numeric($publisher)) {
+                $query->where('published_by', $publisher);
+            } else {
+                $query->whereHas('publisher', function($q) use ($publisher) {
+                    $q->where('name', 'like', "%$publisher%");
+                });
+            }
+        }
+        
+        // Filter by narrator
+        if ($request->has('narrator')) {
+            $narrator = $request->input('narrator');
+            if (is_numeric($narrator)) {
+                $query->whereHas('audioVersions', function($audioQuery) use ($narrator) {
+                    $audioQuery->where('created_by', $narrator);
+                });
+            } else {
+                $query->whereHas('audioVersions', function($audioQuery) use ($narrator) {
+                    $audioQuery->whereHas('creator', function($q) use ($narrator) {
+                        $q->where('name', 'like', "%$narrator%");
+                    });
+                });
+            }
+        }
+        
+        $books = $query->orderBy('title')->get();
+        $book_type = 'search';
+        
+        // Get data for dropdowns
+        $categories = Category::all();
+        $authors = Author::all();
+        $publishers = Publisher::all();
+        $narrators = User::whereHas('audioVersionsCreated')->get(); 
+        
+        return view('user.Books.search', compact('books', 'book_type', 'categories', 'authors', 'publishers', 'narrators'));
+    }
+   
     public function show_audio_books()
     {
         // Get books that have at least one audio version (audio_link not null)
@@ -151,21 +258,6 @@ class BooksController extends Controller
     
         return view('user.Books.index', compact('books', 'topRatedBooks', 'isFeasuredBooks', 'book_type'));
     }
-    
-    //show book with its review number  
-    // audioversion of that book
-    // rating of book
-    //author
-    //publisher of audio book created_by in audio_version
-    // and publisher of book
-    //catgory of book
-    //language of book
-    //book keywords
-
-    //show books that is in the same category of book
-    //and all books
-
-    //show book rating and all review and comments if found
     public function show($bookId)
     {
         // Get the book with all related data
