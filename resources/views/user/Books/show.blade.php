@@ -391,13 +391,27 @@
                                         </button>
                                             @endif
                                     @endif
+                                    
                                     @if(isset($book) && $book->pdf_link)
-                                        @if(( $book->publisher->role == 'Publisher' && $book->publisher->hasActiveSubscription))
+                                            @php
+                                                $storageDownloadbookPath = public_path('storage/' .$book->pdf_link);
+                                                $publicDownloadbookPath = public_path('assets/' . $book->pdf_link);
+                                                if (!empty($book->pdf_link) && file_exists($storageDownloadbookPath)) {
+                                                    $book_download_path = asset('storage/' . $book->pdf_link);
+                                                } elseif (!empty($book->pdf_link) && file_exists($publicDownloadbookPath)) {
+                                                    $book_download_path = asset('assets/' .$book->pdf_link);
+                                                } else {
+                                                    $book_download_path = asset('assets/books_pdf/book_defualt2.pdf');
+                                                }      
+                                            @endphp
+                                            <!-- <audio id="audio_review" src="{{$book_download_path}}"></audio> -->
+                                    
+                                           @if(( $book->publisher->role == 'Publisher' && $book->publisher->hasActiveSubscription))
                                                 <!-- Immediate download for subscribed publishers -->
-                                                <a href="{{ asset('storage/'.$book->pdf_link) }}"   target="_blank" class="btn btn-dark rounded-sm" download="{{$book->title}}.pdf">
+                                                <a href="{{ $book_download_path }}"   target="_blank" class="btn btn-dark rounded-sm" download="{{$book->title}}.pdf">
                                                     <i class="fas fa-file-pdf"></i> Download PDF
                                                 </a>
-                                                @else
+                                            @else
                                                 <!-- Timer for other users -->
                                                 <button id="pdf-download-btn" class="btn btn-dark rounded-sm">
                                                     <i class="fas fa-file-pdf"></i> Download PDF
@@ -986,9 +1000,16 @@
                     
                     if (seconds <= 0) {
                         clearInterval(countdown);
-                        window.location.href = "{{ asset('storage/'.$book->pdf_link) }}?download=true";
                         timerDisplay.style.display = 'none';
                         pdfDownloadBtn.disabled = false;
+                        
+                        // Create a temporary anchor element to trigger the download
+                        const link = document.createElement('a');
+                        link.href = "{{ $book_download_path }}?download=true";
+                        link.download = ''; // This will force download with the original filename
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
                     }
                 }, 1000);
             });

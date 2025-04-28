@@ -27,21 +27,19 @@
                 <tr>
                     <td>{{ $subscription->user->name }}</td>
                     <td>{{ $subscription->plan->name }}</td>
-                    <td>{{ \Carbon\Carbon::parse($subscription->start_date)->format('Y-m-d') }}</td>
-                    <td>{{ $subscription->end_date ?  \Carbon\Carbon::parse($subscription->start_date)->format('Y-m-d') : 'N/A' }}</td>
-                    <td>
+                    <td>{{ $subscription->start_date ?  \Carbon\Carbon::parse($subscription->start_date)->format('Y-m-d') : 'N/A'  }}</td>
+                    <td>{{ $subscription->end_date ? \Carbon\Carbon::parse($subscription->end_date)->format('Y-m-d') : 'N/A' }}</td>                    <td>
                         <span class="badge bg-{{ $subscription->isActive() ? 'success' : 'secondary' }}">
                             {{ $subscription->isActive() ? 'Active' : 'Inactive' }}
                         </span>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-sm btn-info">View</a>
-                    </td>
+                    <a href="{{ route('admin.subscriptions.show', $subscription) }}" class="btn btn-sm btn-info">View</a>                    </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
     
-    {{ $subscriptions->links() }}
+    {{ $subscriptions->links('pagination::bootstrap-5') }}
 </div>
 @endsection

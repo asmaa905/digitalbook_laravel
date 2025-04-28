@@ -18,6 +18,7 @@ class HomeController extends Controller
         // Top 50 rated books
         $topRatedBooks = Book::with(['author', 'audioVersions'])
             ->orderByDesc('rating')
+            ->where('rating', '5') 
             ->where('is_published', 'accepted')
             ->take(20)
             ->get();

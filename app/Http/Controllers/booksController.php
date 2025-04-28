@@ -74,7 +74,7 @@ class BooksController extends Controller
                   // OR have published audio versions
                   ->orWhereHas('audioVersions', function($audioQuery) {
                       $audioQuery->whereNotNull('audio_link')
-                                ->where('is_published', true);
+                                ->where('is_published', 'accepted');
                   });
             })
             ->with(['author', 'audioVersions', 'category', 'publisher']);

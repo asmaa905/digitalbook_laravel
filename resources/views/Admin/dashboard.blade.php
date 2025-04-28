@@ -173,7 +173,7 @@
         <div class="col-lg-6">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Recent Books</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Pending Books</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -204,7 +204,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center">No books found</td>
+                                    <td colspan="4" class="text-center">No pending books found</td>
                                 </tr>
                             @endforelse
                             </tbody>
@@ -218,7 +218,7 @@
         <div class="col-lg-6">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Recent Audio Versions</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Pending Audio Versions</h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -255,7 +255,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="3" class="text-center">No audio versions found</td>
+                                    <td colspan="3" class="text-center">No pending audio versions found</td>
                                 </tr>
                                 @endforelse
                             </tbody>

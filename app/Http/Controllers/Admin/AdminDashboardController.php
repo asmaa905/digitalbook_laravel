@@ -6,9 +6,10 @@ use App\Models\Book;
 use App\Models\AudioVersion;
 use App\Models\Payment;
 use App\Models\Review;
+use App\Http\Controllers\Controller;
 
 use App\Models\Subscription;
-class AdminDashboardController extends BaseController
+class AdminDashboardController extends Controller
 {
     public function index()
     {
@@ -25,15 +26,16 @@ class AdminDashboardController extends BaseController
         ];
         
         $recentBooks = Book::latest()
-            ->take(5)
+            // ->take(5)
+            ->where('is_published', 'waiting')
             ->get();
             
         $recentAudio = AudioVersion::latest()
-            ->take(5)
-            ->get();
+        ->where('is_published', 'waiting')
+        ->get();
             //subscribtions
 
-        return $this->view('dashboard', compact('stats', 'recentBooks', 'recentAudio'));
+        return view('Admin.dashboard', compact('stats', 'recentBooks', 'recentAudio'));
     }
     public function subscriptions()
     {
@@ -45,5 +47,11 @@ class AdminDashboardController extends BaseController
     {
         $payments = Payment::with(['user', 'subscription.plan'])->latest()->paginate(20);
         return view('payments.index', compact('payments'));
+    }
+    public function showSubscription(Subscription $subscription)
+    {
+        $subscription->load(['user', 'plan', 'payments']);
+        
+        return view('Admin.subscriptions.show', compact('subscription'));
     }
 }

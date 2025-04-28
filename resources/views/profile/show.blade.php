@@ -235,7 +235,7 @@
                     @endif
                     
                     <input id="identity_document" name="identity_document" type="file" class="form-input">
-                    <small class="form-text text-muted">Upload identity document (PDF/JPG/PNG, Max 2MB)</small>
+                    <small class="form-text text-muted">Upload identity document (PDF, Max 2MB)</small>
                 </div>
             </div>
         @endif

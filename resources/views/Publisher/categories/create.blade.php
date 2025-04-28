@@ -1,8 +1,12 @@
-@extends('layouts.publisher')
+@extends('layouts.profile-layout')
 
-@section('title', 'Manage Publishing Houses')
+@section('page-title', 'create  new Category')
 
-@section('content')
+@section('page-header-cont')
+<h1>Manage Categories</h1>
+<p class="account-name">Create  New  Category </p>
+@endsection
+@section('page-content')
 <div class="card">
     <div class="card-header">
         <h5 class="mb-0">{{ isset($category) ? 'Edit' : 'Create' }} Category</h5>

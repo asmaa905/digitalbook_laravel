@@ -36,7 +36,7 @@ class Subscription extends Model
         return $this->belongsTo(Payment::class);
     }
 
-    // One-to-many relationship (if you need history)
+    // One-to-many relationship
     public function payments()
     {
         return $this->hasMany(Payment::class);

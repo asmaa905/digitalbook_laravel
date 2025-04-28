@@ -943,134 +943,7 @@ Home -
 
                             </div>
                         </section>
-                    <!-- all books -->
-                    <section class="books-section all-books">
-                            <div class="row px-0 mx-0">
-                                <div
-                                    class="sec-header col-md-12 d-flex justify-content-between align-items-center"
-                                >
-                                <a class="sec-title" style="" href="{{route('user.books.ebooks')}}">Explore the World of Books</a>
-                                    <div class="all-books-link d-flex">
-                                    <a style="color: #000; text-decoration-line:none" href="{{route('user.books.ebooks')}}"> View all titles</a>
-                                    <div
-                                            class="icon"
-                                            style="width: 1rem; height: 1rem"
-                                        >
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                style="width: 100%; height: 100%"
-                                                fill="#101010"
-                                                viewBox="0 0 15 28"
-                                                class="sc-dd917b06-0 bAuqWJ"
-                                            >
-                                                <path
-                                                    d="m2.895 1.126 11.35 11.846c.277.286.415.658.415 1.028s-.138.742-.415 1.028L2.895 26.874a1.483 1.483 0 0 1-2.101.045 1.48 1.48 0 0 1-.045-2.102l10.414-10.873L.751 3.184A1.48 1.48 0 0 1 .796 1.08a1.48 1.48 0 0 1 2.1.045Z"
-                                                ></path>
-                                            </svg>
-                                        </div>
-                                        <!-- <i class="fas fa-greater-than"></i> -->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cards row p-0 m-0">
-                            @if($allBooks->count() > 0)
-                            @foreach($allBooks as $book)
-                                <a
-                                    class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
-                                    style="border-radius: 5px;text-decoration-line:none"
-                                    href="{{ route('user.books.show', $book->id) }}" >
-                                    @auth
-                                        @if(auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Publisher' && isset($book) )
-                                            @php
-                                                $isFav = auth()->user()->favBooks->contains($book->id);
-                                            @endphp
-
-                                            <form method="POST" action="{{ route('books.reader.makeFav', $book) }}" class="position-absolute" style="top:5px;right:5px">
-                                                @csrf
-                                                <button type="submit" class="btn  rounded-sm px-1  btn-fav" style="padding-top:1px;padding-bottom:1px ">
-                                                        <i class="{{ $isFav ? 'fas' : 'far' }} fa-heart mr-2 text-dark"></i>
-                                                    
-                                                </button>
-                                            </form>
-                                        @endif
-                                    @endauth   
-                                    <div class="image" style="width:95%;height:60%">
-                                    @php
-                                        $storagePath = public_path('storage/' .$book->image);
-                                        $publicPath = public_path( 'assets/images/' . $book->image);
-                                        if (!empty($book->image) && file_exists($storagePath)) {
-                                            $imageUrl = asset('storage/' . $book->image);
-                                        } elseif (!empty($book->image) && file_exists($publicPath)) {
-                                            $imageUrl = asset( 'assets/images/' .$book->image);
-                                        }else {
-                                            $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
-                                        }      
-                                    @endphp
-                                    <img
-                                            src="{{ $imageUrl }}"
-                                        alt="book"
-                                        class="card-img-top w-100 h-100"
-                                        />
-                                    
-                                    </div>
-
-                                    <div class="card-body p-0">
-                                        <h5 class="card-title pb-0 mb-0">
-                                        @if (strlen($book->title) > 25)
-                                            {{substr($book->title, 0, 25) . "..."}}
-                                        @else 
-                                        {{cutText($book->title)}} 
-                                        @endif
-                                        
-                                        </h5>
-                                        <p class="card-text pb-0 mb-0">
-                                        {{$book->author? $book->author->name: 'unknown'}}
-                                        </p>
-                                        <div
-                                            class="actions d-flex justify-content-between align-items-center"
-                                        >
-                                    
-                                            <div class="rates p-0">
-                                                <img
-                                                    src="{{asset('assets/images/icons/star.svg')}}"
-                                                    alt=""
-                                                />
-                                                <span class="rate-avg"> {{$book->rating}} </span>
-                                            </div>
-                                            <div
-                                                class="book-versions d-flex justify-content-between align-items-center col-3 p-0"
-                                            >
-
-                                            @if($book->audioVersions->count() > 0)
-
-                                                <div class="audio-version">
-                                                    <img
-                                                    src="{{asset('assets/images/icons/headphones.svg')}}"
-
-                                                        alt=""
-                                                    />
-                                                </div>
-                                                @endif
-
-                                                @if($book->pdf_link)
-
-                                                <div class="pdf-version">
-                                                    <img
-                                                    src="{{asset('assets/images/icons/glasses.svg')}}"
-                                                        alt=""
-                                                    />
-                                                </div>
-                                                @endif
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </a>
-                                @endforeach
-                                @endif
-                            </div>
-                        </section>
-                    <!-- all featured books -->
+                                            <!-- all featured books -->
                     <section class="books-section featured-books">
                             <div class="row px-0 mx-0">
                                 <div
@@ -1199,6 +1072,134 @@ Home -
 
                             </div>
                         </section>
+                    <!-- all books -->
+                    <section class="books-section all-books">
+                            <div class="row px-0 mx-0">
+                                <div
+                                    class="sec-header col-md-12 d-flex justify-content-between align-items-center"
+                                >
+                                <a class="sec-title" style="" href="{{route('user.books.ebooks')}}">Explore the World of Books</a>
+                                    <div class="all-books-link d-flex">
+                                    <a style="color: #000; text-decoration-line:none" href="{{route('user.books.ebooks')}}"> View all titles</a>
+                                    <div
+                                            class="icon"
+                                            style="width: 1rem; height: 1rem"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                style="width: 100%; height: 100%"
+                                                fill="#101010"
+                                                viewBox="0 0 15 28"
+                                                class="sc-dd917b06-0 bAuqWJ"
+                                            >
+                                                <path
+                                                    d="m2.895 1.126 11.35 11.846c.277.286.415.658.415 1.028s-.138.742-.415 1.028L2.895 26.874a1.483 1.483 0 0 1-2.101.045 1.48 1.48 0 0 1-.045-2.102l10.414-10.873L.751 3.184A1.48 1.48 0 0 1 .796 1.08a1.48 1.48 0 0 1 2.1.045Z"
+                                                ></path>
+                                            </svg>
+                                        </div>
+                                        <!-- <i class="fas fa-greater-than"></i> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cards row p-0 m-0">
+                            @if($allBooks->count() > 0)
+                            @foreach($allBooks as $book)
+                                <a
+                                    class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
+                                    style="border-radius: 5px;text-decoration-line:none"
+                                    href="{{ route('user.books.show', $book->id) }}" >
+                                    @auth
+                                        @if(auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Publisher' && isset($book) )
+                                            @php
+                                                $isFav = auth()->user()->favBooks->contains($book->id);
+                                            @endphp
+
+                                            <form method="POST" action="{{ route('books.reader.makeFav', $book) }}" class="position-absolute" style="top:5px;right:5px">
+                                                @csrf
+                                                <button type="submit" class="btn  rounded-sm px-1  btn-fav" style="padding-top:1px;padding-bottom:1px ">
+                                                        <i class="{{ $isFav ? 'fas' : 'far' }} fa-heart mr-2 text-dark"></i>
+                                                    
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endauth   
+                                    <div class="image" style="width:95%;height:60%">
+                                    @php
+                                        $storagePath = public_path('storage/' .$book->image);
+                                        $publicPath = public_path( 'assets/images/' . $book->image);
+                                        if (!empty($book->image) && file_exists($storagePath)) {
+                                            $imageUrl = asset('storage/' . $book->image);
+                                        } elseif (!empty($book->image) && file_exists($publicPath)) {
+                                            $imageUrl = asset( 'assets/images/' .$book->image);
+                                        }else {
+                                            $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
+                                        }      
+                                    @endphp
+                                    <img
+                                            src="{{ $imageUrl }}"
+                                        alt="book"
+                                        class="card-img-top w-100 h-100"
+                                        />
+                                    
+                                    </div>
+
+                                    <div class="card-body p-0">
+                                        <h5 class="card-title pb-0 mb-0">
+                                        @if (strlen($book->title) > 25)
+                                            {{substr($book->title, 0, 25) . "..."}}
+                                        @else 
+                                        {{cutText($book->title)}} 
+                                        @endif
+                                        
+                                        </h5>
+                                        <p class="card-text pb-0 mb-0">
+                                        {{$book->author? $book->author->name: 'unknown'}}
+                                        </p>
+                                        <div
+                                            class="actions d-flex justify-content-between align-items-center"
+                                        >
+                                    
+                                            <div class="rates p-0">
+                                                <img
+                                                    src="{{asset('assets/images/icons/star.svg')}}"
+                                                    alt=""
+                                                />
+                                                <span class="rate-avg"> {{$book->rating}} </span>
+                                            </div>
+                                            <div
+                                                class="book-versions d-flex justify-content-between align-items-center col-3 p-0"
+                                            >
+
+                                            @if($book->audioVersions->count() > 0)
+
+                                                <div class="audio-version">
+                                                    <img
+                                                    src="{{asset('assets/images/icons/headphones.svg')}}"
+
+                                                        alt=""
+                                                    />
+                                                </div>
+                                                @endif
+
+                                                @if($book->pdf_link)
+
+                                                <div class="pdf-version">
+                                                    <img
+                                                    src="{{asset('assets/images/icons/glasses.svg')}}"
+                                                        alt=""
+                                                    />
+                                                </div>
+                                                @endif
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </a>
+                                @endforeach
+                                @endif
+                            </div>
+                        </section>
+
                     
                             </div>
                         </div>
