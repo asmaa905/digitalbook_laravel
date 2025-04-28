@@ -11,6 +11,9 @@
     .card {
         border-radius: 0.35rem;
     }
+    a.card:hover{
+        background:rgba(0,0,0,0.05)
+    }
     .card-header {
         background-color: #f8f9fc;
         border-bottom: 1px solid #e3e6f0;
@@ -30,7 +33,7 @@
     <div class="row">
         <!-- Stats Cards -->
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
+            <a class="card border-left-primary shadow h-100 py-2" style="text-decoration-line:none" href="{{route('admin.books.index')}}">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -43,11 +46,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
+            <a class="card border-left-success shadow h-100 py-2" style="text-decoration-line:none" href="{{route('admin.books.index')}}">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -60,11 +63,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
+            <a class="card border-left-warning shadow h-100 py-2" style="text-decoration-line:none" href="{{route('admin.books.index')}}">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -77,10 +80,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
+            <a class="card border-left-success shadow h-100 py-2" style="text-decoration-line:none" href="{{route('admin.books.index')}}">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -93,15 +96,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
+           </a>
         </div>
 
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
+            <a class="card border-left-info shadow h-100 py-2" style="text-decoration-line:none" href="{{route('admin.audio-versions.index')}}">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1" >
                                 Audio Versions</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $stats['audio_versions'] }}</div>
                         </div>
@@ -110,11 +113,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
+            <a class="card border-left-info shadow h-100 py-2" style="text-decoration-line:none" href="{{route('admin.reviews.index')}}">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -127,11 +130,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+           </a>
         </div>
         
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
+            <a class="card border-left-info shadow h-100 py-2" style="text-decoration-line:none" href="{{route('admin.subscriptions.index')}}">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -144,11 +147,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-info shadow h-100 py-2">
+            <a class="card border-left-info shadow h-100 py-2" style="text-decoration-line:none" href="{{route('admin.payments.index')}}">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
@@ -161,7 +164,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+           </a>
         </div>
     </div>
 
@@ -184,11 +187,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($recentBooks as $book)
-                                <tr>
+                            @forelse($recentBooks as $book)
+                                <tr onclick="window.location='{{route('admin.books.show',$book->id)}}'" style="cursor: pointer;">
                                     <td>{{ $book->title }}</td>
                                     <td>{{$book->publisher->name}}</td>
-
                                     <td>
                                         @if($book->is_published =='accepted')
                                             <span class="badge bg-success">Published</span>
@@ -197,14 +199,14 @@
                                         @else($book->is_published =='waiting')
                                             <span class="badge bg-warning">Pending</span>
                                         @endif
-                                    </td>                                    </td>
+                                    </td>                                   
                                     <td>{{ $book->created_at->format('M d, Y') }}</td>
                                 </tr>
-                                @empty
+                            @empty
                                 <tr>
-                                    <td colspan="3" class="text-center">No books found</td>
+                                    <td colspan="4" class="text-center">No books found</td>
                                 </tr>
-                                @endforelse
+                            @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -235,10 +237,9 @@
                             </thead>
                             <tbody>
                                 @forelse($recentAudio as $audio)
-                                <tr>
+                                <tr onclick="window.location='{{route('admin.audio-versions.show',$audio->id)}}'" style="cursor: pointer;">
                                     <td>{{ $audio->book->title ?? 'N/A' }}</td>
                                     <td>{{ $audio->book->publisher->name ?? 'N/A' }}</td>
-
                                     <td>{{ strtoupper($audio->language) }}</td>
                                     <td>{{$audio->creator->name}}</td>
                                     <td>
@@ -250,8 +251,6 @@
                                             <span class="badge bg-danger">Rejected</span>
                                         @endif
                                     </td>
-                   
-
                                     <td>{{ $audio->created_at->format('M d, Y') }}</td>
                                 </tr>
                                 @empty

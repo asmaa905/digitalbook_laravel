@@ -256,7 +256,7 @@
                     </a>
                     @endforeach
 
-                    {{ $readBooks->links() }}
+                    {{ $readBooks->links('pagination::bootstrap-5') }}
 
                 </section>
 

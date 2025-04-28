@@ -65,8 +65,9 @@ Mange Authors
                 </tbody>
             </table>
         </div>
+
         <div class="mt-3">
-            {{ $authors->links() }}
+            {{ $authors->links('pagination::bootstrap-5') }}
         </div>
     </div>
 </div>

@@ -50,7 +50,7 @@
             </table>
         </div>
         
-        {{ $books->links() }}
+        {{ $books->links('pagination::bootstrap-5') }}
     @endif
 </div>
 @endsection

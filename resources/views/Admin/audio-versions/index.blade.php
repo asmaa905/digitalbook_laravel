@@ -91,8 +91,8 @@
             </table>
         </div>
         <div class="mt-3">
-            {{ $audioVersions->links() }}
-        </div>
+    {{ $audioVersions->links('pagination::bootstrap-5') }}
+</div>
     </div>
 </div>
 @endsection

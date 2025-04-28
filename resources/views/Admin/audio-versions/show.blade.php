@@ -3,9 +3,19 @@
 @section('admin-title', 'Show New Audio - ')
 @section('admin-content')
 <div class="card">
-    <div class="card-header">
-        <h5 class="mb-0">Show Audio Version</h5>
-    </div>
+<div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Audio Book Details</h5>
+        <div>
+            <a href="{{ route('admin.audio-versions.edit', $audioVersion->id) }}" class="btn btn-warning btn-sm">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a href="{{ route('admin.audio-versions.create') }}" 
+               class="btn btn-primary btn-sm">
+                <i class="fas fa-headphones"></i> Add New Audio Version
+            </a>
+        </div>
+        </div>
+
     <div class="card-body">
             <div class="row mb-3">
                 <div class="col-md-6">

@@ -119,7 +119,7 @@
             </div>
             
             <div>
-                {{ $payments->links() }}
+                {{ $payments->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </div>
