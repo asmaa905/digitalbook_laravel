@@ -45,10 +45,10 @@
                             @endif
                         </td>
                         <td>{{ $book->title }}</td>
-                        <td>{{ $book->author->name ?? 'N/A' }}</td>
-                        <td>{{ $book->category->name }}</td>
+                        <td>{{ $book->author?->name ?? 'N/A' }}</td>
+                        <td>{{ $book->category?->name }}</td>
                         <td>{{ $book->publish_date->format('M d, Y') }}</td>
-                        <td>{{ $book->publisher->name }}</td>
+                        <td>{{ $book->publisher?->name }}</td>
                         <td>
                         @if($book->is_published == 'accepted')
                                 <span class="badge bg-success">{{ $book->is_published }}</span>
