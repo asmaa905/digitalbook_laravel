@@ -11,10 +11,10 @@ class PublishingHousesSeeder extends Seeder
 public function run()
 {
     \App\Models\PublishingHouse::create([
-        'name' => 'Example Publisher',
+        'name' => 'Dar alsalam',
         'location' => '123 Main St',
-        'website' => 'http://example.com',
-        'image' => 'publishing_houses/aseer_alkutib.jpg',
+        'website' => 'http://darsalam.com',
+        'image' => 'publishing_houses/darsalam.jpg',
     ]);
 }
 }

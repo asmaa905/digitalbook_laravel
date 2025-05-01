@@ -18,7 +18,7 @@ A modern Laravel-based digital bookstore where users can browse, purchase, and e
 -   **Database**: MySQL
 -   **Authentication**: Laravel Breeze (or Jetstream)
 -   **Audio Streaming**: Laravel File Streaming
--   **Payments**: Stripe
+-   **Payments**: myfatoora
 
 ---
 
@@ -38,7 +38,8 @@ composer install
 ```
 
 3- Set Up Environment
- --- run this commands in git bash
+--- run this commands in git bash
+
 ```bash
 cp .env.example .env
 php artisan key:generate

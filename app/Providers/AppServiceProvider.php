@@ -21,7 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        try {
         View::share('categories', Category::orderBy('name')->get());
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Silently fail during migrations
+        }
 
     }
 }
