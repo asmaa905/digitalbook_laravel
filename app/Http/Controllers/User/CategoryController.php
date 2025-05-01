@@ -39,15 +39,16 @@ class CategoryController extends Controller
     $topRatedBooks = $category->books()
         ->with(['author', 'audioVersions'])
         ->orderByDesc('rating')
+        // ->where('rating','> 4')
         ->take(20)
         ->get();
 
     // Get featured books in this category
-    $featuredBooks = $category->books()
+    $isFeasuredBooks = $category->books()
         ->where('is_published', 'accepted')
         ->where(function($query) {
-            // $query->where('is_featured', 1)
-            $query->orWhereHas('publisher', function($publisherQuery) {
+             $query->where('is_featured', 1)
+            ->orWhereHas('publisher', function($publisherQuery) {
                     // Use the full subscription check here
                     $publisherQuery->whereHas('subscriptions', function($subQuery) {
                         $subQuery->where('status', 'confirm')
@@ -62,7 +63,7 @@ class CategoryController extends Controller
         ->take(20)
         ->get();
 
-    return view('user.categories.show', compact('category', 'featuredBooks', 'topRatedBooks'));
+    return view('user.categories.show', compact('category', 'isFeasuredBooks', 'topRatedBooks'));
 }
     public function topBooksInCat($categoryId){
         // Get the category with its books, sorted by title

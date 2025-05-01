@@ -9,6 +9,20 @@
 @section('page-content')
 <div class="container">
     <div class="card">
+        <!-- Display validation errors at the top -->
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        
         <div class="card-header">
             <h3>Active Subscriptions</h3>
         </div>
@@ -44,7 +58,7 @@
                                     @endif
                                    Remaining
                                 </td>
-                                <td class="d-flex">
+                                <td class="d-flex gap-2">
                                     @if($subscription->end_date && $subscription->end_date->lt(now()))
                                         <form action="{{ route('publisher.subscriptions.renew', $subscription->plan) }}" method="POST">
                                             @csrf

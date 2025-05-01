@@ -32,7 +32,18 @@
                     <tr>
                         <td>
                             @if($audio->book->image)
-                                <img src="{{ asset('storage/'.$audio->book->image) }}" width="50" height="70" class="img-thumbnail">
+                            @php
+                                    $storagePath = public_path('storage/' . $audio->book->image);
+                                    $publicPath = public_path( 'assets/images/' .  $audio->book->image);
+                                    if (!empty( $audio->book->image) && file_exists($storagePath)) {
+                                        $imageUrl = asset('storage/' .  $audio->book->image);
+                                    } elseif (!empty( $audio->book->image) && file_exists($publicPath)) {
+                                        $imageUrl = asset( 'assets/images/' . $audio->book->image);
+                                    }else {
+                                        $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
+                                    }      
+                                @endphp
+                                <img src="{{ $imageUrl }}" width="50" height="70" class="img-thumbnail">
                             @else
                                 <div class="bg-light d-flex align-items-center justify-content-center" style="width:50px;height:70px;">
                                     <i class="fas fa-book text-muted"></i>

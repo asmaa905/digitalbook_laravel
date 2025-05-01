@@ -1,7 +1,7 @@
 @extends('layouts.user')
 
 @section('user-title')
-  Categories
+  Categories - 
 @endsection
 
 @section('user-styles')

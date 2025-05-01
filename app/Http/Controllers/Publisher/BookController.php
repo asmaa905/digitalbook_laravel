@@ -88,7 +88,7 @@ class BookController extends BaseController
             'language' => 'required|string|max:10',
             'publish_house_id' => 'nullable|exists:publishing_houses,id',
             'image' => 'required|image|max:2048', // 2MB max
-            'pdf_link' => 'required|file|mimes:pdf,docx|max:65240', // 10MB max for PDF/DOCX
+            'pdf_link' => 'required|file|mimes:pdf|max:65240', // 10MB max for PDF
             'publish_date' => 'nullable|date',
             'is_featured' => 'nullable|boolean',
             'author_id' => 'required|exists:authors,id',
@@ -173,7 +173,7 @@ class BookController extends BaseController
             'language' => 'required|string|max:10',
             'publish_house_id' => 'required|exists:publishing_houses,id',
             'image' => 'nullable|image|max:2048', //defualt null
-            'pdf_link' => 'nullable|file|mimes:pdf,docx|max:65240', // 10MB max for PDF/DOCX //defualt null
+            'pdf_link' => 'nullable|file|mimes:pdf|max:65240', // 10MB max for PDF //defualt null
             'publish_date' => 'nullable|date', //defualt now
             'is_featured' => 'nullable|boolean', //defualt false
             'author_id' => 'required|exists:authors,id', // //defualt null

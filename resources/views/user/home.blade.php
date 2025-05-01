@@ -741,6 +741,8 @@ Home -
                                             Expired {{ $userSubscription->end_date ? $userSubscription->end_date->diffForHumans() : '' }}
                                         </div>
                                     @else
+                                        @if(Auth::check())
+                                            @if(auth()->user()->role=='Publsiher')
                                         <form action="{{ route('publisher.subscriptions.subscribe', $plan) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn-subscribe" {{ $disableSubscribe ? 'disabled' : '' }}>
@@ -751,9 +753,29 @@ Home -
                                                     You already have an active subscription
                                                 </div>
                                             @endif
+                                            </form>
+                                            @elseif(auth()->user()->role=='Admin'||auth()->user()->role=='Reader')
+                                                <form action="{{ route('publisher.subscriptions.subscribe', $plan) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="btn-subscribe" disabled>
+                                                        Subscribe Now
+                                                    </button>
+                                                        <div class="expiry-info mt-2">
+                                                            Register as publisher to  subscripe
+                                                        </div>
                                         </form>
                                     @endif
+                                             @else
+                                             <form action="{{ route('register') }}">
+                                                    <button type="submit" class="btn-subscribe">
+                                                        Subscribe Now
+                                                    </button>
+                                                     
+                                                </form>
                                 @endif
+                            @endif
+                            @endif
+
                             </div>
                         @endforeach
                     </div>
@@ -943,7 +965,8 @@ Home -
 
                             </div>
                         </section>
-                                            <!-- all featured books -->
+                    <!-- all featured books -->
+                    @if( $isFeasuredBooks->count() > 0)
                     <section class="books-section featured-books">
                             <div class="row px-0 mx-0">
                                 <div
@@ -973,7 +996,6 @@ Home -
                                 </div>
                             </div>
                             <div class="cards row p-0 m-0">
-                            @if( $isFeasuredBooks->count() > 0)
                             @foreach( $isFeasuredBooks as $book)
                             <a
                                     class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
@@ -1068,10 +1090,11 @@ Home -
                                     </div>
                                     </a>
                                 @endforeach
-                                @endif
+                                
 
                             </div>
                         </section>
+                    @endif
                     <!-- all books -->
                     <section class="books-section all-books">
                             <div class="row px-0 mx-0">

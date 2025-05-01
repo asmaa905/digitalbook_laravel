@@ -4,9 +4,6 @@
 {{ isset($book) ? 'Edit' : 'Create' }} Book -
 
 @endsection
-@section('admin-nav-title')
-{{ isset($book) ? 'Edit' : 'Create' }} Book
-@endsection
 
 @section('admin-content')
 <div class="card">
@@ -14,6 +11,16 @@
         <h5 class="mb-0">{{ isset($book) ? 'Edit' : 'Create' }} Book</h5>
     </div>
     <div class="card-body">
+         <!-- Display validation errors at the top -->
+        @if($errors->any())
+                        <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form method="POST" action="{{ isset($book) ? route('admin.books.update', $book->id) : route('admin.books.store') }}" enctype="multipart/form-data">
             @csrf
             @if(isset($book))
@@ -53,8 +60,8 @@
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label for="publish_house_id" class="form-label">Publishing House</label>
-                    <select class="form-select" id="publish_house_id" name="publish_house_id">
+                    <label for="publish_house_id" class="form-label">Publishing House*</label>
+                    <select class="form-select" id="publish_house_id" name="publish_house_id" required>
                         <option value="">Select Publishing House</option>
                         @foreach($publishingHouses as $house)
                             <option value="{{ $house->id }}" 
@@ -94,17 +101,26 @@
                     <input type="file" class="file-upload-input" name="image" accept="image/*" 
                         />    
                         @if(isset($book) && $book->image)
-                        <div class="mt-2">
-                            <img src="{{ asset('storage/'.$book->image) }}" width="100" class="img-thumbnail">
-                        </div>
-                    @endif
+                            @php
+                                $storagePath = public_path('storage/' .$book->image);
+                                $publicPath = public_path( 'assets/images/' . $book->image);
+                                if (!empty($book->image) && file_exists($storagePath)) {
+                                    $imageUrl = asset('storage/' . $book->image);
+                                } elseif (!empty($book->image) && file_exists($publicPath)) {
+                                    $imageUrl = asset( 'assets/images/' .$book->image);
+                                }else {
+                                    $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
+                                }      
+                            @endphp
+                               <div class="mt-2">
+                                  <img src="{{ $imageUrl }}" width="100" class="img-thumbnail">
+                               </div>
+                         @endif
                 </div>
 
                 <div class="col-md-6">
-                    <label for="pdf_link" class="form-label">Book File (PDF or DOCX only)*</label>
-               
-
-                     <input type="file" class="form-control" id="pdf_link" name="pdf_link" accept=".pdf,.docx"
+                    <label for="pdf_link" class="form-label">Book File (PDF only)*</label>
+                     <input type="file" class="form-control" id="pdf_link"  name="pdf_link" accept=".pdf"
                        />   
                     @if(isset($book) && $book->pdf_link)
                         <div class="mt-2" id="existing-file-container">
@@ -114,11 +130,22 @@
                                 @else
                                     <i class="fas fa-file-word fa-2x text-primary me-2"></i>
                                 @endif
+                                @php
+                                    $storageDownloadbookPath = public_path('storage/' .$book->pdf_link);
+                                    $publicDownloadbookPath = public_path('assets/' . $book->pdf_link);
+                                    if (!empty($book->pdf_link) && file_exists($storageDownloadbookPath)) {
+                                        $book_download_path = asset('storage/' . $book->pdf_link);
+                                    } elseif (!empty($book->pdf_link) && file_exists($publicDownloadbookPath)) {
+                                        $book_download_path = asset('assets/' .$book->pdf_link);
+                                    } else {
+                                        $book_download_path = asset('assets/books_pdf/book_defualt2.pdf');
+                                    }      
+                                @endphp      
                                 <div>
-                                    <a href="{{ asset('storage/'.$book->pdf_link) }}" target="_blank" class="d-block">
+                                    <a href="{{ $book_download_path }}"  target="_blank" rel="noopener"  class="d-block">
                                         View current file
                                     </a>
-                                    <small class="text-muted">{{ basename($book->pdf_link) }}</small>
+                                    <small class="text-muted">{{ $book->title }}.pdf</small>
                                 </div>
                             </div>
                         </div>
@@ -137,8 +164,14 @@
             </div>
 
             <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="is_featured" name="is_featured" 
-                       {{ old('is_featured', $book->is_featured ?? false) ? 'checked' : '' }}>
+
+
+            <input type="hidden" name="is_featured" value="0">
+<input type="checkbox" class="form-check-input" id="is_featured" name="is_featured" value="1"
+    {{ old('is_featured', $book->is_featured ?? false) ? 'checked' : '' }}>
+
+
+             
                 <label class="form-check-label" for="is_featured">Featured Book</label>
             </div>
             <div class="mb-3">
@@ -185,8 +218,8 @@
                 const fileType = file.name.split('.').pop().toLowerCase();
                 
                 // Validate file type
-                if (fileType !== 'pdf' && fileType !== 'docx') {
-                    alert('Only PDF and DOCX files are allowed.');
+                if (fileType !== 'pdf') {
+                    alert('Only PDF files are allowed.');
                     this.value = '';
                     return;
                 }

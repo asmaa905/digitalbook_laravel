@@ -203,22 +203,22 @@
                                 <div class="author">
                                     By
                                     <a href="#">
-                                    {{$book->author->name}}</a
+                                    {{$book->author?->name}}</a
                                     >
                                 </div>
                                 @foreach($book->audioVersions as $audio)
 
-                                <div class="narior">
+                                <div class="narrior">
                                     With:
                                     <a href="#">
-                                    {{$audio->creator->name}}</a
+                                    {{$audio->creator?->name}}</a
                                     >
                                 </div>
                                 @endforeach
                                 <div class="publisher">
                                     Publisher<a
                                         href="#"
-                                        >{{$book->publisher->name}}</a
+                                        >{{$book->publisher?->name}}</a
                                     >
                                 </div>
                             </div>
@@ -278,24 +278,11 @@
                                         <div class="value">{{$book->language}}</div>
                                     </div>
                                 </div>
-                                <!-- <div
-                                    class="audio-info-section col-md-2 d-flex flex-column justify-content-center align-items-center m-3"
-                                    style="border-right: 1px solid #ccc"
-                                >
-                                    <div class="info-sec-title">Duration</div>
-                                    <div class="info-sec-body d-flex">
-                                        <div class="icon">
-                                            <i class="fas fa-clock"></i>
-                                        </div>
-                                        <div class="value">1H 54Minutes</div>
-                                    </div>
-                                </div> -->
                                 <div
                                     class="audio-info-section col-md-2 d-flex flex-column justify-content-center align-items-center m-3"
                                     style="border-right: 1px solid #ccc"
                                 >
                                     <div class="info-sec-title">
-                                        <!-- <span class="rates-count">576</span> -->
                                         Format
                                     </div>
                                     <div
@@ -303,22 +290,18 @@
                                     >
                                         @if($book->audioVersions->count() > 0) 
                                         <div class="icon me-2">
-                                  
                                             <i
                                                 class="fas fa-headphones-simple"
                                             ></i>
                                      
                                         </div>   @endif
                                         @if($book->pdf_link)
-
                                         <div class="icon">
                                             <i class="fas fa-glasses"></i>
                                         </div>
                                         @endif
-                                      
                                     </div>
                                 </div>
-
                                 <div
                                     class="audio-info-section col-md-2 d-flex flex-column justify-content-center align-items-center m-3"
                                     style="border-right: 1px solid #ccc"
@@ -338,7 +321,14 @@
                                                 ></path>
                                             </svg>
                                         </div>
-                                        <div class="value">{{$book->category->name}}</div>
+                                        <a
+                                            class="value"
+                                            style="text-decoration-line:none;color:#5c5c5c"
+                                            href="{{$book->category?route('user.categories.show',$book->category->id):'#'}}">
+
+                                        
+                                            {{$book->category?->name}}
+                                        </a>
                                             <div
                                                 class="icon"
                                                 style="width: 1rem; height: 1rem"
@@ -367,20 +357,17 @@
                         <p class="desc">{{$book->description}}</p>
                         <div class="author-info">
                             <h5>About the author</h5>
-                            <p>{{$book->author->name}}</p>
+                            <p>{{$book->author?->name}}</p>
                         </div>
                         <div class="release-info">
                             <h5>Release Date</h5>
-
-                            <p>Ebook: <span>{{$book->publish_date->format('M d, Y') }}</span></p>
+                            <p>Ebook: <span>{{$book->publish_date?->format('M d, Y') }}</span></p>
                         </div>
-                      
                         <div class="mt-2" id="existing-file-container">
                             <div class="d-flex align-items-center">
                                 <div class="d-flex g-2" style="gap:5px">
                                     @if(isset($book) && $book->audioVersions->count())
                                         @if(( $book->publisher->role == 'Publisher' && $book->publisher->hasActiveSubscription))
-                                            <!-- Immediate download for subscribed publishers -->
                                             <button id="audio-full-btn" class="btn btn-outline-dark">
                                                 <i class="fas fa-music"></i> Watch all Audios
                                             </button>
@@ -403,9 +390,7 @@
                                                 } else {
                                                     $book_download_path = asset('assets/books_pdf/book_defualt2.pdf');
                                                 }      
-                                            @endphp
-                                            <!-- <audio id="audio_review" src="{{$book_download_path}}"></audio> -->
-                                    
+                                            @endphp                                    
                                            @if(( $book->publisher->role == 'Publisher' && $book->publisher->hasActiveSubscription))
                                                 <!-- Immediate download for subscribed publishers -->
                                                 <a href="{{ $book_download_path }}"   target="_blank" class="btn btn-dark rounded-sm" download="{{$book->title}}.pdf">
@@ -438,7 +423,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="all-audios mt-3" style="display:none">
                             @if(isset($book) && $book->audioVersions->count())
                                 @foreach($book->audioVersions as $audioV)
@@ -454,7 +438,7 @@
                                         }      
                                     @endphp
                                     <div class="audio-item mb-3">
-                                        <p>By: {{$audioV->creator->name}}</p>
+                                        <p>By: {{$audioV->creator?->name}}</p>
                                         <audio controls style="width: 100%">
                                             <source src="{{ $audioUrl }}" type="audio/mpeg">
                                             Your browser does not support the audio element.
@@ -470,7 +454,7 @@
                         <div
                             class="sec-header col-md-12 d-flex justify-content-between align-items-center"
                         >
-                            <h3 class="sec-title">More by {{ $book->author?$book->author->name:'known' }}</h3>
+                            <h3 class="sec-title">More by {{ $book->author?$book->author?->name:'unknown' }}</h3>
                             <div class="all-books-link d-flex">
                                 <span> View all titles</span>
                                 <div
@@ -489,7 +473,6 @@
                                         ></path>
                                     </svg>
                                 </div>
-                                <!-- <i class="fas fa-greater-than"></i> -->
                             </div>
                         </div>
                     </div>
@@ -601,7 +584,6 @@
                                         ></path>
                                     </svg>
                                 </div>
-                                <!-- <i class="fas fa-greater-than"></i> -->
                             </div>
                         </div>
                     </div>
@@ -733,6 +715,7 @@
                                 </div>
                             </div>
                         </div>
+                    
                         @auth 
                             @php
                             $isReaded = auth()->user()->readedBooks()->where('book_id', $book->id)->exists();
@@ -756,6 +739,7 @@
                                             <div
                                     class="comment-sec-head d-flex justify-content-start"
                                 >
+                                          <!-- User image and info -->
                                     <div
                                         class="creator-img"
                                         style="
@@ -780,6 +764,12 @@
                                             margin-right: 20px;
                                         "
                                     >
+                                        @if(auth()->check() &&auth()->user()->image)
+                                            <img src="{{ asset('storage/' . auth()->user()->image) }}" 
+                                                alt="Current Profile Image"
+                                                class="account-avatar w-100 h-100"
+                                                style="display: block; margin-bottom: 10px; border-radius: 50%;"/>
+                                        @else
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             style="width: 59%; height: 100%"
@@ -794,6 +784,7 @@
                                                 d="M7.998 10.515c-2.407 0-4.389 1.373-4.641 3.654-.03.274-.251.499-.527.499h-.163a.469.469 0 0 1-.479-.5c.256-2.936 2.759-4.816 5.81-4.816 3.053 0 5.557 1.88 5.813 4.816a.469.469 0 0 1-.479.5h-.163c-.276 0-.497-.225-.527-.5-.252-2.28-2.234-3.653-4.643-3.653Z"
                                             ></path>
                                         </svg>
+                                    @endif
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center w-100">
                                         <div class="rate-creator-info">
@@ -811,7 +802,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    
                                     </div> 
                                 </div>
                                           
@@ -908,7 +898,13 @@
                                             background-repeat: no-repeat;
                                             margin-right: 20px;
                                         "
-                                    >
+                                >
+                                    @if($review->user->image)
+                                        <img src="{{ asset('storage/' . $review->user->image) }}" 
+                                            alt="Current Profile Image"
+                                            class="account-avatar w-100 h-100"
+                                            style="display: block; margin-bottom: 10px; border-radius: 50%;"/>
+                                    @else
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             style="width: 59%; height: 100%"
@@ -923,6 +919,7 @@
                                                 d="M7.998 10.515c-2.407 0-4.389 1.373-4.641 3.654-.03.274-.251.499-.527.499h-.163a.469.469 0 0 1-.479-.5c.256-2.936 2.759-4.816 5.81-4.816 3.053 0 5.557 1.88 5.813 4.816a.469.469 0 0 1-.479.5h-.163c-.276 0-.497-.225-.527-.5-.252-2.28-2.234-3.653-4.643-3.653Z"
                                             ></path>
                                         </svg>
+                                    @endif
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center w-100">
                                         <div class="rate-creator-info">
@@ -955,6 +952,7 @@
                             @endforeach
                         @else
                             <p class="comments d-flex flex-column justify-content-between col-sm-6 col-12">No reviews yet. Be the first to review!</p>
+                       
                         </div>  @endif
                     </div>
                 </section>
@@ -1078,7 +1076,8 @@
             });
         });
     });
-    
+});
+   // Star Rating Functionality
     function highlightStars(stars, upToIndex, isHover = false) {
         stars.forEach((star, index) => {
             star.classList.remove('selected', 'hover');
@@ -1097,8 +1096,8 @@
             }
         });
     }
+// Delete review confirmation
 
-});    //delete comment
     function confirmDelete(reviewId) {
     if (confirm('Are you sure you want to delete this review?')) {
         document.getElementById('delete-form-' + reviewId).submit();

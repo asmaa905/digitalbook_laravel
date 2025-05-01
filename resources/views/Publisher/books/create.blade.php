@@ -179,12 +179,12 @@
                   <!-- Fix the PDF file input -->
 
           <div class="form-group">
-        <label for="pdf_link" class="form-label">Book File (PDF or DOCX only)*</label>
+        <label for="pdf_link" class="form-label">Book File (PDF only)*</label>
         @php
             $isnotpdfRequired = ($type == 'edit' && asset($book) && $book->pdf_link);
         @endphp
 
-         <input type="file" class="form-control" id="pdf_link" name="pdf_link" accept=".pdf,.docx"
+         <input type="file" class="form-control" id="pdf_link" name="pdf_link" accept=".pdf"
             @if(!$isnotpdfRequired) required @endif />
                     @if(isset($book) && $book->pdf_link)
                         <div class="mt-2" id="existing-file-container">

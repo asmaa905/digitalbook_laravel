@@ -38,9 +38,9 @@ class AdminBookController extends BaseController
             'publish_house_id' => 'required|exists:publishing_houses,id',
             'is_published' => 'nullable|in:waiting,accepted,rejected',
             'image' => 'nullable|image|max:2048',
-            'pdf_link' => 'nullable|file|mimes:pdf,docx|max:65240',
+            'pdf_link' => 'nullable|file|mimes:pdf|max:65240',
             'publish_date' => 'nullable|date',
-            'is_featured' => 'nullable|boolean',
+            'is_featured' => 'nullable|boolean', // Changed this line
             'author_id' => 'required|exists:authors,id',
         ]);
 
@@ -94,7 +94,6 @@ class AdminBookController extends BaseController
     {
         
         $validated = $request->validate([
-            
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
@@ -102,11 +101,12 @@ class AdminBookController extends BaseController
             'publish_house_id' => 'nullable|exists:publishing_houses,id',
             'is_published' => 'required|in:waiting,accepted,rejected',
             'image' => 'image|max:2048',
-            'pdf_link' => 'file|mimes:pdf,docx|max:65240',
+            'pdf_link' => 'file|mimes:pdf|max:65240',
             'publish_date' => 'required|date',
-            'is_featured' => 'boolean',
+            'is_featured' => 'nullable|boolean', // Changed this line
             'author_id' => 'required|exists:authors,id',
         ]);
+
 
         if ($request->hasFile('pdf_link')) {
             if ($book->pdf_link) {
@@ -125,7 +125,8 @@ class AdminBookController extends BaseController
             $validated['image'] = $request->file('image')->store('books/covers', 'public');
         }
 
-        $validated['is_featured'] = $request->has('is_featured');
+        $validated['is_featured'] = $request->boolean('is_featured');
+
         if (empty($validated['is_featured'])) {
             $validated['is_featured'] = false;
         }

@@ -303,6 +303,8 @@
                         </li>
                     </ul>
                 </nav>
+                @if( $isFeasuredBooks->count() > 0)
+
                 <section class="books-section featured-books">
                     <div class="row px-0 mx-0">
                         <div
@@ -332,7 +334,8 @@
                         </div>
                     </div>
                     <div class="cards row p-0 m-0">
-                        @foreach($books as $book)
+
+                        @foreach($isFeasuredBooks as $book)
                             <a href="{{ route('user.books.show', $book->id) }}" 
                                 class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6 text-decoration-none position-relative"
                                 style="border-radius: 5px">
@@ -416,8 +419,9 @@
                                 </div>
                             </a>
                         @endforeach
-
+                  
                 </section>
+                @endif
                 <section class="books-section world-books">
                     <div class="row px-0 mx-0">
                         <div

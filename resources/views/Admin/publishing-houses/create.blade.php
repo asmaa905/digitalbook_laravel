@@ -24,8 +24,19 @@
                     <label for="image" class="form-label">Logo</label>
                     <input type="file" class="form-control" id="image" name="image" accept="image/*">
                     @if(isset($publishingHouse) && $publishingHouse->image)
+                        @php
+                            $storagePath = public_path('storage/' .$publishingHouse->image);
+                            $publicPath = public_path( 'assets/images/' . $publishingHouse->image);
+                            if (!empty($publishingHouse->image) && file_exists($storagePath)) {
+                                $imageUrl = asset('storage/' . $publishingHouse->image);
+                            } elseif (!empty($publishingHouse->image) && file_exists($publicPath)) {
+                                $imageUrl = asset( 'assets/images/' .$publishingHouse->image);
+                            }else {
+                                $imageUrl =asset('assets/images/' .'publishing_houses/defualt.jpg' );
+                            }      
+                        @endphp
                         <div class="mt-2">
-                            <img src="{{ asset('storage/'.$publishingHouse->image) }}" width="100" class="img-thumbnail">
+                            <img src="{{ $imageUrl }}" width="100" class="img-thumbnail">
                         </div>
                     @endif
                 </div>

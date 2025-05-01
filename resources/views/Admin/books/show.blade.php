@@ -19,20 +19,33 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-4 text-center">
+
                 @if($book->image)
-                    <img src="{{ asset('storage/'.$book->image) }}" class="img-fluid rounded mb-3" alt="Book Cover">
+                    @php
+                        $storagePath = public_path('storage/' .$book->image);
+                        $publicPath = public_path( 'assets/images/' . $book->image);
+                        if (!empty($book->image) && file_exists($storagePath)) {
+                            $imageUrl = asset('storage/' . $book->image);
+                        } elseif (!empty($book->image) && file_exists($publicPath)) {
+                            $imageUrl = asset( 'assets/images/' .$book->image);
+                        }else {
+                            $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
+                        }      
+                    @endphp
+                    <img src="{{ $imageUrl }}" class="img-fluid rounded mb-3" alt="Book Cover">
                 @else
-                    <div class="bg-light d-flex align-items-center justify-content-center" style="height:300px;">
+                <div class="bg-light d-flex align-items-center justify-content-center" style="height:300px;">
                         <i class="fas fa-book fa-5x text-muted"></i>
                     </div>
                 @endif
+              
             </div>
             <div class="col-md-8">
                 <h2>{{ $book->title }}</h2>
-                <p class="text-muted">by {{ $book->author->name ?? 'Unknown Author' }}</p>
+                <p class="text-muted">by {{ $book->author?->name ?? 'Unknown Author' }}</p>
                 
                 <div class="mb-4">
-                    <span class="badge bg-primary">{{ $book->category->name }}</span>
+                    <span class="badge bg-primary">{{ $book->category?->name }}</span>
                     @if($book->is_featured)
                         <span class="badge bg-success ms-2">Featured</span>
                     @endif
@@ -43,31 +56,41 @@
                     
                     <div class="col-md-4">
                         <h6>Published Date</h6>
-                        <p>{{ $book->publish_date->format('M d, Y') }}</p>
+                        <p>{{ $book->publish_date?->format('M d, Y') }}</p>
                     </div>
                     <div class="col-md-4">
                         <h6>Publishing House</h6>
-                        <p>{{ $book->publishingHouse->name ?? 'N/A' }}</p>
+                        <p>{{ $book->publishingHouse?->name ?? 'N/A' }}</p>
                     </div>
                 </div>
                 
                 <h5>Description</h5>
                 <p>{{ $book->description }}</p>
-                
-              
                 @if(isset($book) && $book->pdf_link)
-                        <div class="mt-2" id="existing-file-container">
-                            <div class="d-flex align-items-center">
-                              
-                                <div>
-                                <a href="{{ asset('storage/'.$book->pdf_link) }}" target="_blank" class="btn btn-outline-primary">
-                                    <i class="fas fa-file-pdf"></i> View PDF
-                                </a>
-                                   
-                                </div>
+                    @php
+                        $storageDownloadbookPath = public_path('storage/' .$book->pdf_link);
+                        $publicDownloadbookPath = public_path('assets/' . $book->pdf_link);
+                        if (!empty($book->pdf_link) && file_exists($storageDownloadbookPath)) {
+                            $book_download_path = asset('storage/' . $book->pdf_link);
+                        } elseif (!empty($book->pdf_link) && file_exists($publicDownloadbookPath)) {
+                            $book_download_path = asset('assets/' .$book->pdf_link);
+                        } else {
+                            $book_download_path = asset('assets/books_pdf/book_defualt2.pdf');
+                        }      
+                    @endphp                                    
+                    <div class="mt-2" id="existing-file-container">
+                        <div class="d-flex align-items-center">
+                            
+                            <div>
+                            <a href="{{ $book_download_path }}" target="_blank" class="btn btn-outline-primary"
+                                download="{{$book->title}}.pdf">
+                                <i class="fas fa-file-pdf"></i> Download PDF
+                            </a>
+                                
                             </div>
                         </div>
-                    @endif
+                    </div>
+                @endif
             </div>
         </div>
         

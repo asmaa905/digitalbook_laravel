@@ -28,7 +28,19 @@
                     <tr>
                         <td>
                             @if($house->image)
-                                <img src="{{ asset('storage/'.$house->image) }}" width="50" height="50" class="rounded-circle">
+                            @php
+                                    $storagePath = public_path('storage/' .$house->image);
+                                    $publicPath = public_path( 'assets/images/' . $house->image);
+                                    if (!empty($house->image) && file_exists($storagePath)) {
+                                        $imageUrl = asset('storage/' . $house->image);
+                                    } elseif (!empty($house->image) && file_exists($publicPath)) {
+                                        $imageUrl = asset( 'assets/images/' .$house->image);
+                                    }else {
+                                        $imageUrl =asset('assets/images/' .'publishing_houses/defualt.jpg' );
+                                    }      
+                                @endphp
+                                <img src="{{ $imageUrl }}"  width="50" height="50" class="rounded-circle">
+                         
                             @else
                                 <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" style="width:50px;height:50px;">
                                     <i class="fas fa-building text-muted"></i>

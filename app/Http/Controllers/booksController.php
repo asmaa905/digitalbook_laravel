@@ -190,15 +190,14 @@ class BooksController extends Controller
             ->take(20)
             ->get();
     
-        $isFeaturedBooks = Book::whereHas('audioVersions', function($query) {
+        $isFeasuredBooks = Book::whereHas('audioVersions', function($query) {
                 $query->whereNotNull('audio_link');
             })
             ->where('is_published', 'accepted')
-
             ->with(['author', 'audioVersions'])
             ->where(function($query) {
-                // $query->where('is_featured', 1)
-                $query->orWhereHas('publisher', function($publisherQuery) {
+                $query->where('is_featured', 1)
+                ->orWhereHas('publisher', function($publisherQuery) {
                         // Use the full subscription check here
                         $publisherQuery->whereHas('subscriptions', function($subQuery) {
                             $subQuery->where('status', 'confirm')
@@ -214,7 +213,7 @@ class BooksController extends Controller
     
         $book_type = 'audio';
         
-        return view('user.Books.index', compact('books', 'topRatedBooks', 'isFeaturedBooks', 'book_type'));
+        return view('user.Books.index', compact('books', 'topRatedBooks', 'isFeasuredBooks', 'book_type'));
     }
 
     public function show_ebooks()
@@ -222,7 +221,6 @@ class BooksController extends Controller
         // Get books that have PDF link AND no audio versions
         $books = Book::whereNotNull('pdf_link')
             ->where('is_published', 'accepted')
-
             ->with(['author', 'audioVersions'])
             ->orderBy('title')
             ->get();
@@ -230,16 +228,15 @@ class BooksController extends Controller
         $topRatedBooks = Book::whereNotNull('pdf_link')
             ->with(['author', 'audioVersions'])
             ->where('is_published', 'accepted')
-
             ->orderByDesc('rating')
             ->take(20)
             ->get();
-    
+
             $isFeasuredBooks = Book::whereNotNull('pdf_link')
             ->where('is_published', 'accepted')
             ->where(function($query) {
-                // $query->where('is_featured', 1)
-                $query->orWhereHas('publisher', function($publisherQuery) {
+                $query->where('is_featured', 1)
+                ->orWhereHas('publisher', function($publisherQuery) {
                         // Use the full subscription check here
                         $publisherQuery->whereHas('subscriptions', function($subQuery) {
                             $subQuery->where('status', 'confirm')
@@ -273,7 +270,7 @@ class BooksController extends Controller
             },
             'reviews' => function($query) {
                 $query->with(['user' => function($q) {
-                    $q->select('id', 'name'); // Review author
+                    $q->select('id', 'name','image'); // Review author
                 }])
                 ->orderBy('created_at', 'desc');
             }

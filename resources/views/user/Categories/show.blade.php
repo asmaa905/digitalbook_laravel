@@ -2,7 +2,7 @@
 @extends('layouts.user')
 
 @section('user-title')
-- categories Audio ooks and ebooks - {{$category->name}} 
+{{$category->name}} - categories Audiobooks and ebooks  - 
 @endsection
 @section('user-styles')
     <style>
@@ -267,7 +267,7 @@
                                
                             </h5>
                             <p class="card-text pb-0 mb-0">
-                            {{$book->author->name}}
+                            {{$book->author?->name}}
                             </p>
                             <div
                                 class="actions d-flex justify-content-between align-items-center"
@@ -395,7 +395,7 @@
                                
                             </h5>
                             <p class="card-text pb-0 mb-0">
-                            {{$book->author->name}}
+                            {{$book->author?->name}}
                             </p>
                             <div
                                 class="actions d-flex justify-content-between align-items-center"
@@ -432,17 +432,16 @@
                                         />
                                     </div>
                                     @endif
-
                                 </div>
                             </div>
                         </div>
                         </a>
                     @endforeach
                     @endif
-
                 </div>
             </section>
         <!-- all featured books -->
+        @if( $isFeasuredBooks->count() > 0)
         <section class="books-section featured-books">
                 <div class="row px-0 mx-0">
                     <div
@@ -452,9 +451,9 @@
                         <div class="all-books-link d-flex">
                         <a style="text-decoration-line:none; color:#000" href="{{route('user.categories.topBooks',$category->id)}}"> View all titles</a>
                         <div
-                                class="icon"
-                                style="width: 1rem; height: 1rem"
-                            >
+                            class="icon"
+                            style="width: 1rem; height: 1rem"
+                        >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     style="width: 100%; height: 100%"
@@ -472,8 +471,7 @@
                     </div>
                 </div>
                 <div class="cards row p-0 m-0">
-                @if( $featuredBooks->count() > 0)
-                @foreach( $featuredBooks as $book)
+                @foreach( $isFeasuredBooks as $book)
                 <a
                     class="card border-1 book-card col-lg-12-8 col-md-2 col-sm-3 col-6"
                     style="border-radius: 5px;text-decoration-line:none"
@@ -484,12 +482,10 @@
                                 @php
                                     $isFav = auth()->user()->favBooks->contains($book->id);
                                 @endphp
-
                                 <form method="POST" action="{{ route('books.reader.makeFav', $book) }}" class="position-absolute" style="top:5px;right:5px">
                                     @csrf
                                     <button type="submit" class="btn  rounded-sm px-1  btn-fav" style="padding-top:1px;padding-bottom:1px ">
                                             <i class="{{ $isFav ? 'fas' : 'far' }} fa-heart mr-2 text-dark"></i>
-                                        
                                     </button>
                                 </form>
                             @endif
@@ -567,10 +563,9 @@
                         </div>
                         </a>
                     @endforeach
-                    @endif
-
-                        </div>
+                </div>
             </section>
+          @endif
         </div>
     </div>
 @endsection
