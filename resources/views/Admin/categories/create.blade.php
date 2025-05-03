@@ -27,7 +27,7 @@
 
             <div class="d-flex justify-content-between">
                 <a href="{{ route('admin.categories.index') }}" class="btn btn-secondary">Cancel</a>
-                <button type="submit" class="btn btn-primary">Save Category</button>
+                <button type="submit" class="btn btn-orange">Save Category</button>
             </div>
         </form>
     </div>

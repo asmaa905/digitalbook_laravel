@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('admin-title', 'Edit User')
-@section('admin-nav-title', 'Edit User')
 
 @section('admin-content')
 <div class="card">
@@ -116,7 +115,7 @@
             </div>
 
             <div class="mt-4">
-                <button type="submit" class="btn btn-primary">Update User</button>
+                <button type="submit" class="btn btn-orange">Update User</button>
                 <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>

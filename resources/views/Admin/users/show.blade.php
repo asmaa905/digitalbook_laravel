@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('admin-title', 'User Details: ' . $user->name)
-@section('admin-nav-title', 'User Details')
 
 @section('admin-content')
 <div class="card">
@@ -98,7 +97,7 @@
         @endif
 
         <div class="mt-4 border-top pt-4">
-            <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-primary">
+            <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-orange">
                 <i class="fas fa-edit me-2"></i> Edit User
             </a>
             <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">

@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('admin-title', '- Create New Audio')
-@section('admin-nav-title', 'Create New Audio')
 @section('admin-content')
 <div class="card">
     <div class="card-header">
@@ -75,14 +74,31 @@
                     @error('audio_file')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+
                     @if(isset($audioVersion) && $audioVersion->audio_link)
+                        @php
+                            $storagePath = public_path('storage/' .$audioVersion->audio_link);
+                            $publicPath = public_path('assets/images/' . $audioVersion->audio_link);
+                            if (!empty($audioVersion->audio_link) && file_exists($storagePath)) {
+                                $audioUrl = asset('storage/' . $audioVersion->audio_link);
+                            } elseif (!empty($audioVersion->audio_link) && file_exists($publicPath)) {
+                                $audioUrl = asset('assets/images/' .$audioVersion->audio_link);
+                            } else {
+                                $audioUrl = false;
+                            }      
+                        @endphp
+                        @if($audioUrl)
                         <div class="mt-2">
                             <audio controls>
-                                <source src="{{ asset('storage/'.$audioVersion->audio_link) }}" type="audio/mpeg">
+                                <source src="{{ $audioUrl }}" type="audio/mpeg">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
+                        @else
+                            <span class="text-danger">audio file not Available</span>
+                        @endif
                     @endif
+                    
                 </div>
             </div>
 
@@ -94,13 +110,29 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
                 @if(isset($audioVersion) && $audioVersion->review_record_link)
+                    @php
+                        $storagePath = public_path('storage/' .$audioVersion->review_record_link);
+                        $publicPath = public_path('assets/images/' . $audioVersion->review_record_link);
+                        if (!empty($audioVersion->review_record_link) && file_exists($storagePath)) {
+                            $audioReviewUrl = asset('storage/' .$audioVersion->review_record_link);
+                        } elseif (!empty($audioVersion->review_record_link) && file_exists($publicPath)) {
+                            $audioReviewUrl = asset('assets/images/' .$audioVersion->review_record_link);
+                        } else {
+                            $audioReviewUrl = false;
+                        }      
+                    @endphp
+                    @if($audioReviewUrl)
                     <div class="mt-2">
-                        <audio controls>
-                            <source src="{{ asset('storage/'.$audioVersion->review_record_link) }}" type="audio/mp3">
-                            Your browser does not support the audio element.
-                        </audio>
+                          <audio controls>
+                                <source src="{{ $audioReviewUrl }}" type="audio/mp3">
+                                Your browser does not support the audio element.
+                          </audio>
                     </div>
+                    @else
+                        <span class="text-danger">audio file not Available</span>
+                    @endif
                 @endif
+
             </div>
 
             <div class="mb-3">
@@ -119,7 +151,7 @@
 
             <div class="d-flex justify-content-between">
                 <a href="{{ route('admin.audio-versions.index') }}" class="btn btn-secondary">Cancel</a>
-                <button type="submit" class="btn btn-primary">Save Audio Version</button>
+                <button type="submit" class="btn btn-orange">Save Audio Version</button>
             </div>
         </form>
     </div>

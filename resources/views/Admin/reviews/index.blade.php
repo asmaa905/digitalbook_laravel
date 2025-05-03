@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('admin-title', 'Manage Reviews')
-@section('admin-nav-title', 'Book Reviews Management')
 
 @section('admin-styles')
 <style>
@@ -15,11 +14,14 @@
 @endsection
 
 @section('admin-content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">All Reviews</h5>
-      
+
+<div class="container-fluid">
+    <div class="filter-container d-flex justify-content-between align-items-center">    
+        <strong class="mb-0">All Reviews</strong>
+       
     </div>
+    <div class="card">
+    
     
     <div class="card-body">
        {{-- <form method="GET" action="{{ route('admin.reviews.index') }}" class="mb-4">
@@ -61,7 +63,7 @@
                 </div>
                 
                 <div class="col-md-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-orange">
                         <i class="fas fa-filter"></i> Filter
                     </button>
                 </div>
@@ -127,5 +129,6 @@
             {{ $reviews->appends(request()->query())->links() }}
         </div>
     </div>
+</div>
 </div>
 @endsection

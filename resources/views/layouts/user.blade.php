@@ -98,12 +98,11 @@
                                     <a class="nav-link dropdown-toggle
                                     d-flex justify-content-center align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <div class="profile-icon">
-                                            <i class="fas fa-user-circle" style="font-size:17px"></i>
-                                            {{--  @if(auth()->user()->image)
+                                              @if(auth()->user()->image)
                                                     <img src="{{ asset('storage/' . auth()->user()->image) }}" alt="Profile" class="profile-image">
                                                 @else
-                                                    <i class="fas fa-user-circle"></i>
-                                                @endif--}}
+                                                    <i class="fas fa-user-circle"style="font-size:17px">></i>
+                                                @endif
                                             </div>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

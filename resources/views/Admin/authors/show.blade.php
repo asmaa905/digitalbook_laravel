@@ -38,7 +38,7 @@
 
             <div class="d-flex justify-content-between">
                 <a href="{{ route('admin.authors.index') }}" class="btn btn-secondary">Cancel</a>
-                <button type="submit" class="btn btn-primary">Save Author</button>
+                <button type="submit" class="btn btn-orange">Save Author</button>
             </div>
         </form>
     </div>

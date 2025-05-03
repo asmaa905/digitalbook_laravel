@@ -3,18 +3,38 @@
 @section('admin-title')
   Mange Books
 @endsection
-@section('admin-nav-title')
-  Mange Books
+@section('admin-styles')
+<style>
+
+    .filter-container {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 0.25rem;
+        margin-bottom: 1.5rem;
+    }
+    .btn-orange{
+        background:#FF5C28;
+        color:white
+    }
+    .btn-orange:hover{
+        border:1px solid #FF5C28;
+        color:#FF5C28
+    }
+
+</style>
 @endsection
 
 @section('admin-content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Books Management</h5>
-        <a href="{{ route('admin.books.create') }}" class="btn btn-primary">
+<div class="container-fluid">
+    <div class="filter-container d-flex justify-content-between align-items-center">
+      
+    <strong class="mb-0">Books Management</strong>
+        <a href="{{ route('admin.books.create') }}" class="btn btn-orange">
             <i class="fas fa-plus"></i> Add Book
         </a>
     </div>
+<div class="card">
+   
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-hover">
@@ -109,4 +129,6 @@
         </div>
     </div>
 </div>
+</div>
+
 @endsection

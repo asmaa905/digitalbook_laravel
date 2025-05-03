@@ -1,0 +1,134 @@
+li.nav-item a.nav-link {
+    color: #fff;
+    font-family: "Storytel Euclid", sans-serif;
+    font-size: 16px;
+    line-height: 22px;
+    transition: all 0.3s ease;
+}
+
+li.nav-item a.nav-link:hover {
+    color: #fff !important;
+    /* border: 1px solid #ff5c28; */
+    background-color: #ddd;
+    border-radius: 10px;
+}
+li.nav-item a.nav-link:hover i {
+    color: #fff;
+}
+li.nav-item a.nav-link {
+    color: #000;
+}
+@media screen and (min-width: 1280px) {
+    .sMspI {
+        flex-direction: row;
+        align-items: center;
+        padding-block-end: 0px;
+        border-bottom: none;
+    }
+}
+
+/* Profile Dropdown */
+.profile-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+.profile-icon i {
+    font-size: 1.5rem;
+}
+
+.profile-image {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dropdown-menu {
+    background-color: #2a2a2a;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-item {
+    color: white;
+    padding: 8px 16px;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    /* background-color: #ff5c28;
+    color: white; */
+}
+
+.dropdown-divider {
+    border-color: #444;
+}
+
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    left: auto;
+}
+
+.navbar-nav .dropdown-menu {
+    position: absolute;
+}
+
+button:focus:not(:focus-visible) {
+    outline: 0;
+}
+
+.navbar-toggler:focus {
+    text-decoration: none;
+    outline: 0;
+    box-shadow: unset;
+}
+/* For mobile view */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        padding-bottom: 15px;
+    }
+    .dropdown-menu {
+        position: static;
+        float: none;
+    }
+}
+.dropdown-menu[data-bs-popper] {
+    left: -86px;
+}
+
+.btn-orange {
+    background: #ff5c28;
+    color: white;
+}
+.btn-orange:hover {
+    border: 1px solid #ff5c28;
+    color: #ff5c28;
+}
+.pagination {
+    --bs-pagination-color: #ff5c28;
+    --bs-pagination-active-bg: #ff5c28;
+    --bs-pagination-active-border-color: #ff5c28;
+    --bs-pagination-active-color: #fff;
+}
+.active > .page-link,
+.page-link.active {
+    z-index: 3;
+    color: var(--bs-pagination-active-color);
+    background-color: var(--bs-pagination-active-bg);
+    border-color: var(--bs-pagination-active-border-color);
+}
+.filter-container {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    margin-bottom: 1.5rem;
+}
+.bg-custom-light {
+    background-color: #eff0f1;
+}

@@ -139,7 +139,20 @@
                          
                         </div>  
                           @if($book->audioVersions->count() > 0)
+                          @php
+                                $storageAudio_reviewPath = public_path('storage/' .$book->audioVersions[0]->review_record_link);
+                                $publicAudio_reviewPath = public_path('assets/images/' . $book->audioVersions[0]->review_record_link);
+                                if (!empty($book->audioVersions[0]->review_record_link) && file_exists($storageAudio_reviewPath)) {
+                                    $audio_reviewUrl = asset('storage/' . $book->audioVersions[0]->review_record_link);
+                                } elseif (!empty($book->audioVersions[0]->review_record_link) && file_exists($publicAudio_reviewPath)) {
+                                    $audio_reviewUrl = asset('assets/images/' .$book->audioVersions[0]->review_record_link);
+                                } else {
+                                   // $audio_reviewUrl = asset('assets/images/books_audio_reviews/defualt.mp3'); 
+                                   $audio_reviewUrl = false; 
+                                }      
+                            @endphp
                         <div class="audio-review w-75 me-auto mt-2">
+                             @if($audio_reviewUrl)
                             <div
                                 class="d-flex justify-content-center align-items-center"
                             >
@@ -162,19 +175,13 @@
                             
                                 <p class="text m-0">Sample</p>
                             </div>
-                            @php
-                                $storageAudio_reviewPath = public_path('storage/' .$book->audioVersions[0]->review_record_link);
-                                $publicAudio_reviewPath = public_path('assets/images/' . $book->audioVersions[0]->review_record_link);
-                                if (!empty($book->audioVersions[0]->review_record_link) && file_exists($storageAudio_reviewPath)) {
-                                    $audio_reviewUrl = asset('storage/' . $book->audioVersions[0]->review_record_link);
-                                } elseif (!empty($book->audioVersions[0]->review_record_link) && file_exists($publicAudio_reviewPath)) {
-                                    $audio_reviewUrl = asset('assets/images/' .$book->audioVersions[0]->review_record_link);
-                                } else {
-                                    $audio_reviewUrl = asset('assets/images/books_audio_reviews/defualt.mp3');
-                                }      
-                            @endphp
-                            <audio id="audio_review" src="{{$audio_reviewUrl}}"></audio>
-                        </div>
+                            @endif
+                            @if($audio_reviewUrl)
+                              <audio id="audio_review" src="{{$audio_reviewUrl}}"></audio>
+                            @else
+                               <p id="audio_review" class="alert-warning alert d-none no-sample">there is no sample audio</p>
+                            @endif
+                            </div>
                         @endif
 
                     </div>

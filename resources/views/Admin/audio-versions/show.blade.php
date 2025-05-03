@@ -10,7 +10,7 @@
                 <i class="fas fa-edit"></i> Edit
             </a>
             <a href="{{ route('admin.audio-versions.create') }}" 
-               class="btn btn-primary btn-sm">
+               class="btn  btn-primary btn-sm">
                 <i class="fas fa-headphones"></i> Add New Audio Version
             </a>
         </div>
@@ -59,14 +59,31 @@
                     <label for="audio_file" class="form-label">Audio File (Max: 64MB)</label>
                     <input type="file" class="form-control @error('audio_file') is-invalid @enderror" id="audio_file" name="audio_file" accept="audio/*" disabled>
                   
+                   
                     @if(isset($audioVersion) && $audioVersion->audio_link)
+                        @php
+                            $storagePath = public_path('storage/' .$audioVersion->audio_link);
+                            $publicPath = public_path('assets/images/' . $audioVersion->audio_link);
+                            if (!empty($audioVersion->audio_link) && file_exists($storagePath)) {
+                                $audioUrl = asset('storage/' . $audioVersion->audio_link);
+                            } elseif (!empty($audioVersion->audio_link) && file_exists($publicPath)) {
+                                $audioUrl = asset('assets/images/' .$audioVersion->audio_link);
+                            } else {
+                                $audioUrl = false;
+                            }      
+                        @endphp
+                        @if($audioUrl)
                         <div class="mt-2">
                             <audio controls>
-                                <source src="{{ asset('storage/'.$audioVersion->audio_link) }}" type="audio/mpeg">
+                                <source src="{{ $audioUrl }}" type="audio/mpeg">
                                 Your browser does not support the audio element.
                             </audio>
                         </div>
+                        @else
+                            <span class="text-danger">audio file not Available</span>
+                        @endif
                     @endif
+                    
                 </div>
             </div>
 
@@ -74,13 +91,29 @@
                 <label for="review_record_link" class="form-label">Review Record Link</label>
                 <input type="file" class="form-control @error('review_record_link') is-invalid @enderror" id="review_record_link" name="review_record_link" accept="audio/*" disabled>
                 @if(isset($audioVersion) && $audioVersion->review_record_link)
+                    @php
+                        $storagePath = public_path('storage/' .$audioVersion->review_record_link);
+                        $publicPath = public_path('assets/images/' . $audioVersion->review_record_link);
+                        if (!empty($audioVersion->review_record_link) && file_exists($storagePath)) {
+                            $audioReviewUrl = asset('storage/' .$audioVersion->review_record_link);
+                        } elseif (!empty($audioVersion->review_record_link) && file_exists($publicPath)) {
+                            $audioReviewUrl = asset('assets/images/' .$audioVersion->review_record_link);
+                        } else {
+                            $audioReviewUrl = false;
+                        }      
+                    @endphp
+                    @if($audioReviewUrl)
                     <div class="mt-2">
-                        <audio controls>
-                            <source src="{{ asset('storage/'.$audioVersion->review_record_link) }}" type="audio/mp3">
-                            Your browser does not support the audio element.
-                        </audio>
+                          <audio controls>
+                                <source src="{{ $audioReviewUrl }}" type="audio/mp3">
+                                Your browser does not support the audio element.
+                          </audio>
                     </div>
+                    @else
+                        <span class="text-danger">audio file not Available</span>
+                    @endif
                 @endif
+
             </div>
 
             <div class="row mb-3">

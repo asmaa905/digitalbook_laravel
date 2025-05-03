@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
 @section('admin-title', 'Users Management')
-@section('admin-nav-title', 'Users List')
 
 @section('admin-styles')
+
 <style>
     .user-avatar {
         width: 40px;
@@ -15,13 +15,17 @@
 @endsection
 
 @section('admin-content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">All Users</h5>
-        <a href="{{ route('admin.users.create') }}" class="btn btn-primary">
+
+<div class="container-fluid">
+    <div class="filter-container d-flex justify-content-between align-items-center">
+      
+    <strong class="mb-0">All Users</strong>
+    <a href="{{ route('admin.users.create') }}" class="btn btn-orange">
             <i class="fas fa-plus me-1"></i> Add New User
         </a>
     </div>
+<div class="card">
+    
     <div class="card-body">
         @if(session('success'))
             <div class="alert alert-success">
@@ -82,6 +86,7 @@
 
         <div class="mt-4">
             {{ $users->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 </div>

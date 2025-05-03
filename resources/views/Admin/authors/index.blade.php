@@ -6,15 +6,16 @@
 
 
 @section('admin-content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">@section('admin-nav-title')
-Mange Authors
-@endsection</h5>
-        <a href="{{ route('admin.authors.create') }}" class="btn btn-primary">
+<div class="filter-container d-flex justify-content-between align-items-center">
+      
+      <strong>Manage Authors</strong>
+      
+      <a href="{{ route('admin.authors.create') }}" class="btn btn-orange">
             <i class="fas fa-plus"></i> Add Author
         </a>
-    </div>
+  </div>
+<div class="card">
+ 
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-hover">

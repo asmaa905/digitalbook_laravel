@@ -94,7 +94,7 @@
 
             <div class="d-flex justify-content-between">
                 <a href="{{ route('admin.plans.index') }}" class="btn btn-secondary">Cancel</a>
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-orange">
                     {{ $plan ? 'Update Plan' : 'Create Plan' }}
                 </button>
             </div>

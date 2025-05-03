@@ -3,9 +3,7 @@
 @section('admin-title')
   Admin Dashboard
 @endsection
-@section('admin-nav-title')
-  Dashboard
-@endsection
+
 @section('admin-styles')
 <style>
     .card {

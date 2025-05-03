@@ -1,16 +1,18 @@
 @extends('layouts.admin')
 
 @section('admin-title', 'Manage Categories')
-@section('admin-nav-title', 'Manage Categories')
 
 @section('admin-content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Categories Management</h5>
-        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
+<div class="container-fluid">
+    <div class="filter-container d-flex justify-content-between align-items-center">
+      
+    <strong class="mb-0">Categories Management</strong>
+    <a href="{{ route('admin.categories.create') }}" class="btn btn-orange">
             <i class="fas fa-plus"></i> Add Category
         </a>
     </div>
+<div class="card">
+   
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-hover">
@@ -55,5 +57,6 @@
             {{ $categories->links('pagination::bootstrap-5') }}
         </div>
     </div>
+</div>
 </div>
 @endsection

@@ -1,16 +1,16 @@
 @extends('layouts.admin')
 
 @section('admin-title', 'Manage Plans')
-@section('admin-nav-title', 'Plans Management')
 
 @section('admin-content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">All Plans</h5>
-        <a href="{{ route('admin.plans.create') }}" class="btn btn-primary">
+<div class="container-fluid">
+    <div class="filter-container d-flex justify-content-between align-items-center">    
+        <strong class="mb-0">All Plans</strong>
+        <a href="{{ route('admin.plans.create') }}" class="btn btn-orange">
             <i class="fas fa-plus me-1"></i> Create New Plan
         </a>
     </div>
+<div class="card">
     <div class="card-body">
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -50,7 +50,7 @@
                             </td>
                             <td>
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('admin.plans.edit', $plan) }}" class="btn btn-sm btn-primary">
+                                    <a href="{{ route('admin.plans.edit', $plan) }}" class="btn btn-sm btn-warning">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <form action="{{ route('admin.plans.destroy', $plan) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this plan?')">
@@ -70,6 +70,7 @@
                     @endforelse
                 </tbody>
             </table>
+        </div>
         </div>
     </div>
 </div>

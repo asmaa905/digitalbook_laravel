@@ -30,31 +30,7 @@
 @section('admin-content')
 <div class="container-fluid">
     <div class="filter-container">
-        {{--<form method="GET" action="{{ route('admin.payments.index') }}">
-            <div class="row">
-                <div class="col-md-3">
-                    <label for="status" class="form-label">Status</label>
-                    <select name="status" id="status" class="form-select">
-                        <option value="">All Statuses</option>
-                        @foreach($statuses as $status)
-                            <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
-                                {{ ucfirst($status) }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label for="search" class="form-label">Search</label>
-                    <input type="text" name="search" id="search" class="form-control" 
-                           placeholder="Transaction ID or User" value="{{ request('search') }}">
-                </div>
-                <div class="col-md-3 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary me-2">Filter</button>
-                    <a href="{{ route('admin.payments.index') }}" class="btn btn-outline-secondary">Reset</a>
-                </div>
-               
-            </div>
-        </form>--}}
+      
         <strong>Payments</strong>
     </div>
 

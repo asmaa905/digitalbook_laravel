@@ -3,13 +3,16 @@
 @section('admin-title',  'Manage Publishing Houses')
 
 @section('admin-content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Publishing Houses Management</h5>
-        <a href="{{ route('admin.publishing-houses.create') }}" class="btn btn-primary">
+<div class="container-fluid">
+    <div class="filter-container d-flex justify-content-between align-items-center">
+      
+    <strong class="mb-0">Publishing Houses Management</strong>
+    <a href="{{ route('admin.publishing-houses.create') }}" class="btn btn-orange">
             <i class="fas fa-plus"></i> Add Publishing House
         </a>
     </div>
+<div class="card">
+  
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-hover">
@@ -80,5 +83,6 @@
             {{ $publishingHouses->links('pagination::bootstrap-5') }}
         </div>
     </div>
+</div>
 </div>
 @endsection

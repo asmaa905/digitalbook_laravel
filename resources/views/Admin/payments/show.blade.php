@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section('admin-title',  'Payment #' . $payment->id)
-@section('admin-nav-title', 'Payment #' . $payment->id)
 
 @section('admin-content')
 <div class="container-fluid">
@@ -9,7 +8,7 @@
         <div class="col-md-8">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="card-title">Payment Information</h5>
+                    <h5 class="card-title">{{'Payment #' . $payment->id}}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
