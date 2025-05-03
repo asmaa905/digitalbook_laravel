@@ -67,25 +67,25 @@
                 </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav sMspI ms-auto" style="padding-left: 20px">
-                            <li class="nav-item active">
-                            <a class="nav-link" href="{{route('user.books.audio')}}">Audiobooks</a>
+                            <li class="nav-item">
+                            <a class="nav-link  @if(request()->routeIs('user.books.audio')) text-orange @else text-white @endif" href="{{route('user.books.audio')}}">Audiobooks</a>
 
                             </li>
                             <li class="nav-item active">
-                            <a class="nav-link" href="{{route('user.books.ebooks')}}">ebooks</a>
+                            <a class="nav-link   @if(request()->routeIs('user.books.ebooks')) text-orange @else text-white @endif" href="{{route('user.books.ebooks')}}">ebooks</a>
 
                             </li>
                             <li class="nav-item">
-                            <a class="nav-link"  href="{{route('user.categories.index')}}">Categories</a>
+                            <a class="nav-link   @if(request()->routeIs('user.categories.index')) text-orange @else text-white @endif"  href="{{route('user.categories.index')}}">Categories</a>
                             @if(Auth::check() && auth()->user()->role=='Reader')
                             <li class="nav-item">
-                            <a class="nav-link"  href="{{route('books.reader.fav')}}">WishList</a>
+                            <a class="nav-link   @if(request()->routeIs('books.reader.fav')) text-orange @else text-white @endif"  href="{{route('books.reader.fav')}}">WishList</a>
                             </li>
                             @endif
                             </li>
                             @if(!Auth::check() )
                             <li class="nav-item">
-                            <a class="nav-link"  href="{{route('admin.login.create')}}">Login as a staff</a>
+                            <a class="nav-link  @if(request()->routeIs('admin.login.create')) text-orange @else text-white @endif"  href="{{route('admin.login.create')}}">Login as a staff</a>
                             </li>
                             @endif
                         </ul>
@@ -121,7 +121,7 @@
                                         
                                             @elseif(Auth::check() && Auth::user()->role === 'Publisher')
                                             <a class="dropdown-item " style="" href="{{ route('publisher.books.index') }}">
-                                            <i class="fa-solid fa-book"></i> My published books
+                                            <i class="fa-solid fa-book me-2"></i> Published books
                                             </a>
                                             @elseif(Auth::check() && Auth::user()->role === 'Admin')
                                             <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
@@ -143,11 +143,11 @@
                                 </div>
                         </ul>
                                 @else
-                        <ul class="navbar-nav sMspI" style="    padding-left: 20px;
+                        <ul class="navbar-nav sMspI " style="    padding-left: 20px;
                         justify-content: center;
                         align-items: center;">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{ route('login') }}">Login</a>
+                            <a class="nav-link   @if(request()->routeIs('login')) text-orange @else text-white @endif" href="{{ route('login') }}">Login</a>
                         </li>
                         <li class="nav-item">
                             <a class="gqCvyq" style="font-size:13px;line-height:16px;color:rgb(16,16,16);font-weight:600"
