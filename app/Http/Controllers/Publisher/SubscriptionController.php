@@ -194,15 +194,31 @@ class SubscriptionController extends BaseController
             ])
         ];
         
+        \Log::info("Attempting MyFatoorah payment with data: ", $data);
+        
         $response = $this->fatooraService->sendPayment($data);
         
-        if (!$response || !isset($response['IsSuccess'])) {
-            return redirect()->back()->with('error', 'Failed to initiate payment. Please try again.');
+        if (!$response) {
+            \Log::error("MyFatoorah payment initiation failed - no response");
+            return redirect()->back()->with('error', 'Failed to connect to payment gateway. Please try again.');
         }
-
+        
+        if (!isset($response['IsSuccess'])) {
+            \Log::error("MyFatoorah payment initiation failed - invalid response", ['response' => $response]);
+            return redirect()->back()->with('error', 'Invalid response from payment gateway. Please try again.');
+        }
+        
+        if (!$response['IsSuccess']) {
+            \Log::error("MyFatoorah payment initiation failed", [
+                'response' => $response,
+                'error' => $response['Message'] ?? 'No error message'
+            ]);
+            return redirect()->back()->with('error', $response['Message'] ?? 'Failed to initiate payment. Please try again.');
+        }
+    
         // Store payment ID in session for verification later
         session(['myfatoorah_invoice_id' => $response['Data']['InvoiceId']]);
-
+    
         // Redirect to payment page
         return redirect($response['Data']['InvoiceURL']);
     }
