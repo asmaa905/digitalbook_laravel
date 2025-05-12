@@ -101,12 +101,12 @@
                                 <th>Cover</th>
                                 <th>Title</th>
                                 <th>Narrator</th>
-                                <th>Duration</th>
+                                
                                 <th>Review Audio</th>
 
-                                <th>Full Audios</th>
-
-                                <th>Audio Status</th>
+                                <th>Last Audio</th>
+                               <th>Duration</th>
+                                {{--<th>Audio Status</th>--}}
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -114,30 +114,93 @@
                             @forelse($audioVersions as $audio)
                             <tr>
                                 <td>
-                                    @if($audio->book->image)
+                                @if($audio->book->image)
+                                @php
+                                    $storagePath = public_path('storage/' .$audio->book->image);
+                                    $publicPath = public_path( 'assets/images/' . $audio->book->image);
+                                    if (!empty($audio->book->image) && file_exists($storagePath)) {
+                                        $imageUrl = asset('storage/' . $audio->book->image);
+                                    } elseif (!empty($audio->book->image) && file_exists($publicPath)) {
+                                        $imageUrl = asset( 'assets/images/' .$audio->book->image);
+                                    }else {
+                                        $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
+                                    }      
+                                @endphp
+                                <img src="{{ $imageUrl }}" width="50" height="70" class="img-thumbnail">
+                            @else
+                                <div class="bg-light d-flex align-items-center justify-content-center" style="width:50px;height:70px;">
+                                    <i class="fas fa-book text-muted"></i>
+                                </div>
+                            @endif
+                                    {{--@if($audio->book->image)
                                         <img src="{{ asset('storage/'.$audio->book->image) }}" width="50" height="70" class="img-thumbnail">
                                     @else
                                         <div class="bg-light d-flex align-items-center justify-content-center" style="width:50px;height:70px;">
                                             <i class="fas fa-book text-muted"></i>
                                         </div>
-                                    @endif
+                                    @endif--}}
                                 </td>
                                 <td>{{ $audio->book->title }}</td>
                                 <td>{{ $audio->creator->name ?? 'Unknown' }}</td>
-                                <td>{{ $audio->audio_duration }}</td>
-                                <td><span class="badge bg-success">
+                                {{--<td>{{ $audio->audio_duration }}</td>--}}
+                                {{--<td><span class="badge bg-success">
                                     Found
-                                    </span></th>
+                                    </span></th>--}}
 
+                                    @if($audio->audio_link)
+                            <!-- <td> -->
+                            
+                                @php
+                                    $storagePath = public_path('storage/' .$audio->audio_link);
+                                    $publicPath = public_path('assets/images/' . $audio->audio_link);
+                                    
+                                    if (!empty($audio->audio_link)) {
+                                        if (file_exists($storagePath)) {
+                                            $audioPath = $storagePath;
+                                            $audioUrl = asset('storage/' . $audio->audio_link);
+                                        } elseif (file_exists($publicPath)) {
+                                            $audioPath = $publicPath;
+                                            $audioUrl = asset('assets/images/' .$audio->audio_link);
+                                        } else {
+                                            $audioUrl = false;
+                                        }
+                                        
+                                        // Calculate duration if file exists
+                                        if ($audioUrl && file_exists($audioPath)) {
+                                            $getID3 = new getID3();
+                                            $fileInfo = $getID3->analyze($audioPath);
+                                            $duration = $fileInfo['playtime_seconds'] ?? 0;
+                                        } else {
+                                            $duration = 0;
+                                        }
+                                    } else {
+                                        $audioUrl = false;
+                                        $duration = 0;
+                                    }
+                                @endphp
+                                
                                 <td>
-                                @if($audio->audio_link)
-                                        <audio controls style="width: 150px">
-                                            <source src="{{ asset('storage/'.$audio->audio_link) }}" type="audio/{{ pathinfo($audio->audio_link, PATHINFO_EXTENSION) }}">
+                            
+                                    @if($audioUrl)
+                                    <audio controls style="width: 150px; height: 40px;">
+                                            <source src="{{ $audioUrl }}" type="audio/mpeg">
                                         </audio>
                                     @else
-                                        <span class="text-muted">N/A</span>
-                                    @endif 
-                               </td>
+                                    <span class="text-danger">audio not Available</span>
+                                    @endif
+                            
+                                </td>
+                                
+                                <td class="audio-duration" data-audio-url="{{ $audioUrl ?? '' }}">
+                                    @if($audioUrl)
+                                        {{ gmdate("H:i:s", $duration) }}
+                                    @else
+                                        <span class="">00:00:00</span>
+                                    @endif
+                                </td>
+                                @else
+                                <span class="text-danger">No audio</span>
+                                @endif
                                 <td>
                                     <span class="badge bg-{{ $audio->is_published === 'accepted' ? 'success' : ($audio->is_published === 'rejected' ? 'danger' : 'info') }}">
                                         {{ ucfirst($audio->is_published) }}

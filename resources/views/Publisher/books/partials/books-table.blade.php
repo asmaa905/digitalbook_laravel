@@ -20,14 +20,24 @@
             @forelse($books as $book)
             <tr>
                 <td>
-                    @if($book->image)
-                    <div style="width:50px;height:50px; border-raduis:5px;border:1px solid #ddd;padding:6px">
-                        <img src="{{ asset('storage/'.$book->image) }}"  class="w-100 h-100"></div>
-                    @else
-                        <div class="bg-light d-flex align-items-center justify-content-center" style="width:50px;height:70px;">
-                            <i class="fas fa-book text-muted"></i>
-                        </div>
-                    @endif
+                @if($book->image)
+                    @php
+                        $storagePath = public_path('storage/' .$book->image);
+                        $publicPath = public_path( 'assets/images/' . $book->image);
+                        if (!empty($book->image) && file_exists($storagePath)) {
+                            $imageUrl = asset('storage/' . $book->image);
+                        } elseif (!empty($book->image) && file_exists($publicPath)) {
+                            $imageUrl = asset( 'assets/images/' .$book->image);
+                        }else {
+                            $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
+                        }      
+                    @endphp
+                    <img src="{{ $imageUrl }}" width="50" height="70" class="img-thumbnail">
+                @else
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="width:50px;height:70px;">
+                        <i class="fas fa-book text-muted"></i>
+                    </div>
+                @endif
                 </td>
                <td> @if (strlen($book->title) > 15)
                     {{substr($book->title, 0, 15) . "..."}}

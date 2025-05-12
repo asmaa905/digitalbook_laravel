@@ -47,8 +47,15 @@ class FatooraService
       }
   }
     public function sendPayment($data)
-    {
-       return $response = $this->buildRequest('/v2/SendPayment','POST',$data);
+    {if (!isset($data['MerchantInfo'])) {
+        $data['MerchantInfo'] = [
+            "DisplayName" => 'listen to story', // From your .env or config
+            "LogoUrl" => 'https://www.storytel.com/favicon-32x32.png' // Your logo URL
+        ];
+    }
+    
+    return $this->buildRequest('/v2/SendPayment', 'POST', $data);
+    //    return $response = $this->buildRequest('/v2/SendPayment','POST',$data);
     }
     // private function saveTransactionPayment(Request $request){
     // }

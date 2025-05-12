@@ -685,16 +685,16 @@
                             <div class="row justify-content-between">
                                 <div class="book-img col-md-4 col-sm-4 col-6">
                                 @php
-                                $storagePath = public_path('storage/' .$book->image);
-                                $publicPath = public_path( 'assets/images/' . $book->image);
-                                if (!empty($book->image) && file_exists($storagePath)) {
-                                    $imageUrl = asset('storage/' . $book->image);
-                                } elseif (!empty($book->image) && file_exists($publicPath)) {
-                                    $imageUrl = asset( 'assets/images/' .$book->image);
-                                }else {
-                                    $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
-                                }      
-                            @endphp
+                                    $storagePath = public_path('storage/' .$book->image);
+                                    $publicPath = public_path( 'assets/images/' . $book->image);
+                                    if (!empty($book->image) && file_exists($storagePath)) {
+                                        $imageUrl = asset('storage/' . $book->image);
+                                    } elseif (!empty($book->image) && file_exists($publicPath)) {
+                                        $imageUrl = asset( 'assets/images/' .$book->image);
+                                    }else {
+                                        $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
+                                    }      
+                                @endphp
                             <img
                                     src="{{ $imageUrl }}"
                                 alt="book"
@@ -725,92 +725,92 @@
                     
                         @auth 
                             @php
-                            $isReaded = auth()->user()->readedBooks()->where('book_id', $book->id)->exists();
-                            $userReview = $book->reviews->where('user_id', auth()->id())->first();
+                                $isReaded = auth()->user()->readedBooks()->where('book_id', $book->id)->exists();
+                                $userReview = $book->reviews->where('user_id', auth()->id())->first();
                             @endphp
 
                             @if(auth()->user()->role !== 'Admin' && auth()->user()->role !== 'Publisher' && $isReaded)                           
                                 @if($userReview)
                                     <!-- Edit Review Form -->
                                     <div class="comment-card card mb-2"
-                                style="
-                                    padding-top: 20px;
-                                    padding-bottom: 20px;
-                                    padding-right: 20px;
-                                    padding-left: 20px;
-                                ">
+                                        style="
+                                            padding-top: 20px;
+                                            padding-bottom: 20px;
+                                            padding-right: 20px;
+                                            padding-left: 20px;
+                                    ">
                                         <h5>Edit Your Review</h5>
                                         <form method="POST" action="{{ route('user.review.update', $userReview) }}">
                                             @csrf
                                             @method('PUT')
                                             <div
                                     class="comment-sec-head d-flex justify-content-start"
-                                >
-                                          <!-- User image and info -->
-                                    <div
-                                        class="creator-img"
-                                        style="
-                                            border-radius: 50%;
-                                            position: relative;
-                                            display: flex;
-                                            justify-content: center;
-                                            align-items: center;
-                                            width: 56px;
-                                            height: 56px;
-                                            min-width: 56px;
-                                            min-height: 56px;
-                                            background-color: rgb(
-                                                255,
-                                                224,
-                                                218
-                                            );
-                                            border-radius: 50%;
-                                            background-size: cover;
-                                            background-position: 50% center;
-                                            background-repeat: no-repeat;
-                                            margin-right: 20px;
-                                        "
                                     >
-                                        @if(auth()->check() &&auth()->user()->image)
-                                            <img src="{{ asset('storage/' . auth()->user()->image) }}" 
-                                                alt="Current Profile Image"
-                                                class="account-avatar w-100 h-100"
-                                                style="display: block; margin-bottom: 10px; border-radius: 50%;"/>
-                                        @else
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            style="width: 59%; height: 100%"
-                                            fill="#5c5c5cff"
-                                            viewBox="0 0 16 16"
+                                            <!-- User image and info -->
+                                        <div
+                                            class="creator-img"
+                                            style="
+                                                border-radius: 50%;
+                                                position: relative;
+                                                display: flex;
+                                                justify-content: center;
+                                                align-items: center;
+                                                width: 56px;
+                                                height: 56px;
+                                                min-width: 56px;
+                                                min-height: 56px;
+                                                background-color: rgb(
+                                                    255,
+                                                    224,
+                                                    218
+                                                );
+                                                border-radius: 50%;
+                                                background-size: cover;
+                                                background-position: 50% center;
+                                                background-repeat: no-repeat;
+                                                margin-right: 20px;
+                                            "
                                         >
-                                            <path
-                                                d="M11.752 5.083c0 2.07-1.68 3.75-3.75 3.75-2.07 0-3.75-1.68-3.75-3.75 0-2.07 1.68-3.75 3.75-3.75 2.07 0 3.75 1.68 3.75 3.75Zm-1.25 0c0-1.377-1.123-2.5-2.5-2.5a2.504 2.504 0 0 0-2.5 2.5c0 1.378 1.123 2.5 2.5 2.5s2.5-1.122 2.5-2.5Z"
-                                                clip-rule="evenodd"
-                                            ></path>
-                                            <path
-                                                d="M7.998 10.515c-2.407 0-4.389 1.373-4.641 3.654-.03.274-.251.499-.527.499h-.163a.469.469 0 0 1-.479-.5c.256-2.936 2.759-4.816 5.81-4.816 3.053 0 5.557 1.88 5.813 4.816a.469.469 0 0 1-.479.5h-.163c-.276 0-.497-.225-.527-.5-.252-2.28-2.234-3.653-4.643-3.653Z"
-                                            ></path>
-                                        </svg>
-                                    @endif
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center w-100">
-                                        <div class="rate-creator-info">
-                                            <h6 class="creator-name">{{ auth()->user()->name }}</h6>
-                                            <div
-                                                class="rate-content d-flex justify-content-between"
+                                            @if(auth()->check() &&auth()->user()->image)
+                                                <img src="{{ asset('storage/' . auth()->user()->image) }}" 
+                                                    alt="Current Profile Image"
+                                                    class="account-avatar w-100 h-100"
+                                                    style="display: block; margin-bottom: 10px; border-radius: 50%;"/>
+                                            @else
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                style="width: 59%; height: 100%"
+                                                fill="#5c5c5cff"
+                                                viewBox="0 0 16 16"
                                             >
-                                                <!-- <label for="rating-value"  class="form-label">Rating</label> -->
-                                                <div class="star-rating">
-                                                    <input type="hidden" name="rating" id="rating-value" value="{{ $userReview->rating }}" required>
-                                                    @for($i = 1; $i <= 5; $i++)
-                                                        <i class="fas fa-star star-icon {{ $i <= $userReview->rating ? 'selected' : '' }}" 
-                                                        data-value="{{ $i }}"></i>
-                                                    @endfor
+                                                <path
+                                                    d="M11.752 5.083c0 2.07-1.68 3.75-3.75 3.75-2.07 0-3.75-1.68-3.75-3.75 0-2.07 1.68-3.75 3.75-3.75 2.07 0 3.75 1.68 3.75 3.75Zm-1.25 0c0-1.377-1.123-2.5-2.5-2.5a2.504 2.504 0 0 0-2.5 2.5c0 1.378 1.123 2.5 2.5 2.5s2.5-1.122 2.5-2.5Z"
+                                                    clip-rule="evenodd"
+                                                ></path>
+                                                <path
+                                                    d="M7.998 10.515c-2.407 0-4.389 1.373-4.641 3.654-.03.274-.251.499-.527.499h-.163a.469.469 0 0 1-.479-.5c.256-2.936 2.759-4.816 5.81-4.816 3.053 0 5.557 1.88 5.813 4.816a.469.469 0 0 1-.479.5h-.163c-.276 0-.497-.225-.527-.5-.252-2.28-2.234-3.653-4.643-3.653Z"
+                                                ></path>
+                                            </svg>
+                                        @endif
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center w-100">
+                                            <div class="rate-creator-info">
+                                                <h6 class="creator-name">{{ auth()->user()->name }}</h6>
+                                                <div
+                                                    class="rate-content d-flex justify-content-between"
+                                                >
+                                                    <!-- <label for="rating-value"  class="form-label">Rating</label> -->
+                                                    <div class="star-rating">
+                                                        <input type="hidden" name="rating" id="rating-value" value="{{ $userReview->rating }}" required>
+                                                        @for($i = 1; $i <= 5; $i++)
+                                                            <i class="fas fa-star star-icon {{ $i <= $userReview->rating ? 'selected' : '' }}" 
+                                                            data-value="{{ $i }}"></i>
+                                                        @endfor
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div> 
-                                </div>
+                                        </div> 
+                                    </div>
                                           
                                             
                                             <div class="mb-1">
@@ -857,6 +857,9 @@
                                         You must read this book to submit a review.
                                     </div>
                                 @endif
+                        @else
+                        <p class="comments col-sm-6 col-12">You must <a href="{{route('login')}}">Login</a> to review on this book</p>
+
                         @endauth
                          @if($book->reviews->count() > 0)<div
                             class="comments d-flex flex-column justify-content-between col-sm-6 col-12"
@@ -958,9 +961,9 @@
                             </div>
                             @endforeach
                         @else
-                            <p class="comments d-flex flex-column justify-content-between col-sm-6 col-12">No reviews yet. Be the first to review!</p>
-                       
-                        </div>  @endif
+                               <p class="comments d-flex flex-column justify-content-between col-sm-6 col-12">No reviews yet. Be the first to review!</p>
+                            </div>  
+                        @endif
                     </div>
                 </section>
             </div>

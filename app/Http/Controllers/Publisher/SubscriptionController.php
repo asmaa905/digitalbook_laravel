@@ -188,15 +188,25 @@ class SubscriptionController extends BaseController
             "ErrorUrl" => route('publisher.subscriptions.payment.error'),
             "Language" => 'en',
             "DisplayCurrencyIso" => 'EGP',
-            "UserDefinedField" => json_encode([
-                'plan_id' => $plan->id,
-                'user_id' => $user->id
-            ])
+            // Branding parameters
+            "InvoiceItems" => [[
+                "ItemName" => $plan->name . " Subscription",
+                "Quantity" => 1,
+                "UnitPrice" => $plan->price
+            ]],
+            "DisplayInfo" => [
+                "InvoiceDisplayValue" => $plan->price . " EGP",
+                "Currency" => "EGP",
+                "CultureName" => "en"
+            ],
+            // Custom branding
+            "MerchantInfo" => [
+                "DisplayName" => "Listen to story", // Your application name
+                "LogoUrl" => 'https://www.storytel.com/favicon-32x32.png' // Full URL to your logo
+            ]
         ];
         
-        \Log::info("Attempting MyFatoorah payment with data: ", $data);
-        
-        $response = $this->fatooraService->sendPayment($data);
+        $response = $this->fatooraService->sendPayment($data);    
         
         if (!$response) {
             \Log::error("MyFatoorah payment initiation failed - no response");

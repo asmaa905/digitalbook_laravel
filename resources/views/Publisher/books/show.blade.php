@@ -19,13 +19,27 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-4 text-center">
-                @if($book->image)
-                    <img src="{{ asset('storage/'.$book->image) }}" class="img-fluid rounded mb-3" alt="Book Cover">
+            @if( $book->image)
+                @php
+                    $storagePath = public_path('storage/' . $book->image);
+                    $publicPath = public_path( 'assets/images/' . $book->image);
+                    if (!empty( $book->image) && file_exists($storagePath)) {
+                        $imageUrl = asset('storage/' .  $book->image);
+                    } elseif (!empty( $book->image) && file_exists($publicPath)) {
+                        $imageUrl = asset( 'assets/images/' . $book->image);
+                    }else {
+                        $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
+                    }      
+                @endphp
+                     <img  class="img-fluid rounded mb-3" alt="Book Cover" src="{{ $imageUrl }}" alt="image">
+            
                 @else
                     <div class="bg-light d-flex align-items-center justify-content-center" style="height:300px;">
                         <i class="fas fa-book fa-5x text-muted"></i>
                     </div>
                 @endif
+                       
+              
             </div>
             <div class="col-md-8">
                 <h2>{{ $book->title }}</h2>

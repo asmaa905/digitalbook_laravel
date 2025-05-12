@@ -142,11 +142,23 @@
 
                     <input type="file" class="file-upload-input" name="image" accept="image/*" 
                     @if(!$isnotimgRequired) required @endif />
-                        @if(isset($book) && $book->image)
-                        <div class="img " id="coverPreview" style="height: 200px; width: 100%;">
-                            <img id="coverPreviewImage" class="w-100 h-100" src="{{ asset('storage/'. old('image', $book->image ?? '')) }}" alt="image">
+                    @if(isset($book) && $book->image)
+                        @php
+                            $storagePath = public_path('storage/' .old('image', $book->image ?? ''));
+                            $publicPath = public_path( 'assets/images/' . old('image', $book->image ?? ''));
+                            if (!empty(old('image', $book->image ?? '') && file_exists($storagePath))) {
+                                $imageUrl = asset('storage/' . old('image', $book->image ?? ''));
+                            } elseif (!empty(old('image', $book->image ?? '')) && file_exists($publicPath)) {
+                                $imageUrl = asset( 'assets/images/' . old('image', $book->image ?? ''));
+                            }else {
+                                $imageUrl =asset('assets/images/' .'books/book-1.jpg' );
+                            }      
+                        @endphp
+                        <div  id="coverPreview" style="height: 200px; width: 100%;">
+                                <img id="coverPreviewImage" class="w-100 h-100" src="{{ $imageUrl }}" alt="image">
                         </div>
-                        @endif
+                    @endif
+                       
                        <div style="margin" class="mx-auto">
                         <div style="background-color:rgba(0,0,0,0.01)">
                              <i class="fas fa-image z-50  text-orange"></i>
